@@ -10,7 +10,6 @@ $contrasena = $_POST['contrasena'];
 $confirmarContra = $_POST['confirmarContra'];
 
 if ($contrasena === $confirmarContra) {
-    $contrasena = password_hash($contrasena, PASSWORD_BCRYPT); // Encriptar contraseña
     $registroExitoso = $modelo->registrarUsuario($usuario, $correo, $contrasena);
 
     if ($registroExitoso) {

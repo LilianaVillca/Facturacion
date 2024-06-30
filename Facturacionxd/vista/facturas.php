@@ -8,8 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         body {
-            background-color: #c9d6ff;
-            background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+            background-color: #e8f6ec;
+            /* background: linear-gradient(to right, #e2e2e2, #c9d6ff); */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -142,7 +142,8 @@
                     // pero lo hacemos luego
                     echo "<td>" . $factura["total_despues_impuesto"] . "</td>";
                     echo "<td>";
-                    echo "<a href='../controlador/factura.php?accion=imprimir&id=" . $factura["id_factura"] . "' class='editar'>Imprimir</a>";
+                    //echo "<a href='fpdf//PruebaV.php' target='_blank' class='imprimir'>Imprimir</a>";
+                    echo "<a href='../controlador/factura.php?accion=imprimir&id=" . $factura["id_factura"] . "' target='_blank' class='imprimir'>Imprimir</a>";
                     echo "<a href='../controlador/factura.php?accion=editar&id=" . $factura["id_factura"] . "' class='editar'>Editar</a>";
                     echo "</td>";
                     echo "</tr>";

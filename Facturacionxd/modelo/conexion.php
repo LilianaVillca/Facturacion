@@ -25,7 +25,7 @@ class Conexion
     ////////////////////////////////  REGISTRAR USUARIO /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function registrarUsuario($usuario, $correo, $contrasena) {
-        $sql = "INSERT INTO usuario (nombre_usuario, correo, contrasena, rol) VALUES ('$usuario', '$correo', '$contrasena', 'cliente')";
+        $sql = "INSERT INTO usuario (nomUsuario, email, password, rol) VALUES ('$usuario', '$correo', '$contrasena', 'cliente')";
         $result = $this->conexion->query($sql);
         return $result;
     }
@@ -59,6 +59,18 @@ class Conexion
     // ACIONES DEL ADMINISTRADOR //
     // GESTION DE USUARIOS //
     
+    public function obtener_factura($id_factura) {
+        $sql = "SELECT * FROM factura WHERE id_factura = ?";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id_factura);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc();
+        } else {
+            return null;
+        }
+    }
     public function obtener_facturas(){
         $sql="SELECT * FROM factura";
         // Ejecutar la consulta
@@ -75,6 +87,7 @@ class Conexion
         }
 
     }
+    
 
 }
 

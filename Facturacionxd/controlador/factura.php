@@ -1,3 +1,4 @@
+
 <?php
 include_once("../modelo/conexion.php");
 
@@ -7,23 +8,23 @@ if (isset($_GET["accion"])) {
     $accion = $_GET["accion"];
 
     switch ($accion) {
-        case "crear":
-            if (isset($_POST["id"], $_POST["nombre"], $_POST["tipo"], $_POST["anio"], $_POST["profe"])) {
-                $carrera = $_POST["id"];
-                $nombre = $_POST["nombre"];
-                $tipo = $_POST["tipo"];
-                $anio = $_POST["anio"];
-                $profe = $_POST["profe"];
-
-                exit();
-            }else{
-                echo "faltan parametros";
+        case "imprimir":
+            if (isset($_GET["id"])) {
+                $id_factura = $_GET["id"];
+                $factura = $modelo->obtener_factura($id_factura);
+                if ($factura) {
+                    $factura_serializado = serialize($factura);
+                    header("Location: ../vista/fpdf/generarFactura.php?datoFactura=$factura_serializado");
+                    exit();
+                } else {
+                    echo "Factura no encontrada";
+                }
+            } else {
+                echo "Faltan parámetros";
             }
             break;
 
-        
+        // Otros casos...
     }
 }
-
-
-
+?>
