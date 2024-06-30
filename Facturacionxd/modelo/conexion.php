@@ -5,9 +5,9 @@ class Conexion
 
     public function __construct()
     {
-        $this->conexion = new mysqli("localhost:3309", "root", "", "facturacion");
+        $this->conexion = new mysqli("localhost:3307", "root", "Eva2024", "facturacion");
     }
-    
+    ///////////////////////////////INGRESO DE USUARIO ///////////////////////////
     public function procesarInicioSesion($usuario, $correo, $contrasena) {
         $consulta = "SELECT * FROM usuario WHERE nomUsuario = ? AND email = ? AND password = ?";
         $stmt = $this->conexion->prepare($consulta);
@@ -25,7 +25,7 @@ class Conexion
     ////////////////////////////////  REGISTRAR USUARIO /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function registrarUsuario($usuario, $correo, $contrasena) {
-        $sql = "INSERT INTO usuario (nomUsuario, email, password, rol) VALUES ('$usuario', '$correo', '$contrasena', 'cliente')";
+        $sql = "INSERT INTO usuario (nombre_usuario, correo, contrasena, rol) VALUES ('$usuario', '$correo', '$contrasena', 'cliente')";
         $result = $this->conexion->query($sql);
         return $result;
     }
@@ -59,18 +59,6 @@ class Conexion
     // ACIONES DEL ADMINISTRADOR //
     // GESTION DE USUARIOS //
     
-    public function obtener_factura($id_factura) {
-        $sql = "SELECT * FROM factura WHERE id_factura = ?";
-        $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("i", $id_factura);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            return $result->fetch_assoc();
-        } else {
-            return null;
-        }
-    }
     public function obtener_facturas(){
         $sql="SELECT * FROM factura";
         // Ejecutar la consulta
@@ -87,7 +75,6 @@ class Conexion
         }
 
     }
-    
 
 }
 

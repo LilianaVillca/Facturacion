@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facturacion</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
+ 
     <style>
         body {
             background-color: #c9d6ff;
@@ -46,6 +46,7 @@
                     </div>
                 </div>
                 <input id="currency" type="hidden" value="$">
+                
                 <div class="row">
 
                     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
@@ -58,29 +59,28 @@
                         <!-- pero nc si hacer un tabla con los datos de la muebleria -->
                         <!-- Muebleria: id,nombre,direccion,email,tel -->
                     </div>
+                    <div class="container content-factura">
                     <div class="col">
-                        <h3 class="col">Quien Compra</h3>
-                        <label for="nombre">Nombre del cliente:</label>
-                        <input type="text" id="nombre" name="nombre" required>
-                        <br>
+                        <h3 class="col">Quien Compra</h3><br>
+                        <label for="nombre">Nombre del cliente:</label><br>
+                        <input type="text" id="nombre" name="nombre" required><br>
 
-                        <label for="cuil">CUIL/CUIT:</label>
-                        <input type="text" id="cuil" name="cuil" required>
-                        <br>
-
-                        <label for="nombre">Domicilio:</label>
-                        <input type="text" id="nombre" name="nombre" required>
-                        <br>
+                        <label for="cuil">CUIL/CUIT:</label><br>
+                        <input type="text" id="cuil" name="cuil" required><br>
+                
+                        <label for="nombre">Domicilio:</label><br>
+                        <input type="text" id="nombre" name="nombre" required><br>
+                    
                     </div>
 
-                </div> <br> <br>
+                </div> <br>
                 <div class="row">
                     <label for="tipoFactura">Tipo de factura:</label>
                     <select id="tipoFactura" name="tipoFactura">
                         <option value="consumidor">Consumidor final</option>
                         <option value="monotributista">Monotributista</option>
                         <option value="responsable">Responsable inscripto</option>
-                        <option value="sujetoexento">Sujeto Exento </option>
+                        <option value="sujetoexento">Sujeto Exento </option><br>
                     </select>
 
                     <label for="formaPago">Forma de pago:</label>
@@ -171,9 +171,10 @@
                                 </div>
                                 <br>
                             </div>
+                        
                             <div class="finalFactura">
                                 <div class="form-group">
-                                    <input type="hidden" value="<?php echo $_SESSION['userid']; ?>" class="form-control" name="userId">
+                                    <input type="hidden" value="<?php echo $_SESSION['userId']; ?>" class="form-control" name="userId">
                                     <input data-loading-text="Guardando factura..." type="submit" name="invoice_btn" value="Guardar factura" class="btn btn-success submit_btn invoice-save-btm">
                                 </div>
 

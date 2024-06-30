@@ -6,8 +6,10 @@ $modelo = new conexion();
 
 // Validar credenciales
 $permiso = $modelo->procesarInicioSesion($_POST['usuario'], $_POST['correo'], $_POST['contrasena']);
+// $id_usuario = $modelo->obtenerIdUsuario($_POST['usuario']);
 
 if ($permiso !== null) {
+    // Autenticación exitosa, redirigir según el permiso del usuario
     $_SESSION["autentificado"] = true;
     $_SESSION["rol"] = $permiso;
 
