@@ -13,7 +13,7 @@
       /*background: linear-gradient(to right, #4e54c8, #8f94fb);
       background: linear-gradient(to right, #000428, #004e92);  */
       /*background: linear-gradient(to right, #0f0c29, #302b63, #24243e);*/
-      background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+      background: white;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -22,31 +22,15 @@
     }
     #container-fluid{
       background-color: #512da8;
-    }
-    
-    /*.bi {
-      ;
-    }*/
-    .p{
-      background: linear-gradient(90deg, #89A7D5,#5378b2ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      /*color:#5378b2ff; */     
-      font-family: "Anton", sans-serif;
-      
-      font-style: normal;
-      font-size: 500%; 
-                   
     } 
-      
       /*     -----------cambios--------------          */
     
     .bi {
-    fill: #294A92;
+    fill: #1f4136;
     cursor: pointer;
     }
     .bi:hover {
-    fill: #3a7bd5;
+    fill: #5EC57E;
     }
 
     
@@ -75,11 +59,31 @@
       filter:blur(10px);
       z-index:-1;
     }
+
+    
+    .card-header{
+      
+  font-family: "Lato", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+ 
+    }
+    
+    
+    .logo-png{
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-45%);
+      width: 50%;
+    }
+    
     
   </style>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
 
 </head>
 
@@ -87,93 +91,26 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-  <nav class="navbar navbar-light bg-light fixed-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" >Inicio</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLightNavbar" aria-controls="offcanvasLightNavbar" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="offcanvas offcanvas-end text-bg-light" tabindex="-1" id="offcanvasLightNavbar" aria-labelledby="offcanvasLightNavbarLabel">
-        <div class="offcanvas-header">
-          <!--<h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Menu</h5>-->
-          <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item d-flex justify-content-center">
-              <a class="nav-link active" aria-current="page" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="130" height="130" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-                </svg><br><br>
-                <h4>Administrador</h4>
-              </a>
-
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Inicio</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Ventas</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Articulos
-              </a>
-              <ul class="dropdown-menu dropdown-menu-dark">
-                <li><a class="dropdown-item" href="#">Gestionar Articulo</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="#">Listado de articulos</a></li>
-              </ul>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Clientes
-              </a>
-              <ul class="dropdown-menu dropdown-menu-dark">
-                <li><a class="dropdown-item" href="#">Gestionar cliente</a></li><!--puede ser añadir, modificar-->
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
-                      <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z" />
-                    </svg> Listado de clientes</a></li>
-              </ul>
-            </li>
-
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Facturas
-              </a>
-              <ul class="dropdown-menu dropdown-menu-dark">
-                <li><a class="dropdown-item" href="generarFactura.php">Generar factura</a></li>
-                <li><a class="dropdown-item" href="#">Modificar factura</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="#">Facturas emitidas</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </nav><br>
   
-  <p class="p"><b>FacturaPro</b></p>
+       
+  <div class="position-absolute w-50" style="left:20%;z-index:-1">
+       
+  <svg id="sw-js-blob-svg" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" version="1.1" style="position: fixed;bottom: -1040;right: -4500;width: 800%;height: 800%;">                   
+    <defs>                         <linearGradient id="sw-gradient" x1="0" x2="1" y1="1" y2="0">                            <stop id="stop1" stop-color="rgba(215, 248, 196, 1)" offset="0%"></stop>                            <stop id="stop2" stop-color="rgba(215, 248, 196, 1)" offset="100%"></stop>                        </linearGradient>                    </defs>                <path fill="url(#sw-gradient)" d="M21.2,12.1C14.1,24.5,-14.2,24.6,-21.3,12.1C-28.4,-0.3,-14.2,-25.1,0,-25.1C14.1,-25.2,28.3,-0.3,21.2,12.1Z" width="100%" height="100%" transform="translate(50 50)" stroke-width="0" style="transition: all 0.3s ease 0s;" stroke="url(#sw-gradient)"></path>              </svg>
+  </div>
   
-  <br><br>
+
+
+ <br><br>
 
 
 
-  <!--    tarjetas    -->
+<!--    tarjetas    -->
   <!--    los iconos son de color lila por la clase bi de cada icono    -->
   <div class="container">
-    <div class="row justify-content-center mt-4">
-
+    <div class="row justify-content-start mt-4">
       <div class="col-md-3">
-        <div class="card" fill="currentColor" style="width: 100%;">
+        <div class="card" fill="currentColor" style="width: 90%;">
           <div class="card-header text-center">Clientes</div>
           <div class="card-body d-flex justify-content-center align-items-center">
             <a class="link-dark" href="facturas.php">
@@ -186,7 +123,7 @@
       </div>
 
       <div class="col-md-3">
-        <div class="card" style="width: 100%;">
+        <div class="card" style="width: 90%;">
           <div class="card-header text-center">Articulos</div>
           <div class="card-body d-flex justify-content-center align-items-center">
             <a class="link-dark" href="facturas.php">
@@ -198,21 +135,24 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="row justify-content-start mt-4">
       <div class="col-md-3">
-        <div class="card" style="width: 100%;">
+        <div class="card" style="width: 90%;">
           <div class="card-header text-center">Ventas</div>
           <div class="card-body d-flex justify-content-center align-items-center">
             <a class="link-dark" href="facturas.php">
-
               <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
-                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4z" />
+                <path d="M8 1a3 3 0 0 0-3 3v1H3.5A1.5 1.5 0 0 0 2 6.5v8A1.5 1.5 0 0 0 3.5 16h9A1.5 1.5 0 0 0 14 14.5v-8A1.5 1.5 0 0 0 12.5 5H11V4a3 3 0 0 0-3-3zm-2 4V4a2 2 0 0 1 4 0v1H6z" />
               </svg>
             </a>
           </div>
         </div>
       </div>
+
       <div class="col-md-3">
-        <div class="card" style="width: 100%;">
+        <div class="card" style="width: 90%;">
           <div class="card-header text-center">Facturas</div>
           <div class="card-body d-flex justify-content-center align-items-center">
             <a class="link-dark" href="facturas.php">
@@ -224,10 +164,13 @@
           </div>
         </div>
       </div>
-
     </div>
   </div> <!--cierre de conteiner-->
+      
+      
 
+
+  <img class="logo-png" src="logo.png" alt="Logo">
 
 </body>
 
