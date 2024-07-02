@@ -19,7 +19,13 @@
       justify-content: center;
       flex-direction: column;
       height: 100vh;
+      background-image: url('fondo.png'); /* URL de tu imagen de fondo */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
+
+    
     #container-fluid{
       background-color: #512da8;
     } 
@@ -65,7 +71,7 @@
       
   font-family: "Lato", sans-serif;
   font-weight: 600;
-  font-style: italic;
+  font-style: normal;
  
     }
     
@@ -93,11 +99,7 @@
 
   
        
-  <div class="position-absolute w-50" style="left:20%;z-index:-1">
-       
-  <svg id="sw-js-blob-svg" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" version="1.1" style="position: fixed;bottom: -1040;right: -4500;width: 800%;height: 800%;">                   
-    <defs>                         <linearGradient id="sw-gradient" x1="0" x2="1" y1="1" y2="0">                            <stop id="stop1" stop-color="rgba(215, 248, 196, 1)" offset="0%"></stop>                            <stop id="stop2" stop-color="rgba(215, 248, 196, 1)" offset="100%"></stop>                        </linearGradient>                    </defs>                <path fill="url(#sw-gradient)" d="M21.2,12.1C14.1,24.5,-14.2,24.6,-21.3,12.1C-28.4,-0.3,-14.2,-25.1,0,-25.1C14.1,-25.2,28.3,-0.3,21.2,12.1Z" width="100%" height="100%" transform="translate(50 50)" stroke-width="0" style="transition: all 0.3s ease 0s;" stroke="url(#sw-gradient)"></path>              </svg>
-  </div>
+  
   
 
 
@@ -113,7 +115,7 @@
         <div class="card" fill="currentColor" style="width: 90%;">
           <div class="card-header text-center">Clientes</div>
           <div class="card-body d-flex justify-content-center align-items-center">
-            <a class="link-dark" href="facturas.php">
+            <a class="link-dark" href="clientes.php">
               <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
                 <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
               </svg>
@@ -126,7 +128,7 @@
         <div class="card" style="width: 90%;">
           <div class="card-header text-center">Articulos</div>
           <div class="card-body d-flex justify-content-center align-items-center">
-            <a class="link-dark" href="facturas.php">
+            <a class="link-dark" href="articulos.php">
               <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="currentColor" class="bi bi-backpack4-fill" viewBox="0 0 16 16">
                 <path d="M8 0a2 2 0 0 0-2 2H3.5a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h4v.5a.5.5 0 0 0 1 0V7h4a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H10a2 2 0 0 0-2-2m1 2a1 1 0 0 0-2 0zm-4 9v2h6v-2h-1v.5a.5.5 0 0 1-1 0V11z" />
                 <path d="M14 7.599A3 3 0 0 1 12.5 8H9.415a1.5 1.5 0 0 1-2.83 0H3.5A3 3 0 0 1 2 7.599V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5z" />
@@ -142,7 +144,7 @@
         <div class="card" style="width: 90%;">
           <div class="card-header text-center">Ventas</div>
           <div class="card-body d-flex justify-content-center align-items-center">
-            <a class="link-dark" href="facturas.php">
+            <a class="link-dark" href="ventas.php">
               <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
                 <path d="M8 1a3 3 0 0 0-3 3v1H3.5A1.5 1.5 0 0 0 2 6.5v8A1.5 1.5 0 0 0 3.5 16h9A1.5 1.5 0 0 0 14 14.5v-8A1.5 1.5 0 0 0 12.5 5H11V4a3 3 0 0 0-3-3zm-2 4V4a2 2 0 0 1 4 0v1H6z" />
               </svg>
