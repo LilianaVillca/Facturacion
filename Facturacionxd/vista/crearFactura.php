@@ -55,9 +55,7 @@
                         <?php echo "Av. Qsyo 123"  ?><br>
                         <?php echo "tel: 2616908765"  ?><br>
                         <?php echo "facturacionpro@gmail.com" ?><br>
-                        <!-- por ahora mostramos los datos asi -->
-                        <!-- pero nc si hacer un tabla con los datos de la muebleria -->
-                        <!-- Muebleria: id,nombre,direccion,email,tel -->
+                      
                     </div>
                     <div class="container content-factura">
                     <div class="col">
@@ -67,10 +65,7 @@
 
                         <label for="cuil">CUIL/CUIT:</label><br>
                         <input type="text" id="cuil" name="cuil" required><br>
-                
-                        <label for="nombre">Domicilio:</label><br>
-                        <input type="text" id="nombre" name="nombre" required><br>
-                    
+            
                     </div>
 
                 </div> <br>

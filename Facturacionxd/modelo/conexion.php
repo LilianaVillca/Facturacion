@@ -5,7 +5,7 @@ class Conexion
 
     public function __construct()
     {
-        $this->conexion = new mysqli("localhost:3307", "root", "Eva2024", "facturacion");
+        $this->conexion = new mysqli("localhost:3309", "root", "", "facturacion");
     }
     ///////////////////////////////INGRESO DE USUARIO ///////////////////////////
     public function procesarInicioSesion($usuario, $correo, $contrasena) {
@@ -74,6 +74,35 @@ class Conexion
             return array();
         }
 
+    }
+    public function obtener_factura($id_factura)
+    {
+        $sql = "SELECT * FROM factura WHERE id_factura = ?";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id_factura);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc();
+        } else {
+            return null;
+        }
+    }
+    public function guardarFacturas()
+    {
+        $sql = "INSER INTO factura ............ A TERMINAR";
+        // Ejecutar la consulta
+        $result = $this->conexion->query($sql);
+        $facturas = array();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $facturas[] = $row;
+            }
+            return $facturas;
+        } else {
+            return array();
+        }
     }
 
 }
