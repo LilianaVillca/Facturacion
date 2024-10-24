@@ -19,7 +19,7 @@
 
     $modelo = new Conexion();
 
-    $facturas = $modelo->obtener_facturas();
+    $clientes = $modelo->obtener_clientes();
 ?>
 
 
@@ -58,41 +58,40 @@
   <div class="content p-4">
 
     <div class="title-box">
-        <h1>Gestión de Facturación</h1>
-        <p class="lead">Genera facturas de manera rápida y sencilla con todos los detalles necesarios, incluyendo la información del cliente, los productos o servicios, y los impuestos aplicables..</p>
+        <h1>Gestión de Clientes</h1>
     </div>
 
-    <a class="btn btn-success btn-nueva" href="crearFactura.php"><b>+</b> Crear Factura </a>
-    <table class="table table-bordered grocery-crud-table table-hover">
+    <a class="btn custom-btn btn-center" href="crearFactura.php"><b>+</b> Añadir cliente </a>
+
+    <div class="card custom-card">
+     <div class="card-body">
+      <table class="table table-hover">
         <thead>
             <tr>
-                <th>N° de Factura</th>
-                <th>Fecha Creación</th>
+                <th>N° de Cliente</th>
                 <th>Nombre del Cliente</th>
-                <th>Total Facturado</th>
-                <th>Acciones</th>
+                <th>Apellido</th>
+                <th>Cuil</th>
+                <th>Domicilio</th>
             </tr>
         </thead>
         <tbody>
             <?php
-            foreach ($facturas as $factura) {
+            foreach ($clientes as $cliente) {
                 echo "<tr>";
-                echo "<td>" . $factura["id_factura"] . "</td>";
-                echo "<td>" . $factura["fecha"] . "</td>";
-                echo "<td>Juan</td>";
-                // debemos de extraer los datos del usuario para mostrolarlos por aca
-                // pero lo hacemos luego
-                echo "<td>" . $factura["total_despues_impuesto"] . "</td>";
-                echo "<td>";
-                echo "<a href='../controlador/factura.php?accion=imprimir&id=" . $factura["id_factura"] . "' class='editar'>Imprimir</a>";
-                echo "<a href='../controlador/factura.php?accion=editar&id=" . $factura["id_factura"] . "' class='editar'>Editar</a>";
-                echo "</td>";
+                echo "<td>" . $cliente["id_cliente"] . "</td>";
+                echo "<td>" . $cliente["nombre"] . "</td>";
+                echo "<td>" . $cliente["apellido"] . "</td>";
+                echo "<td>" . $cliente["cuil"] . "</td>";
+                echo "<td>" . $cliente["domicilio"] . "</td>";
                 echo "</tr>";
             }
             ?>
 
         </tbody>
     </table>
+   </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

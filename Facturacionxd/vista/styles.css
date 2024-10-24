@@ -79,7 +79,7 @@
   }
   
   .custom-btn:hover {
-    background-color: #512da8; /* Color más oscuro en hover */
+    background-color:#7a56cf; /* Color más oscuro en hover */
     color:white;
   }
 
@@ -122,6 +122,17 @@
     width: 100%;  /* Ajusta el ancho del gráfico a 100% del contenedor */
     height: 100px; /* Ajusta la altura para que coincida con la tarjeta "Hoy" */
   }
+
+  .title-box {
+    padding: 3rem 1.5rem 2rem !important;
+    text-align: center !important;
+}
+
+/* .btn {
+    margin: 2px 0 14px 0 !important;
+    background-color: #512da8 !important;
+    border:none
+} */
   
   body{
     background-color: #efeef3;

@@ -5,7 +5,7 @@ class Conexion
 
     public function __construct()
     {
-        $this->conexion = new mysqli("localhost:3309", "root", "", "facturacion");
+        $this->conexion = new mysqli("localhost:3309", "root", "", "facturaciondb");
     }
     ///////////////////////////////INGRESO DE USUARIO ///////////////////////////
     public function procesarInicioSesion($usuario, $correo, $contrasena) {
@@ -101,6 +101,74 @@ class Conexion
             }
             return $facturas;
         } else {
+            return array();
+        }
+    }
+
+    public function obtener_productos()
+    {
+        $sql = "SELECT p.id_producto, p.descripcion_producto, p.precio_producto, c.nombre AS nombre_categoria
+                FROM producto p
+                JOIN categorias c ON p.categorias_id = c.id";
+        $result = $this->conexion->query($sql);
+
+        // Verificar si la consulta fue exitosa
+        if ($result && $result->num_rows > 0) {
+            // Crear un array para almacenar los productos
+            $productos = array();
+
+            // Recorrer los resultados y agregarlos al array
+            while ($row = $result->fetch_assoc()) {
+                $productos[] = $row;
+            }
+
+            return $productos;
+        } else {
+            // Si no hay resultados, devuelve un array vacío
+            return array();
+        }
+    }
+
+    public function obtener_clientes()
+    {
+        $sql = "SELECT * FROM cliente";
+        $result = $this->conexion->query($sql);
+
+        // Verificar si la consulta fue exitosa
+        if ($result && $result->num_rows > 0) {
+            // Crear un array para almacenar los productos
+            $clientes = array();
+
+            // Recorrer los resultados y agregarlos al array
+            while ($row = $result->fetch_assoc()) {
+                $clientes[] = $row;
+            }
+
+            return $clientes;
+        } else {
+            // Si no hay resultados, devuelve un array vacío
+            return array();
+        }
+    }
+
+    public function productos_mas_vendidos()
+    {
+        $sql = "SELECT * FROM ";
+        $result = $this->conexion->query($sql);
+
+        // Verificar si la consulta fue exitosa
+        if ($result && $result->num_rows > 0) {
+            // Crear un array para almacenar los productos
+            $clientes = array();
+
+            // Recorrer los resultados y agregarlos al array
+            while ($row = $result->fetch_assoc()) {
+                $clientes[] = $row;
+            }
+
+            return $clientes;
+        } else {
+            // Si no hay resultados, devuelve un array vacío
             return array();
         }
     }
