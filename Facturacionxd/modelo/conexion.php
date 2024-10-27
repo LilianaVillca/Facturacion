@@ -32,7 +32,7 @@ class Conexion
         return $result;
     }
 
-    
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // ACIONES DEL ADMINISTRADOR //
     // GESTION DE USUARIOS //
@@ -133,11 +133,37 @@ class Conexion
         }
     }
     //////////////////////////////////////////////////// ACCIONES PARA CREAR FACTURA ///////////////////////////////////////////////////////////////
-    public function obtenerClientePorId($idCliente) {
-        $stmt = $this->conexion->prepare("SELECT * FROM clientes WHERE id_cliente = ?");
-        $stmt->bind_param("i", $idCliente);
+
+    public function obtenerClientePorDni($dni)
+    {
+        $stmt = $this->conexion->prepare("SELECT * FROM cliente WHERE dni = ?");
+        $stmt->bind_param("i", $dni);
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();
+    }
+
+    public function obtenerProductoPorId($producto)
+    {
+        $stmt = $this->conexion->prepare("SELECT * FROM producto WHERE id_producto = ?");
+        $stmt->bind_param("i", $producto);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
+    public function obtenerProductos($idProducto)
+    {
+        $sql = "SELECT nombre, domicio, celular FROM cliente WHERE id_cliente = ?";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $idCliente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        // Si encuentra el cliente, devuelve sus datos
+        if ($result->num_rows > 0) {
+            echo json_encode($result->fetch_assoc());
+        } else {
+            echo json_encode(["error" => "Cliente no encontrado"]);
+        }
     }
     public function guardarFacturas()
     {
@@ -155,6 +181,30 @@ class Conexion
             return array();
         }
     }
+    public function obtener_productos()
+    {
+        $sql = "SELECT p.id_producto, p.descripcion_producto, p.precio_producto, c.nombre AS nombre_categoria
+                FROM producto p
+                JOIN categorias c ON p.categorias_id = c.id";
+        $result = $this->conexion->query($sql);
+
+        // Verificar si la consulta fue exitosa
+        if ($result && $result->num_rows > 0) {
+            // Crear un array para almacenar los productos
+            $productos = array();
+
+            // Recorrer los resultados y agregarlos al array
+            while ($row = $result->fetch_assoc()) {
+                $productos[] = $row;
+            }
+
+            return $productos;
+        } else {
+            // Si no hay resultados, devuelve un array vacío
+            return array();
+        }
+    }
+
     //////////////////////////////////////////////////// Método para cerrar la sesión///////////////////////////////////////////////////////////
     public static function cerrarSesion()
     {

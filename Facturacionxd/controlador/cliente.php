@@ -1,50 +1,20 @@
 <?php
-// require_once("../modelo/conexion.php");
+include_once '../modelo/conexion.php';
 
-// class ClienteController {
-//     private $modelo;
+$modelo = new conexion();
+$cliente = $modelo->obtenerClientePorDni($_POST['dni']);
+// $producto = $modelo->obtenerProductoPorId($_POST['numeroProducto']);
 
-//     public function __construct() {
-//         $this->modelo = new Conexion();
-//     }
-
-//     public function buscarClientePorId() {
-//         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//             // Obtener el ID del cliente desde el formulario
-//             $idCliente = $_POST['idCliente'];
-
-//             // Llamar a la función del modelo para buscar el cliente por su ID
-//             $cliente = $this->modelo->obtenerClientePorId($idCliente);
-
-//             // Verificar si se encontró el cliente
-//             if ($cliente) {
-//                 // Pasar el array de datos del cliente a la vista
-//                 $this->mostrarVistaCliente($cliente);
-//             } else {
-//                 echo "Cliente no encontrado.";
-//             }
-//         }
-//     }
-
-//     private function mostrarVistaCliente($cliente) {
-//         // Incluir la vista y pasarle los datos del cliente
-//         include '../vista/craerFacturas.php';
-//     }
-
-    
+if ($cliente !== null) {
+    echo json_encode($cliente);
+} else {
+    echo json_encode(['error' => 'Cliente no encontrado']);
+} 
+// elseif ($producto !== null) {
+//     echo json_encode($producto);
+// } else {
+//     echo json_encode(['error' => 'Producto no encontrado']);
 // }
-
-// // Instanciar el controlador y llamar al método para buscar el cliente
-// $controller = new ClienteController();
-// $controller->buscarClientePorId();
-
-
-
-
-
-
-
-///////////////////////////////////////////////////// crear factura ///////////////////////////////////////////////////////////////////////////
 
 ?>
 

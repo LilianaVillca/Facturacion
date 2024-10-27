@@ -14,6 +14,29 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+  <style>
+    /* ESTILOS PARA EL FORMULARIO */
+    .recuadro {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 
 <body>
@@ -65,6 +88,22 @@
             <div class="card h-80 custom-card" style="width: 100%;">
               <div class="card-body">
                 <h6 class="card-title">cliente</h6><br>
+                <!-- <div class="text-center">
+                  <form method="POST">
+                    <div class="form-group">
+                      <label for="idCliente" class="form-label">ID del Cliente:</label> 
+                      <button type="submit" class="btn btn-primary">Buscar Cliente</button>
+                      <input type="text" id="dni" name="dni" class="form-control border-label" required>
+                    </div>
+                    <div id="clienteInfo" style="display: none; margin-top: 15px;">
+                      <p><strong>Nombre:</strong> <span id="nombreCliente"></span></p>
+                      <p><strong>direcion:</strong> <span id="direcionCliente"></span></p>
+                      <p><strong>Teléfono:</strong> <span id="telefonoCliente"></span></p>
+                    </div>
+                     <button type="submit" class="btn custom-btn">Buscar Cliente</button> 
+                  </form>
+                  <a href="#" class="btn custom-btn" onclick="abrirRecuadro()">Crear Cliente</a>
+                </div> -->
                 <div class="text-center">
                   <!-- Campo de entrada para el DNI y botones de acciones -->
                   <input type="text" id="dni" name="dni" class="form-control border-label" required>
@@ -144,11 +183,11 @@
                     <tbody>
                       <tr>
                         <td><input class="itemRow" type="checkbox"></td>
-                        <td><input type="number" name="codigoProducto" id="codigoProducto" class="form-control" autocomplete="off"></td>
-                        <td><input type="text" name="nombreProducto" id="nombreProducto" class="form-control" autocomplete="off"></td>
-                        <td><input type="number" name="cantidad" id="cantidad" class="form-control cantidad" autocomplete="off"></td>
-                        <td><input type="number" name="precio" id="precio" class="form-control" autocomplete="off"></td>
-                        <td><input type="number" name="total" id="total" class="form-control" autocomplete="off"></td>
+                        <td><input type="number" name="productCode[]" id="productCode_1" class="form-control" autocomplete="off"></td>
+                        <td><input type="text" name="productName[]" id="productName_1" class="form-control" autocomplete="off"></td>
+                        <td><input type="number" name="quantity[]" id="quantity_1" class="form-control" autocomplete="off"></td>
+                        <td><input type="number" name="price[]" id="price_1" class="form-control" autocomplete="off"></td>
+                        <td><input type="number" name="total[]" id="total_1" class="form-control" autocomplete="off"></td>
                       </tr>
                     </tbody>
                   </table>
@@ -163,23 +202,13 @@
                 <!-- Resumen de la factura -->
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="subtotal" class="form-label">Subtotal</label>
-                    <input type="number" id="subtotal" class="form-control" placeholder="$">
+                    <label for="montoPagado" class="form-label">Monto Pagado</label>
+                    <input type="number" id="montoPagado" class="form-control" placeholder="$">
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="total" class="form-label">Total</label>
                     <input type="number" id="total" class="form-control" placeholder="$">
                   </div>
-
-                  <div class="col-md-6 mb-3">
-                    <label for="porcentajeImpuestos" class="form-label">Porcentaje Impuestos</label>
-                    <input type="number" id="porcentajeImpuestos" class="form-control" placeholder="%">
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="montoPagado" class="form-label">Monto Pagado</label>
-                    <input type="number" id="montoPagado" class="form-control" placeholder="$">
-                  </div>
-
                 </div>
 
                 <div class="row">
@@ -188,8 +217,8 @@
                     <input type="number" id="montoImpuestos" class="form-control" placeholder="$">
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="cambio" class="form-label">Cambio</label>
-                    <input type="number" id="cambio" class="form-control" placeholder="$">
+                    <label for="porcentajeImpuestos" class="form-label">Porcentaje Impuestos</label>
+                    <input type="number" id="porcentajeImpuestos" class="form-control" placeholder="%">
                   </div>
                 </div>
 
@@ -229,101 +258,140 @@
       recuadro.style.display = "none";
     }
 
-    ///////////////////////////////// Evento de clic para buscar cliente por DNI////////////////////////////////////////////////////////////
-    document.getElementById('buscarClienteBtn').addEventListener('click', function() {
-      const clienteDni = document.getElementById('dni').value;
+    // ////////////////////////////  Buscar cliente por dni //////////////////////////////////////////////////////
+    // document.querySelector('form').addEventListener('submit', function(event) {
+    //   event.preventDefault(); // Prevenir el envío normal del formulario
 
-      // Verificar que el DNI no esté vacío antes de hacer la solicitud
-      if (!clienteDni) {
-        alert("Por favor ingresa el DNI del cliente.");
-        return;
-      }
+    //   const dni = document.getElementById('dni').value;
 
-      // Realizar la petición AJAX
-      fetch('../controlador/cliente.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            dni: clienteDni,
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          // Verificar si hay un error en la respuesta
-          if (data.error) {
-            alert(data.error);
-            return;
-          }
+    //   // Realizar la petición AJAX
+    //   fetch('../controlador/cliente.php', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/x-www-form-urlencoded',
+    //       },
+    //       body: new URLSearchParams({
+    //         dni: dni,
+    //       })
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       // Verificar si hay un error en la respuesta
+    //       if (data.error) {
+    //         alert(data.error);
+    //         return;
+    //       }
 
-          // Mostrar datos del cliente en la página
-          document.getElementById('clienteInfo').style.display = 'block';
-          document.getElementById('nombreCliente').innerText = data.nombre; // Campo 'nombre'
-          document.getElementById('direcionCliente').innerText = data.domicilio; // Campo 'domicilio'
-          document.getElementById('telefonoCliente').innerText = data.celular; // Campo 'celular'
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Ha ocurrido un error al buscar el cliente.');
-        });
-    });
-
-
-    /////////////////////////////////////////////////// Evento para buscar producto //////////////////////////////////////////////////////
-    document.getElementById('codigoProducto').addEventListener('blur', function() {
-      const producto = this.value;
-
-      if (producto === '') {
-        return;
-      }
-
-      fetch('../controlador/producto.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            numeroProducto: producto,
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.error) {
-            alert(data.error);
-            return;
-          }
-
-          document.getElementById('nombreProducto').value = data.nombre;
-          document.getElementById('precio').value = data.precio;
-          // Aquí podrías agregar lógica para calcular el total automáticamente si se desea
-          // Calcular el total según la cantidad
-          // const cantidadInput = document.getElementById('cantidad');
-          // const cantidad = parseFloat(cantidadInput.value) ; // Obtener cantidad o 0 si no es válido
-          // const precio = parseFloat(data.precio) ; // Obtener precio o 0 si no es válido
-
-          // // Calcular el total y mostrarlo en el campo correspondiente
-          // const total = (precio * cantidad).toFixed(2);
-          // document.getElementById('total').value = total;
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Ha ocurrido un error al buscar el producto.');
-        });
-    });
-    //////////////////////////////////////////// Evento para realizar la suma de varios productos ///////////////////////////////////////
-    document.getElementById('cantidad').addEventListener('input', function() {
-      const precio = parseFloat(document.getElementById('precio').value) || 0; // Obtener precio
-      const cantidad = parseFloat(this.value) || 0; // Obtener cantidad
-
-      // Calcular el total y mostrarlo
-      const total = (precio * cantidad).toFixed(2);
-      document.getElementById('total').value = total;
-    });
-
-    
+    //       // Mostrar datos del cliente en la página
+    //       document.getElementById('clienteInfo').style.display = 'block';
+    //       document.getElementById('nombreCliente').innerText = data.nombre; // Asumiendo que tienes un campo 'nombre'
+    //       document.getElementById('direcionCliente').innerText = data.domicilio; // Asumiendo que tienes un campo 'email'
+    //       document.getElementById('telefonoCliente').innerText = data.celular; // Asumiendo que tienes un campo 'telefono'
+    //     })
+    //     .catch(error => {
+    //       console.error('Error:', error);
+    //       alert('Ha ocurrido un error al buscar el cliente.');
+    //     });
+    // });
   </script>
 
+<script>
+    // Evento de clic para buscar cliente por DNI
+    document.getElementById('buscarClienteBtn').addEventListener('click', function() {
+        const clienteDni = document.getElementById('dni').value;
+
+        // Verificar que el DNI no esté vacío antes de hacer la solicitud
+        if (!clienteDni) {
+            alert("Por favor ingresa el DNI del cliente.");
+            return;
+        }
+
+        // Realizar la petición AJAX
+        fetch('../controlador/cliente.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                dni: clienteDni,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Verificar si hay un error en la respuesta
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            // Mostrar datos del cliente en la página
+            document.getElementById('clienteInfo').style.display = 'block';
+            document.getElementById('nombreCliente').innerText = data.nombre; // Campo 'nombre'
+            document.getElementById('direcionCliente').innerText = data.domicilio; // Campo 'domicilio'
+            document.getElementById('telefonoCliente').innerText = data.celular; // Campo 'celular'
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Ha ocurrido un error al buscar el cliente.');
+        });
+    });
+</script>
+<script>
+document.querySelectorAll('.productCode').forEach(input => {
+    input.addEventListener('change', function() {
+        const productCode = this.value;
+        const rowId = this.id.split('_')[1]; // Obtener el número de la fila, e.g., 1
+
+        // Verificar que se haya ingresado un código de producto
+        if (!productCode) return;
+
+        // Realizar la petición AJAX al controlador de productos
+        fetch('../controlador/producto.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                numeroProducto: productCode,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            // Actualizar los campos de nombre y precio con los datos obtenidos
+            document.getElementById(`productName_${rowId}`).value = data.descricion_producto;
+            document.getElementById(`price_${rowId}`).value = data.precio_producto;
+
+            // Calcular el total automáticamente si ya hay una cantidad ingresada
+            const quantity = document.getElementById(`quantity_${rowId}`).value;
+            if (quantity) {
+                document.getElementById(`total_${rowId}`).value = (data.precio_producto * quantity).toFixed(2);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Ha ocurrido un error al buscar el producto.');
+        });
+    });
+});
+
+// Evento para actualizar el total automáticamente al cambiar la cantidad
+document.querySelectorAll('.quantity').forEach(input => {
+    input.addEventListener('input', function() {
+        const rowId = this.id.split('_')[1]; // Obtener el número de la fila
+        const price = parseFloat(document.getElementById(`price_${rowId}`).value);
+        const quantity = parseFloat(this.value);
+
+        if (!isNaN(price) && !isNaN(quantity)) {
+            document.getElementById(`total_${rowId}`).value = (price * quantity).toFixed(2);
+        }
+    });
+});
+</script>
 
 
 </body>

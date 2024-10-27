@@ -126,3 +126,24 @@
   body{
     background-color: #efeef3;
   }
+   /* ESTILOS PARA EL FORMULARIO DE CREAR CLIENTE*/
+   .recuadro {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  }
+
+  .container {
+    margin-top: 50px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
