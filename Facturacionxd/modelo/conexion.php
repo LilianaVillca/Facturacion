@@ -165,22 +165,50 @@ class Conexion
             echo json_encode(["error" => "Cliente no encontrado"]);
         }
     }
-    public function guardarFacturas()
+    ////////////////////////////////////////////////////////  guardar factura //////////////////////////////////////////////////////////////////
+    // Obtener el ID del cliente a partir del nombre o CUIL/CUIT
+    public function obtenerIdCliente($nombreCliente)
     {
-        $sql = "INSER INTO factura ............ A TERMINAR";
-        // Ejecutar la consulta
-        $result = $this->conexion->query($sql);
-        $facturas = array();
-
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $facturas[] = $row;
-            }
-            return $facturas;
-        } else {
-            return array();
-        }
+        $query = "SELECT id_cliente FROM cliente WHERE nombre = ?";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bind_param("s", $nombreCliente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['id_cliente'];
     }
+
+    // Guardar factura en la base de datos y devolver el ID de la factura
+    public function guardarFactura($idCliente, $subTotal, $montoImpuestos, $porcentajeImpuestos, $totalFinal, $montoPagado, $cambio, $observacion)
+    {
+        $query = "INSERT INTO factura (id_cliente, fecha, total_ante_impuesto, total_impuesto, porcentaje_impuesto, total_despues_impuesto, monto_pagado, total_a_devolver, nota, hora, estado) 
+              VALUES (?, NOW(), ?, ?, ?, ?, ?, ?, ?, NOW(), 'pendiente')";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bind_param("idddddss", $idCliente, $subTotal, $montoImpuestos, $porcentajeImpuestos, $totalFinal, $montoPagado, $cambio, $observacion);
+        $stmt->execute();
+        return $stmt->insert_id;
+    }
+
+    // Guardar detalle de la factura
+    public function guardarDetalleFactura($idFactura, $idProducto, $cantidad, $precio, $total, $formaPago)
+    {
+        $query = "INSERT INTO detalle_factura (id_factura, id_producto, cantidad_producto, precio_producto, total_producto, forma_pago) 
+              VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bind_param("iiidds", $idFactura, $idProducto, $cantidad, $precio, $total, $formaPago);
+        $stmt->execute();
+    }
+    // Obtener el ID del producto basado en el código del producto
+    public function obtenerIdProducto($codigoProducto) {
+        $query = "SELECT id_producto FROM producto WHERE codigo_producto = ?";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bind_param("s", $codigoProducto);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['id_producto'];
+    }
+
     public function obtener_productos()
     {
         $sql = "SELECT p.id_producto, p.descripcion_producto, p.precio_producto, c.nombre AS nombre_categoria

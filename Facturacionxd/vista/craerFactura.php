@@ -61,153 +61,149 @@
 
       <div class="content p-4">
         <div class="row justify-content-md-center">
-          <div class="col-md-3 mb-3">
-            <div class="card h-80 custom-card" style="width: 100%;">
-              <div class="card-body">
-                <h6 class="card-title">cliente</h6><br>
-                <div class="text-center">
-                  <!-- Campo de entrada para el DNI y botones de acciones -->
-                  <input type="text" id="dni" name="dni" class="form-control border-label" required>
-                  <button id="buscarClienteBtn" class="btn custom-btn btn-center">Buscar Cliente</button>
-                  <a href="#" class="btn custom-btn btn-center" onclick="abrirRecuadro()">Crear Cliente</a>
+          <form action="../controlador/factura.php?accion=guardar" id="formularioFactura" method="post" class="formularioFactura" >
 
-                  <!-- Contenedor para mostrar la información del cliente -->
-                  <div id="clienteInfo" style="display: none; margin-top: 15px;">
-                    <p><strong>Nombre:</strong> <span id="nombreCliente"></span></p>
-                    <p><strong>Dirección:</strong> <span id="direcionCliente"></span></p>
-                    <p><strong>Teléfono:</strong> <span id="telefonoCliente"></span></p>
+            <div class="col-md-3 mb-3">
+              <div class="card h-80 custom-card" style="width: 100%;">
+                <div class="card-body">
+                  <h6 class="card-title">cliente</h6><br>
+                  <div class="text-center">
+                    <!-- Campo de entrada para el DNI y botones de acciones -->
+                    <input type="text" id="dni" name="dni" class="form-control border-label" required>
+                    <button id="buscarClienteBtn" class="btn custom-btn btn-center">Buscar Cliente</button>
+                    <a href="#" class="btn custom-btn btn-center" onclick="abrirRecuadro()">Crear Cliente</a>
+
+                    <!-- Contenedor para mostrar la información del cliente -->
+                    <div id="clienteInfo" style="display: none; margin-top: 15px;">
+                      <p><strong>Nombre:</strong> <span id="nombreCliente"></span></p>
+                      <p><strong>Dirección:</strong> <span id="direcionCliente"></span></p>
+                      <p><strong>Teléfono:</strong> <span id="telefonoCliente"></span></p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- FORMULARIO PARA CREAR CLIENTE-->
-          <div class="recuadro" id="recuadro">
-            <h2>Crear Nuevo Cliente</h2>
-            <form method="post" class="form" action="../controlador/veremos.php?accion=crear&tipo=cliente">
-              <!-- Agrega un contenedor para los mensajes de error -->
-              <div class="form-group">
-                <label for="nombre" class="form-label">Nombre del cliente:</label>
-                <input type="text" id="nombre" name="nombre" class="form-control border-label" required>
-              </div>
-              <div class="form-group">
-                <label for="cuit" class="form-label">CUIL/CUIT:</label>
-                <input type="text" id="cuit" name="cuit" class="form-control border-label" required>
-              </div>
-              <div class="form-group">
-                <label for="domicilio" class="form-label">Domicilio:</label>
-                <input type="text" id="domicilio" name="domicilio" class="form-control border-label" required>
-              </div>
-              <!-- <button type="submit" class="btn btn-primary" name="insertar">Crear Alumno</button> -->
-              <button type="submit" class="btn btn-primary">Crear Cliente</button>
-              <button type="button" class="btn btn-secondary" onclick="cerrarRecuadro()">Cancelar</button>
-
-            </form>
-          </div>
-          <br>
-          <br>
-
-          <div class="col-md-8 mb-3">
-            <div class="card h-100 custom-card" style="width: 100%;">
-              <div class="card-body">
-                <h6 class="card-title">Detalles factura</h6><br>
+            <!-- FORMULARIO PARA CREAR CLIENTE-->
+            <div class="recuadro" id="recuadro">
+              <h2>Crear Nuevo Cliente</h2>
+              <form method="post" class="form" action="../controlador/cliente.php?accion=crear">
+                <!-- Agrega un contenedor para los mensajes de error -->
                 <div class="form-group">
-                  <label for="tipoFactura">Tipo de factura:</label>
-                  <select class="form-control" id="tipoFactura" name="tipoFactura">
-                    <option value="consumidor">Consumidor Final</option>
-                    <option value="monotributista">Monotributista</option>
-                    <option value="responsable">Responsable Inscripto</option>
-                    <option value="sujetoexento">Sujeto Exento</option>
-                  </select>
+                  <label for="nombre" class="form-label">Nombre del cliente:</label>
+                  <input type="text" id="nombre" name="nombre" class="form-control border-label" required>
                 </div>
                 <div class="form-group">
-                  <label for="formaPago">Forma de pago:</label>
-                  <select class="form-control" id="formaPago" name="formaPago">
-                    <option value="efectivo">Efectivo</option>
-                    <option value="tarjeta">Tarjeta de crédito</option>
-                    <option value="transferencia">Transferencia Bancaria</option>
-                  </select>
+                  <label for="cuit" class="form-label">CUIL/CUIT:</label>
+                  <input type="text" id="cuit" name="cuit" class="form-control border-label" required>
                 </div>
-                <!-- Tabla con scroll horizontal -->
-                <div class="table-responsive">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th width="2%"></th>
-                        <th width="15%">N° Ítem</th>
-                        <th width="38%">Nombre Ítem</th>
-                        <th width="15%">Cantidad</th>
-                        <th width="15%">Precio</th>
-                        <th width="15%">Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><input class="itemRow" type="checkbox"></td>
-                        <td><input type="number" name="codigoProducto" id="codigoProducto" class="form-control" autocomplete="off"></td>
-                        <td><input type="text" name="nombreProducto" id="nombreProducto" class="form-control" autocomplete="off"></td>
-                        <td><input type="number" name="cantidad" id="cantidad" class="form-control cantidad" autocomplete="off"></td>
-                        <td><input type="number" name="precio" id="precio" class="form-control" autocomplete="off"></td>
-                        <td><input type="number" name="total" id="total" class="form-control" autocomplete="off"></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="form-group">
+                  <label for="domicilio" class="form-label">Domicilio:</label>
+                  <input type="text" id="domicilio" name="domicilio" class="form-control border-label" required>
                 </div>
+                <!-- <button type="submit" class="btn btn-primary" name="insertar">Crear Alumno</button> -->
+                <button type="submit" class="btn btn-primary">Crear Cliente</button>
+                <button type="button" class="btn btn-secondary" onclick="cerrarRecuadro()">Cancelar</button>
 
-                <!-- Botones para agregar/eliminar ítems -->
-                <div class="botones mb-3">
-                  <button class="btn custom-btn">- Eliminar</button>
-                  <button class="btn custom-btn" onclick="agregarFila()">+ Agregar</button>
+              </form>
+            </div>
+            <br>
+            <br>
+
+            <div class="col-md-8 mb-3">
+              <div class="card h-100 custom-card" style="width: 100%;">
+                <div class="card-body">
+                  <h6 class="card-title">Detalles factura</h6><br>
+                  <div class="form-group">
+                    <label for="tipoFactura">Tipo de factura:</label>
+                    <select class="form-control" id="tipoFactura" name="tipoFactura">
+                      <option value="consumidor">Consumidor Final</option>
+                      <option value="monotributista">Monotributista</option>
+                      <option value="responsable">Responsable Inscripto</option>
+                      <option value="sujetoexento">Sujeto Exento</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="formaPago">Forma de pago:</label>
+                    <select class="form-control" id="formaPago" name="formaPago">
+                      <option value="efectivo">Efectivo</option>
+                      <option value="tarjeta">Tarjeta de crédito</option>
+                      <option value="transferencia">Transferencia Bancaria</option>
+                    </select>
+                  </div>
+                  <!-- Tabla con scroll horizontal -->
+                  <div class="table-responsive">
+                    <table class="table table-bordered" id="tablaFacturas">
+                      <thead>
+                        <tr>
+                          <th width="2%"></th>
+                          <th width="15%">N° Ítem</th>
+                          <th width="38%">Nombre Ítem</th>
+                          <th width="15%">Cantidad</th>
+                          <th width="15%">Precio</th>
+                          <th width="15%">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tbodyFacturas">
+                        <tr>
+                          <td><input class="fila" type="checkbox"></td>
+                          <td><input type="number" name="codigoProducto[]" id="codigoProducto_1" class="form-control codigoProducto" autocomplete="off"></td>
+                          <td><input type="text" name="nombreProducto[]" id="nombreProducto_1" class="form-control nombreProducto" autocomplete="off"></td>
+                          <td><input type="number" name="cantidad[]" id="cantidad_1" class="form-control cantidad" autocomplete="off"></td>
+                          <td><input type="number" name="precio[]" id="precio_1" class="form-control precio" autocomplete="off"></td>
+                          <td><input type="number" name="total[]" id="total_1" class="form-control total" autocomplete="off"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Botones para agregar/eliminar ítems -->
+                  <div class="botones mb-3">
+                    <button class="btn custom-btn" id="eliminarFila">- Eliminar</button>
+                    <button class="btn custom-btn" id="addfila">+ Agregar</button>
+                  </div>
+
+                  <!-- Resumen de la factura -->
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="subtotal" class="form-label">Subtotal</label>
+                      <input type="number" id="subTotal" class="form-control" placeholder="$">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="total" class="form-label">Total</label>
+                      <input type="number" id="totalFinal" class="form-control" placeholder="$">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <label for="porcentajeImpuestos" class="form-label">Porcentaje Impuestos</label>
+                      <input type="number" id="porcentajeImpuestos" class="form-control" placeholder="%">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="montoPagado" class="form-label">Monto Pagado</label>
+                      <input type="number" id="montoPagado" class="form-control" placeholder="$">
+                    </div>
+
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="montoImpuestos" class="form-label">Monto Impuestos</label>
+                      <input type="number" id="montoImpuestos" class="form-control" placeholder="$">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="cambio" class="form-label">Cambio</label>
+                      <input type="number" id="cambio" class="form-control" placeholder="$">
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="observacion" class="form-label">Observaciones</label>
+                    <textarea class="form-control" id="observacion" rows="3"></textarea>
+                  </div>
+                  <button  type="submit" class="btn custom-btn" name="guardar">Generar Factura</button> <!--  name="guardar" -->
                 </div>
-
-                <!-- Resumen de la factura -->
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="subtotal" class="form-label">Subtotal</label>
-                    <input type="number" id="subtotal" class="form-control" placeholder="$">
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="total" class="form-label">Total</label>
-                    <input type="number" id="total" class="form-control" placeholder="$">
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <label for="porcentajeImpuestos" class="form-label">Porcentaje Impuestos</label>
-                    <input type="number" id="porcentajeImpuestos" class="form-control" placeholder="%">
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="montoPagado" class="form-label">Monto Pagado</label>
-                    <input type="number" id="montoPagado" class="form-control" placeholder="$">
-                  </div>
-
-                </div>
-
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="montoImpuestos" class="form-label">Monto Impuestos</label>
-                    <input type="number" id="montoImpuestos" class="form-control" placeholder="$">
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="cambio" class="form-label">Cambio</label>
-                    <input type="number" id="cambio" class="form-control" placeholder="$">
-                  </div>
-                </div>
-
-                <!-- Observaciones -->
-                <div class="mb-3">
-                  <label for="observacion" class="form-label">Observaciones</label>
-                  <textarea class="form-control" id="observacion" rows="3"></textarea>
-                </div>
-
-                <!-- Botón de generar factura -->
-                <button class="btn custom-btn">Generar Factura</button>
               </div>
             </div>
-          </div>
-
+          </form>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -216,114 +212,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
-  <script>
-    function abrirRecuadro() {
-      var recuadro = document.getElementById("recuadro");
-      recuadro.style.display = "block";
-    }
-
-    function cerrarRecuadro() {
-      var recuadro = document.getElementById("recuadro");
-      recuadro.style.display = "none";
-    }
-
-    ///////////////////////////////// Evento de clic para buscar cliente por DNI////////////////////////////////////////////////////////////
-    document.getElementById('buscarClienteBtn').addEventListener('click', function() {
-      const clienteDni = document.getElementById('dni').value;
-
-      // Verificar que el DNI no esté vacío antes de hacer la solicitud
-      if (!clienteDni) {
-        alert("Por favor ingresa el DNI del cliente.");
-        return;
-      }
-
-      // Realizar la petición AJAX
-      fetch('../controlador/cliente.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            dni: clienteDni,
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          // Verificar si hay un error en la respuesta
-          if (data.error) {
-            alert(data.error);
-            return;
-          }
-
-          // Mostrar datos del cliente en la página
-          document.getElementById('clienteInfo').style.display = 'block';
-          document.getElementById('nombreCliente').innerText = data.nombre; // Campo 'nombre'
-          document.getElementById('direcionCliente').innerText = data.domicilio; // Campo 'domicilio'
-          document.getElementById('telefonoCliente').innerText = data.celular; // Campo 'celular'
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Ha ocurrido un error al buscar el cliente.');
-        });
-    });
-
-
-    /////////////////////////////////////////////////// Evento para buscar producto //////////////////////////////////////////////////////
-    document.getElementById('codigoProducto').addEventListener('blur', function() {
-      const producto = this.value;
-
-      if (producto === '') {
-        return;
-      }
-
-      fetch('../controlador/producto.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            numeroProducto: producto,
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.error) {
-            alert(data.error);
-            return;
-          }
-
-          document.getElementById('nombreProducto').value = data.nombre;
-          document.getElementById('precio').value = data.precio;
-          // Aquí podrías agregar lógica para calcular el total automáticamente si se desea
-          // Calcular el total según la cantidad
-          // const cantidadInput = document.getElementById('cantidad');
-          // const cantidad = parseFloat(cantidadInput.value) ; // Obtener cantidad o 0 si no es válido
-          // const precio = parseFloat(data.precio) ; // Obtener precio o 0 si no es válido
-
-          // // Calcular el total y mostrarlo en el campo correspondiente
-          // const total = (precio * cantidad).toFixed(2);
-          // document.getElementById('total').value = total;
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Ha ocurrido un error al buscar el producto.');
-        });
-    });
-    //////////////////////////////////////////// Evento para realizar la suma de varios productos ///////////////////////////////////////
-    document.getElementById('cantidad').addEventListener('input', function() {
-      const precio = parseFloat(document.getElementById('precio').value) || 0; // Obtener precio
-      const cantidad = parseFloat(this.value) || 0; // Obtener cantidad
-
-      // Calcular el total y mostrarlo
-      const total = (precio * cantidad).toFixed(2);
-      document.getElementById('total').value = total;
-    });
-
-    
-  </script>
-
+  <script src="../factura.js"></script>
 
 
 </body>
