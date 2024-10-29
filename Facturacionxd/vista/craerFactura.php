@@ -1,186 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Factura</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <style>
-        body {
-            background-color: #c9d6ff;
-            background: linear-gradient(to right, #e2e2e2, #e0f9dc); 
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-
-        /* .border-label { 
-            border: 2px solid #95be9c;
-        }*/
-
-        .btn-agregar {
-            background: #82E5A9;
-            color: #2530B1;
-            border-radius: 1em;
-            font-weight: 600;
-            font-style: bold;
-        }
-
-        .form-container {
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .form-container label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .form-container input,
-        .form-container select {
-            width: 100%;
-            margin-bottom: 15px;
-        }
-
-        .table-container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-
-        .botones {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .d-grid {
-            margin-top: 20px;
-        }
-
-        
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encanto Natural</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
-<nav class="navbar bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand">
-      <img src="logo_2.png" alt="Logo" width="50" height="50" class="">
-      Encanto Natural
-    </a>
-  </div>
-</nav> 
-<br>
-
-<!-- <div class="datos"> 
-    <p><b>Dirección:</b> Avenida Rodriguez 123 <br> <b>Teléfono:</b> 2616908765 <br><b>Correo electrónico:</b> EncantoNatural@gmail.com</p>
-</div>-->
-
-<div class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-container">
-        <h2 class="text-left">Generar Factura</h2>
-        <br>
-
-        <div class="form-group">
-          <label for="nombre" class="form-label">Nombre del cliente:</label>
-          <input type="text" id="nombre" name="nombre" class="form-control border-label" required>
-        </div>
-
-        <div class="form-group">
-          <label for="cuit" class="form-label">CUIL/CUIT:</label>
-          <input type="text" id="cuit" name="cuit" class="form-control border-label" required>
-        </div>
-
-        <div class="form-group">
-          <label for="domicilio" class="form-label">Domicilio:</label>
-          <input type="text" id="domicilio" name="domicilio" class="form-control border-label" required>
-        </div>
-
-        <div class="form-group">
-          <label for="tipoFactura">Tipo de factura:</label>
-          <select class="form-control" id="tipoFactura" name="tipoFactura">
-            <option value="consumidor">Consumidor Final</option>
-            <option value="monotributista">Monotributista</option>
-            <option value="responsable">Responsable Inscripto</option>
-            <option value="sujetoexento">Sujeto Exento</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="formaPago">Forma de pago:</label>
-          <select class="form-control" id="formaPago" name="formaPago">
-            <option value="efectivo">Efectivo</option>
-            <option value="tarjeta">Tarjeta de crédito</option>
-            <option value="transferencia">Transferencia Bancaria</option>
-          </select>
-        </div>
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <div id="sidebar" class="bg-light p-3">
+      <div class="text-center mb-4">
+        <img src="img/user1.png" class="rounded-circle" alt="Avatar">
+        <p class="mt-2">Administrador <br><?php session_start();
+                                          echo htmlspecialchars($_SESSION["nombre_usuario"]) ?> </p>
+      </div>
+      <hr>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2">
+          <a class="nav-link text-dark" href="admin.php"><i class="fas fa-th-large me-2"></i> Inicio</a>
+        </li>
+        <li class="nav-item mb-2">
+          <a class="nav-link text-dark" href="clientes.php"><i class="fas fa-user me-2"></i> Clientes</a>
+        </li>
+        <li class="nav-item mb-2">
+          <a class="nav-link text-dark" href="articulos.php"><i class="fas fa-box me-2"></i> Articulos</a>
+        </li>
+        <li class="nav-item mb-2">
+          <a class="nav-link text-dark active" href="facturas.php"><i class="fas fa-file-invoice me-2"></i> Facturas</a>
+        </li>
+        <li class="nav-item mb-2">
+          <a class="nav-link text-dark" href="ajustes.php"><i class="fas fa-cog me-2"></i> Ajustes</a>
+        </li>
+      </ul>
+      <hr>
+      <div class="mt-auto">
+        <a class="nav-link text-dark" href="../controlador/cerrarSession.php"><i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión</a>
       </div>
     </div>
-    <div class="col-md-6">
-      <div class="table-container">
-        <table class="table table-bordered">
-          <tr>
-            <th width="2%"></th>
-            <th width="15%">N° Ítem</th>
-            <th width="38%">Nombre Ítem</th>
-            <th width="15%">Cantidad</th>
-            <th width="15%">Precio</th>
-            <th width="15%">Total</th>
-          </tr>
-          <tr>
-            <td><input class="itemRow" type="checkbox"></td>
-            <td><input type="number" name="productCode[]" id="productCode_1" class="form-control" autocomplete="off"></td>
-            <td><input type="text" name="productName[]" id="productName_1" class="form-control" autocomplete="off"></td>
-            <td><input type="number" name="quantity[]" id="quantity_1" class="form-control quantity" autocomplete="off"></td>
-            <td><input type="number" name="price[]" id="price_1" class="form-control price" autocomplete="off"></td>
-            <td><input type="number" name="total[]" id="total_1" class="form-control total" autocomplete="off"></td>
-          </tr>
-        </table>
-        <div class="botones">
-          <button class="btn btn-danger">- Eliminar</button>
-          <button class="btn btn-success">+ Agregar</button>
+
+    <!-- Content Section -->
+    <div class="w-100">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-light text-white">
+        <div class="container-fluid">
+          <span class="navbar-brand text-white">Encanto Natural</span>
+        </div>
+      </nav>
+
+      <div class="content p-4">
+        <div class="row justify-content-md-center">
+        <form action="../controlador/factura.php?accion=guardar" id="formularioFactura" method="post" class="formularioFactura" >
+
+          <div class="col-md-3 mb-3">
+            <div class="card h-80 custom-card" style="width: 100%;">
+              <div class="card-body">
+                <h6 class="card-title">cliente</h6><br>
+                <div class="text-center">
+                  <!-- Campo de entrada para el DNI y botones de acciones -->
+                  <input type="text" id="dni" name="dni" class="form-control border-label" required>
+                    <button id="buscarClienteBtn" class="btn custom-btn btn-center">Buscar Cliente</button>
+                    <a href="#" class="btn custom-btn btn-center" onclick="abrirRecuadro()">Crear Cliente</a>
+
+                    <!-- Contenedor para mostrar la información del cliente -->
+                    <div id="clienteInfo" style="display: none; margin-top: 15px;">
+                      <p><strong>Nombre:</strong> <span id="nombreCliente"></span></p>
+                      <p><strong>Dirección:</strong> <span id="direcionCliente"></span></p>
+                      <p><strong>Teléfono:</strong> <span id="telefonoCliente"></span></p>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- FORMULARIO PARA CREAR CLIENTE-->
+          <div class="recuadro" id="recuadro">
+            <h2>Crear Nuevo Cliente</h2>
+            <form method="post" class="form" action="../controlador/veremos.php?accion=crear&tipo=cliente">
+              <!-- Agrega un contenedor para los mensajes de error -->
+              <div class="form-group">
+                <label for="nombre" class="form-label">Nombre del cliente:</label>
+                <input type="text" id="nombre" name="nombre" class="form-control border-label" required>
+              </div>
+              <div class="form-group">
+                <label for="cuit" class="form-label">CUIL/CUIT:</label>
+                <input type="text" id="cuit" name="cuit" class="form-control border-label" required>
+              </div>
+              <div class="form-group">
+                <label for="domicilio" class="form-label">Domicilio:</label>
+                <input type="text" id="domicilio" name="domicilio" class="form-control border-label" required>
+              </div>
+              <!-- <button type="submit" class="btn btn-primary" name="insertar">Crear Alumno</button> -->
+              <button type="submit" class="btn btn-primary">Crear Cliente</button>
+              <button type="button" class="btn btn-secondary" onclick="cerrarRecuadro()">Cancelar</button>
+
+            </form>
+          </div>
+          <br>
+          <br>
+
+          
+            <div class="card h-100 custom-card" style="width: 100%;">
+              <div class="card-body">
+                <h6 class="card-title">Detalles factura</h6><br>
+                <div class="form-group">
+                  <label for="tipoFactura">Tipo de factura:</label>
+                  <select class="form-control" id="tipoFactura" name="tipoFactura">
+                    <option value="consumidor">Consumidor Final</option>
+                    <option value="monotributista">Monotributista</option>
+                    <option value="responsable">Responsable Inscripto</option>
+                    <option value="sujetoexento">Sujeto Exento</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="formaPago">Forma de pago:</label>
+                  <select class="form-control" id="formaPago" name="formaPago">
+                    <option value="efectivo">Efectivo</option>
+                    <option value="tarjeta">Tarjeta de crédito</option>
+                    <option value="transferencia">Transferencia Bancaria</option>
+                  </select>
+                </div>
+                <!-- Tabla con scroll horizontal -->
+                <div class="table-responsive">
+                  <table class="table table-bordered" id="tablaFacturas">
+                    <thead>
+                      <tr>
+                        <th width="2%"></th>
+                        <th width="15%">N° Ítem</th>
+                        <th width="38%">Nombre Ítem</th>
+                        <th width="15%">Cantidad</th>
+                        <th width="15%">Precio</th>
+                        <th width="15%">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbodyFacturas">
+                      <tr>
+                        <td><input class="itemRow" type="checkbox"></td>
+                        <td><input type="number" name="productCode[]" id="productCode_1" class="form-control" autocomplete="off"></td>
+                        <td><input type="text" name="productName[]" id="productName_1" class="form-control" autocomplete="off"></td>
+                        <td><input type="number" name="quantity[]" id="quantity_1" class="form-control" autocomplete="off"></td>
+                        <td><input type="number" name="price[]" id="price_1" class="form-control" autocomplete="off"></td>
+                        <td><input type="number" name="total[]" id="total_1" class="form-control" autocomplete="off"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Botones para agregar/eliminar ítems -->
+                <div class="botones mb-3">
+                  <button class="btn custom-btn" id="eliminarFila">- Eliminar</button>
+                  <button class="btn custom-btn" id="addfila">+ Agregar</button>
+                </div>
+
+                <!-- Resumen de la factura -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="subtotal" class="form-label">Subtotal</label>
+                      <input type="number" id="subTotal" class="form-control" placeholder="$">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="total" class="form-label">Total</label>
+                      <input type="number" id="totalFinal" class="form-control" placeholder="$">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <label for="porcentajeImpuestos" class="form-label">Porcentaje Impuestos</label>
+                      <input type="number" id="porcentajeImpuestos" class="form-control" placeholder="%">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="montoPagado" class="form-label">Monto Pagado</label>
+                      <input type="number" id="montoPagado" class="form-control" placeholder="$">
+                    </div>
+
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="montoImpuestos" class="form-label">Monto Impuestos</label>
+                      <input type="number" id="montoImpuestos" class="form-control" placeholder="$">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="cambio" class="form-label">Cambio</label>
+                      <input type="number" id="cambio" class="form-control" placeholder="$">
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="observacion" class="form-label">Observaciones</label>
+                    <textarea class="form-control" id="observacion" rows="3"></textarea>
+                  </div>
+                  <button  type="submit" class="btn custom-btn" name="guardar">Generar Factura</button> <!--  name="guardar" -->
+                </div>
+            </div>
+          
+
         </div>
       </div>
-      <div class="d-grid gap-2 col-12 mx-auto">
-        <div class="row">
-          <div class="col-md-6">
-            <label for="montoPagado" class="form-label">Monto Pagado</label>
-            <input type="number" id="montoPagado" class="form-control" placeholder="$">
-          </div>
-          <div class="col-md-6">
-            <label for="total" class="form-label">Total</label>
-            <input type="number" id="total" class="form-control" placeholder="$">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <label for="montoImpuestos" class="form-label">Monto Impuestos</label>
-            <input type="number" id="montoImpuestos" class="form-control" placeholder="$">
-          </div>
-          <div class="col-md-6">
-            <label for="porcentajeImpuestos" class="form-label">Porcentaje Impuestos</label>
-            <input type="number" id="porcentajeImpuestos" class="form-control" placeholder="%">
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="observacion" class="form-label">Observaciones</label>
-          <textarea class="form-control" id="observacion" rows="3"></textarea>
-        </div>
-        <label for="cambio" class="form-label">Cambio</label>
-        <input type="number" id="cambio" class="form-control" placeholder="$">
-        <button class="btn btn-agregar mt-3">Generar Factura</button>
-      </div>
+
     </div>
   </div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../factura.js"></script>
+
+  <script>
+    function abrirRecuadro() {
+      var recuadro = document.getElementById("recuadro");
+      recuadro.style.display = "block";
+    }
+
+    function cerrarRecuadro() {
+      var recuadro = document.getElementById("recuadro");
+      recuadro.style.display = "none";
+    }
+  </script>
+
 </body>
+
 </html>
+
+
+
+
+
+
+
+
+
+<!-- busca de cliente por id -->
+<?php
+
+// $conn = new mysqli("localhost:3309", "root", "", "facturacion");
+
+// // Verifica la conexión
+// if ($conn->connect_error) {
+//     die("Connection failed: " . $conn->connect_error);
+// }
+
+// // Procesar el formulario
+// if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idCliente'])) {
+//     $idCliente = $_POST['idCliente'];
+//     $stmt = $conn->prepare("SELECT * FROM cliente WHERE id_cliente = ?");
+//     $stmt->bind_param("i", $idCliente); // "i" indica que el parámetro es un entero
+//     $stmt->execute();
+//     $resultado = $stmt->get_result();
+//     $cliente = $resultado->fetch_assoc();
+
+//     // Cierra la declaración
+//     $stmt->close();
+// }
+?>
+
+<!-- HTML para mostrar los resultados -->
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Cliente</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Buscar Cliente</h2>
+        <form action="" method="POST">
+            <div class="mb-3">
+                <label for="idCliente" class="form-label">ID del Cliente:</label>
+                <input type="text" class="form-control" id="idCliente" name="idCliente" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar Cliente</button>
+        </form> -->
+
+        <?php if (isset($cliente)): ?>
+            <!-- <h3>Detalles del Cliente</h3>
+            <ul>
+                <li><strong>ID:</strong> <?php echo htmlspecialchars($cliente['id_cliente']); ?></li>
+                <li><strong>Nombre:</strong> <?php echo htmlspecialchars($cliente['nombre']); ?></li>
+                <li><strong>CUIL:</strong> <?php echo htmlspecialchars($cliente['cuil']); ?></li>
+                <li><strong>Domicilio:</strong> <?php echo htmlspecialchars($cliente['domicilio']); ?></li>
+            </ul> -->
+        <?php elseif ($_SERVER["REQUEST_METHOD"] == "POST"): ?>
+            <!-- <p>No se encontró el cliente.</p> -->
+        <?php endif; ?>
+    <!-- </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> -->
+
