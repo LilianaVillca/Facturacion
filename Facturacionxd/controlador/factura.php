@@ -22,8 +22,8 @@ if (isset($_GET["accion"])) {
                 echo "Faltan parámetros";
             }
             break;
-        case "guardar":
-            if (isset($_POST['nombreCliente'], $_POST['direcionCliente'], $_POST['telefonoCliente'], $_POST['tipoFactura'], $_POST['formaPago'], $POST['codigoProducto'][$i], $POST['nombreProducto'][$i], $POST['cantidad'][$i], $POST['precio'][$i], $POST['total'][$i], $_POST['subTotal'], $_POST['totalFinal'], $_POST['porcentajeImpuestos'], $_POST['montoPagado'], $_POST['montoImpuestos'], $_POST['cambio'], $_POST['observacion'])) {
+        case "crear":
+            if (isset($_POST['nombreCliente'], $_POST['direcionCliente'], $_POST['telefonoCliente'], $_POST['tipoFactura'], $_POST['formaPago'], $_POST['codigoProducto'][$i], $_POST['nombreProducto'][$i], $_POST['cantidad'][$i], $_POST['precio'][$i], $_POST['total'][$i], $_POST['subTotal'], $_POST['totalFinal'], $_POST['porcentajeImpuestos'], $_POST['montoPagado'], $_POST['montoImpuestos'], $_POST['cambio'], $_POST['observacion'])) {
                 $nombreCliente = $_POST['nombreCliente'];
                 $direccionCliente = $_POST['direcionCliente'];
                 $telefonoCliente = $_POST['telefonoCliente'];
@@ -42,22 +42,22 @@ if (isset($_GET["accion"])) {
                 $cambio = $_POST['cambio'];
                 $observacion = $_POST['observacion'];
 
-                // Obtener el ID del cliente por nombre o CUIL/CUIT
-                $idCliente = $modelo->obtenerIdCliente($nombreCliente);
+                if (isset($_POST['guardar'])) {
+                    // Obtener el ID del cliente por nombre o CUIL/CUIT
+                    $idCliente = $modelo->obtenerIdCliente($nombreCliente);
 
-                // Guardar la factura y obtener el ID de la factura recién creada
-                $idFactura = $modelo->guardarFactura($idCliente, $subTotal, $montoImpuestos, $porcentajeImpuestos, $totalFinal, $montoPagado, $cambio, $observacion);
+                    // Guardar la factura y obtener el ID de la factura recién creada
+                    $idFactura = $modelo->guardarFactura($idCliente, $subTotal, $montoImpuestos, $porcentajeImpuestos, $totalFinal, $montoPagado, $cambio, $observacion);
 
-                // Guardar los detalles de cada producto en detalle_factura
-                foreach ($codigoProducto as $i => $codigo) {
-                    $idProducto = $modelo->obtenerIdProducto($codigo);
-                    $modelo->guardarDetalleFactura($idFactura, $idProducto, $cantidad[$i], $precio[$i], $total[$i], $formaPago);
+                    // Guardar los detalles de cada producto en detalle_factura
+                    foreach ($codigoProducto as $i => $codigo) {
+                        $idProducto = $modelo->obtenerIdProducto($codigo);
+                        $modelo->guardarDetalleFactura($idFactura, $idProducto, $cantidad[$i], $precio[$i], $total[$i], $formaPago);
+                    }
                 }
 
-                // Redirigir o mostrar mensaje de éxito
-                header("Location: ../vista/factura.php?mensaje=Factura creada con éxito");
+                header("Location: ../vista/facturas.php?mensaje=Factura creada con éxito");
             }
             break;
-            // Otros casos...
     }
 }

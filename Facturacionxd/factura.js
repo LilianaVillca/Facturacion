@@ -123,20 +123,6 @@ $(document).ready(function () {
             calculateTotal(); // Recalcular totales después de eliminar
         }
     });
-    // Función para añadir nuevas filas con IDs únicos siguiendo el mismo patrón
-    // function agregarFila() {
-    //     const rowCount = $('#tbodyFacturas tr').length + 1; // Determina el nuevo número de fila
-    //     const newRow = `
-    //   <tr>
-    //     <td><input class="fila" type="checkbox"></td>
-    //     <td><input type="number" name="codigoProducto[]" id="codigoProducto_${rowCount}" class="form-control codigoProducto" autocomplete="off"></td>
-    //     <td><input type="text" name="nombreProducto[]" id="nombreProducto_${rowCount}" class="form-control nombreProducto" autocomplete="off"></td>
-    //     <td><input type="number" name="cantidad[]" id="cantidad_${rowCount}" class="form-control cantidad" autocomplete="off"></td>
-    //     <td><input type="number" name="precio[]" id="precio_${rowCount}" class="form-control precio" autocomplete="off"></td>
-    //     <td><input type="number" name="total[]" id="total_${rowCount}" class="form-control total" autocomplete="off"></td>
-    //   </tr>`;
-    //     $('#tbodyFacturas').append(newRow);
-    // }
 
     // Calcular total al cambiar cantidad o precio
     $(document).on('blur', "[id^=cantidad_], [id^=precio_]", function () {
@@ -192,17 +178,6 @@ function calculateTaxes(subTotal) {
         calculateChange(totalAftertax); // Calcula cambio
     }
 }
-// Función para calcular cambio
-function calculateChange(totalFinal) {
-    var pago = $('#montoPagado').val();
-    if (pago) {
-        var cambio = pago - totalFinal;
-        $('#cambio').val(cambio.toFixed(2)); // Actualiza el cambio
-    } else {
-        $('#cambio').val('0.00'); // Si no hay monto pagado, cambio es 0
-    }
-}
-
 // Función para eliminar filas
 function eliminarFila() {
     const tbody = document.getElementById('tbodyFacturas');
@@ -215,5 +190,3 @@ function eliminarFila() {
         }
     });
 }
-
- 

@@ -40,12 +40,12 @@
           <a class="nav-link text-dark active" href="facturas.php"><i class="fas fa-file-invoice me-2"></i> Facturas</a>
         </li>
         <li class="nav-item mb-2">
-          <a class="nav-link text-dark" href="#"><i class="fas fa-cog me-2"></i> Ajustes</a>
+          <a class="nav-link text-dark" href="ajustes.php"><i class="fas fa-cog me-2"></i> Ajustes</a>
         </li>
       </ul>
       <hr>
       <div class="mt-auto">
-        <a class="nav-link text-dark" href="#"><i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión</a>
+        <a class="nav-link text-dark" href="../controlador/cerrarSession.php"><i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión</a>
       </div>
     </div>
 
@@ -61,7 +61,7 @@
       <div class="content p-4">
         <div class="d-flex justify-content-between mb-3">
           <h3>Lista de Facturas</h3>
-          <a href="craerFactura.php" class="fbtn custom-btn btn-center">crear</a>
+          <a href="crearFactura.php" class="fbtn custom-btn btn-center">crear</a>
         </div>
 
         <table class="table table-bordered grocery-crud-table table-hover">

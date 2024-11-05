@@ -43,12 +43,12 @@
           <a class="nav-link text-dark" href="facturas.php"><i class="fas fa-file-invoice me-2"></i> Facturas</a>
         </li>
         <li class="nav-item mb-2">
-          <a class="nav-link text-dark" href="#"><i class="fas fa-cog me-2"></i> Ajustes</a>
+          <a class="nav-link text-dark" href="ajustes.php"><i class="fas fa-cog me-2"></i> Ajustes</a>
         </li>
       </ul>
       <hr>
       <div class="mt-auto">
-        <a class="nav-link text-dark" href="#"><i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión</a>
+        <a class="nav-link text-dark" href="../controlador/cerrarSession.php"><i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión</a>
       </div>
     </div>
     
@@ -60,18 +60,19 @@
       </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="content p-4">
-      <!-- <h1>Bienvenido, Luis</h1>
-      <p>Esta es la área de contenido principal.</p> -->
+  <div class="content p-4 ">
+  
 
+    <div class="title-box">
+      <h1>Gestión de Clientes</h1>
+    </div>
+    <a class="btn custom-btn btn-center mb-3 ms-3" href="crearFactura.php"><b>+</b> Añadir cliente </a> 
 
     <!-- tabla clientes -->
-    <div class="col-md-11 mb-3 mx-auto">
-      <h6>Lista de Clientes</h6>
-      <div class="card custom-card">
-        <div class="card-body">
-          <table class="table table-hover">
+      
+    <div class="card custom-card ms-3">
+     <div class="card-body">
+      <table class="table table-hover">
             <thead>
               <tr>
                 <th scope="col"> </th>
@@ -85,36 +86,28 @@
               </tr>
             </thead>
             <tbody>
-              <tr onclick="window.location.href='facturas.php'">
-                <th scope="row"><i class="fas fa-edit me-2"></i></th>
-                <?php
-                foreach ($clientes as $cliente) {
-                  echo "<td>" . $cliente["nombre"] . "</td>";
-                  echo "<td>" . $cliente["apellido"] . "</td>";
-                  echo "<td>" . $cliente["cuil"] . "</td>";
-                  echo "<td>" . $cliente["domicilio"] . "</td>";
-                  echo "<td>" . $cliente["celular"] . "</td>";
-                  echo "<td>" . $cliente["tipoCliente"] . "</td>";
-
-                  // echo "<td>";
-                  // echo "<a href='../controllers/carrera_controller.php?accion=editar&id=" . $carrera["id_Carrera"] . "' class='editar'>Editar</a>";
-                  // echo "<a href='../controllers/carrera_controller.php?accion=borrar&id=" . $carrera["id_Carrera"] . "' class='borrar'>Borrar</a>";
-                  // echo "<a href='../controllers/carrera_controller.php?accion=ver_materias&id=" . $carrera["id_Carrera"] . "' class='materias'>Materias</a>";
-                  // echo "<a href='../controllers/carrera_controller.php?accion=ver_estudiantes&id=" . $carrera["id_Carrera"] . "' class='estudiantes'>Estudiantes</a>";
-                }
-                ?>
-                <th scope="row"><i class="fas fa-trash me-2"></i></th>
-              </tr>
+             <?php
+              foreach ($clientes as $cliente) {
+               echo "<tr onclick=\"window.location.href='facturas.php'\">";
+               echo "<th scope='row'><i class='fas fa-edit me-2'></i></th>";
+               
+                echo "<td>" . $cliente["nombre"] . "</td>";
+                echo "<td>" . $cliente["apellido"] . "</td>";
+                echo "<td>" . $cliente["cuil"] . "</td>";
+                echo "<td>" . $cliente["domicilio"] . "</td>";
+                echo "<td>" . $cliente["celular"] . "</td>";
+                echo "<td>" . $cliente["tipoCliente"] . "</td>";
+                echo "<th scope='row'><i class='fas fa-trash me-2'></i></th>";
+               echo "</tr>";
+              }
+             ?>
             </tbody>
           </table>
         </div>
       </div>
+ </div>
 
-
-    </div>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </body>
 
