@@ -5,7 +5,7 @@ class Conexion
 
     public function __construct()
     {
-        $this->conexion = new mysqli("localhost:3307", "root", "Eva2024", "facturacion");
+        $this->conexion = new mysqli("localhost:3309", "root", "", "facturacion");
     }
     ///////////////////////////////INGRESO DE USUARIO ///////////////////////////
     public function procesarInicioSesion($usuario, $correo, $contrasena)
@@ -168,11 +168,11 @@ class Conexion
     }
     ////////////////////////////////////////////////////////  guardar factura //////////////////////////////////////////////////////////////////
     // Obtener el ID del cliente a partir del nombre o CUIL/CUIT
-    public function obtenerIdCliente($nombreCliente)
+    public function obtenerIdCliente($dni)
     {
-        $query = "SELECT id_cliente FROM cliente WHERE nombre = ?";
+        $query = "SELECT id_cliente FROM cliente WHERE dni = ?";
         $stmt = $this->conexion->prepare($query);
-        $stmt->bind_param("s", $nombreCliente);
+        $stmt->bind_param("i", $dni);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
@@ -180,12 +180,12 @@ class Conexion
     }
 
     // Guardar factura en la base de datos y devolver el ID de la factura
-    public function guardarFactura($idCliente, $subTotal, $montoImpuestos, $porcentajeImpuestos, $totalFinal, $montoPagado, $cambio, $observacion)
+    public function guardarFactura($idCliente, $subTotal, $montoImpuestos, $totalFinal)
     {
-        $query = "INSERT INTO factura (id_cliente, fecha, total_ante_impuesto, total_impuesto, porcentaje_impuesto, total_despues_impuesto, monto_pagado, total_a_devolver, nota, hora, estado) 
-              VALUES (?, NOW(), ?, ?, ?, ?, ?, ?, ?, NOW(), 'pendiente')";
+        $query = "INSERT INTO factura (id_usuario, subtotal , montoImpuesto,  total) 
+              VALUES (?,?, ?, ?)";
         $stmt = $this->conexion->prepare($query);
-        $stmt->bind_param("idddddss", $idCliente, $subTotal, $montoImpuestos, $porcentajeImpuestos, $totalFinal, $montoPagado, $cambio, $observacion);
+        $stmt->bind_param("iddd", $idCliente, $subTotal, $montoImpuestos, $totalFinal);
         $stmt->execute();
         return $stmt->insert_id;
     }
@@ -223,7 +223,7 @@ class Conexion
     }
 
 
-    // ////////////////////////////// metodos Brisa ////////////////
+    // ////////////////////////////// metodos Brisa //////////////////////////////////////////
 
     ///////otra cosaa eeeee
     public function obtenerClientePorId($idCliente)
@@ -287,7 +287,7 @@ class Conexion
 
     
 // Nota de Credito---- realizado por Eva...jeje // Iniciar transacción
-         //   
+           
          public function obtenerNotaCredito($id_notaCredito, $numeroFactura, $idFactura, $monto, $motivo, $fecha) {
             try {
                 // Iniciar la transacción

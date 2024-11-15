@@ -80,7 +80,7 @@
                 <td><?php echo $factura["id_factura"]; ?></td>
                 <td><?php echo $factura["fecha"]; ?></td>
                 <td><?php echo $factura["nombre_cliente"]; ?></td>
-                <td>$ <?php echo $factura["monto_pagado"]; ?></td>
+                <td>$ <?php echo $factura["total"]; ?></td>
                 <td>
                   <a href="../controlador/notaCredito.php?accion=anular&id=<?php echo $factura['id_factura']; ?>" class="btn btn-danger btn-sm me-2">
                     <i class="fas fa-ban"></i>

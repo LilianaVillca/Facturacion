@@ -190,3 +190,44 @@ function eliminarFila() {
         }
     });
 }
+
+
+// //// guardra factura
+document.getElementById('guardarFactura').addEventListener('click', function() {
+    const idpproducto = document.getElementById('codigoProducto_1').value;
+
+    // Verificar que el DNI no esté vacío antes de hacer la solicitud
+    if (!idpproducto) {
+        alert("Por favor un oroducto.");
+        return;
+    }
+
+    // Realizar la petición AJAX
+    fetch('./guardarFactura.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                dni: clienteDni,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Verificar si hay un error en la respuesta
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            // Mostrar datos del cliente en la página
+            document.getElementById('clienteInfo').style.display = 'block';
+            document.getElementById('nombreCliente').innerText = data.nombre; // Campo 'nombre'
+            document.getElementById('direcionCliente').innerText = data.domicilio; // Campo 'domicilio'
+            document.getElementById('telefonoCliente').innerText = data.celular; // Campo 'celular'
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Ha ocurrido un error al buscar el cliente.');
+        });
+});

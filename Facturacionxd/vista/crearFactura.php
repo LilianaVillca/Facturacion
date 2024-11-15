@@ -60,53 +60,8 @@
       </nav>
 
       <div class="content p-4">
-        <div class="row justify-content-md-center">
-          <form method="POST" action="../controlador/factura.php?accion=crear" id="formularioFactura" class="formularioFactura">
-
-            <!-- <div class="col-md-3 mb-3">
-              <div class="card h-80 custom-card" style="width: 100%;">
-                <div class="card-body">
-                  <h6 class="card-title">cliente</h6><br>
-                  <div class="text-center">
-                    Campo de entrada para el DNI y botones de acciones 
-                    <input type="text" id="dni" name="dni" class="form-control border-label" required>
-                    <button id="buscarClienteBtn" class="btn custom-btn btn-center">Buscar Cliente</button>
-                    <a href="#" class="btn custom-btn btn-center" onclick="abrirRecuadro()">Crear Cliente</a>
-
-                    Contenedor para mostrar la información del cliente
-                    <div id="clienteInfo" style="display: none; margin-top: 15px;">
-                      <p><strong>Nombre:</strong> <span id="nombreCliente" name="nombreCliente"></span></p>
-                      <p><strong>Dirección:</strong> <span id="direcionCliente" name="direcionCliente"></span></p>
-                      <p><strong>Teléfono:</strong> <span id="telefonoCliente" name="telefonoCliente"></span></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-            <!-- FORMULARIO PARA CREAR CLIENTE-->
-            <div class="recuadro" id="recuadro">
-              <h2>Crear Nuevo Cliente</h2>
-              <form method="POST" class="form" action="../controlador/cliente.php?accion=crear">
-                <!-- Agrega un contenedor para los mensajes de error -->
-                <div class="form-group">
-                  <label for="nombre" class="form-label">Nombre del cliente:</label>
-                  <input type="text" id="nombre" name="nombre" class="form-control border-label" required>
-                </div>
-                <div class="form-group">
-                  <label for="cuit" class="form-label">CUIL/CUIT:</label>
-                  <input type="text" id="cuit" name="cuit" class="form-control border-label" required>
-                </div>
-                <div class="form-group">
-                  <label for="domicilio" class="form-label">Domicilio:</label>
-                  <input type="text" id="domicilio" name="domicilio" class="form-control border-label" required>
-                </div>
-                <!-- <button type="submit" class="btn btn-primary" name="insertar">Crear Alumno</button> -->
-                <button type="submit" class="btn btn-primary">Crear Cliente</button>
-                <button type="button" class="btn btn-secondary" onclick="cerrarRecuadro()">Cancelar</button>
-
-              </form>
-            </div>
-
+        <form method="POST" action="../controlador/factura.php?accion=guardar">
+          <div class="row justify-content-md-center">
             <div class="col-md-8 mb-3">
               <div class="card h-80 custom-card" style="width: 100%;">
                 <div class="card-body">
@@ -179,16 +134,16 @@
                     <div class="row">
                       <div class="col-md-6 mb-3">
                         <label for="subtotal" class="form-label">Subtotal</label>
-                        <input type="number" id="subTotal" class="form-control" placeholder="$">
+                        <input type="number" id="subTotal" name="subTotal"  class="form-control" placeholder="$">
                       </div>
                       <div class="col-md-6 mb-3">
                         <label for="total" class="form-label">Total</label>
-                        <input type="number" id="totalFinal" class="form-control" placeholder="$">
+                        <input type="number" id="totalFinal" name="totalFinal" class="form-control" placeholder="$">
                       </div>
 
                       <div class="col-md-6 mb-3">
                         <label for="porcentajeImpuestos" class="form-label">Porcentaje Impuestos</label>
-                        <input type="number" id="porcentajeImpuestos" class="form-control" placeholder="%">
+                        <input type="number" id="porcentajeImpuestos" name="montoImpuestos" class="form-control" placeholder="%">
                       </div>
                     </div>
                     <div class="row">
@@ -197,23 +152,46 @@
                         <input type="number" id="montoImpuestos" class="form-control" placeholder="$">
                       </div>
                     </div>
-                    <button type="submit" class="btn custom-btn" name="guardar">Generar Factura</button>
+                    <input type="submit" class="btn custom-btn" id="guardarFactura" value="Generar Factura">
+                    <!-- <button type="submit" class="btn custom-btn" id="guardarFactura"> Generar Factura</button> -->
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </form>
+        <!-- FORMULARIO PARA CREAR CLIENTE-->
+        <div class="recuadro" id="recuadro">
+          <h2>Crear Nuevo Cliente</h2>
+          <form method="POST" class="form" action="../controlador/cliente.php?accion=crear">
+            <!-- Agrega un contenedor para los mensajes de error -->
+            <div class="form-group">
+              <label for="nombre" class="form-label">Nombre del cliente:</label>
+              <input type="text" id="nombre" name="nombre" class="form-control border-label" required>
+            </div>
+            <div class="form-group">
+              <label for="cuit" class="form-label">CUIL/CUIT:</label>
+              <input type="text" id="cuit" name="cuit" class="form-control border-label" required>
+            </div>
+            <div class="form-group">
+              <label for="domicilio" class="form-label">Domicilio:</label>
+              <input type="text" id="domicilio" name="domicilio" class="form-control border-label" required>
+            </div>
+            <!-- <button type="submit" class="btn btn-primary" name="insertar">Crear Alumno</button> -->
+            <button type="submit" class="btn btn-primary">Crear Cliente</button>
+            <button type="button" class="btn btn-secondary" onclick="cerrarRecuadro()">Cancelar</button>
+
           </form>
         </div>
       </div>
     </div>
-  </div>
 
 
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../factura.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="../factura.js"></script> -->
 
 </body>
 
