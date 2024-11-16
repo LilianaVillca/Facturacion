@@ -235,8 +235,6 @@ class Conexion
     }
 
    
-
-    ////////////////////mio
     public function obtener_productos()
     {
         $sql = "SELECT p.id_producto, p.codigo_producto, p.descripcion_producto, p.precio_producto, c.nombre AS nombre_categoria
@@ -287,35 +285,35 @@ class Conexion
 
     
 // Nota de Credito---- realizado por Eva...jeje // Iniciar transacción
-           
-         public function obtenerNotaCredito($id_notaCredito, $numeroFactura, $idFactura, $monto, $motivo, $fecha) {
-            try {
-                // Iniciar la transacción
-                $this->conexion->beginTransaction();
+         //   
+        //  public function obtenerNotaCredito($id_notaCredito, $numeroFactura, $idFactura, $monto, $motivo, $fecha) {
+        //     try {
+        //         // Iniciar la transacción
+        //         $this->conexion->beginTransaction();
         
-                // Insertar la nota de crédito
-                $stmt = $this->conexion->prepare("INSERT INTO nota_credito (id_notacredito, numerofactura, id_factura, monto, motivo, fecha) 
-                                            VALUES (:id_notacredito, :numerofactura, :id_factura, :monto, :motivo, :fecha)");
-                $stmt->bindParam(":id_notacredito", $id_notaCredito);
-                $stmt->bindParam(":numerofactura", $numeroFactura);
-                $stmt->bindParam(":id_factura", $idFactura);
-                $stmt->bindParam(":monto", $monto);
-                $stmt->bindParam(":motivo", $motivo);
-                $stmt->bindParam(":fecha", $fecha);
-                $stmt->execute();
+        //         // Insertar la nota de crédito
+        //         $stmt = $this->conexion->prepare("INSERT INTO nota_credito (id_notacredito, numerofactura, id_factura, monto, motivo, fecha) 
+        //                                     VALUES (:id_notacredito, :numerofactura, :id_factura, :monto, :motivo, :fecha)");
+        //         $stmt->bindParam(":id_notacredito", $id_notaCredito);
+        //         $stmt->bindParam(":numerofactura", $numeroFactura);
+        //         $stmt->bindParam(":id_factura", $idFactura);
+        //         $stmt->bindParam(":monto", $monto);
+        //         $stmt->bindParam(":motivo", $motivo);
+        //         $stmt->bindParam(":fecha", $fecha);
+        //         $stmt->execute();
         
-                // Actualizar la factura original como anulada o dada de baja
-                $stmt = $this->db->prepare("UPDATE facturas SET nota_credito = 1 WHERE id = :idFactura");
-                $stmt->bindParam(":idFactura", $idFactura);
-                $stmt->execute();
+        //         // Actualizar la factura original como anulada o dada de baja
+        //         $stmt = $this->db->prepare("UPDATE facturas SET nota_credito = 1 WHERE id = :idFactura");
+        //         $stmt->bindParam(":idFactura", $idFactura);
+        //         $stmt->execute();
         
-                // Confirmar la transacción
-                $this->db->commit();
-                return true;
-            } catch (Exception $e) {
-                // Revertir cambios en caso de error
-                $this->db->rollBack();
-                throw $e;
-            }
-        }
+        //         // Confirmar la transacción
+        //         $this->db->commit();
+        //         return true;
+        //     } catch (Exception $e) {
+        //         // Revertir cambios en caso de error
+        //         $this->db->rollBack();
+        //         throw $e;
+        //     }
+        // }
     }

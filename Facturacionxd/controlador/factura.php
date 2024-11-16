@@ -74,7 +74,8 @@ if (isset($_GET["accion"])) {
                     $modelo->guardarDetalleFactura($idFactura, $idProducto, $cantidadProducto, $precioProducto, $totalProducto);
                 }
 
-                echo "Factura guardada exitosamente.";
+                // echo "Factura guardada exitosamente.";
+                header("Location: ../vista/facturas.php");
             } else {
                 echo "Faltan campos obligatorios.";
                 exit();

@@ -60,7 +60,7 @@
       </nav>
 
       <div class="content p-4">
-        <form method="POST" action="../controlador/factura.php?accion=guardar">
+        <form method="POST" action="../controlador/factura.php?accion=guardar" id="formuFactura">
           <div class="row justify-content-md-center">
             <div class="col-md-8 mb-3">
               <div class="card h-80 custom-card" style="width: 100%;">
@@ -134,7 +134,7 @@
                     <div class="row">
                       <div class="col-md-6 mb-3">
                         <label for="subtotal" class="form-label">Subtotal</label>
-                        <input type="number" id="subTotal" name="subTotal"  class="form-control" placeholder="$">
+                        <input type="number" id="subTotal" name="subTotal" class="form-control" placeholder="$">
                       </div>
                       <div class="col-md-6 mb-3">
                         <label for="total" class="form-label">Total</label>
@@ -191,7 +191,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="../factura.js"></script> -->
+    <script src="../factura.js"></script>
 
 </body>
 

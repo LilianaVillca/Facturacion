@@ -10,44 +10,35 @@ function cerrarRecuadro() {
 }
 
 ///////////////////////////////// Evento de clic para buscar cliente por DNI////////////////////////////////////////////////////////////
-document.getElementById('buscarClienteBtn').addEventListener('click', function () {
+document.getElementById('buscarClienteBtn').addEventListener('click', async function () {
     const clienteDni = document.getElementById('dni').value;
 
-    // Verificar que el DNI no esté vacío antes de hacer la solicitud
     if (!clienteDni) {
         alert("Por favor ingresa el DNI del cliente.");
         return;
     }
 
-    // Realizar la petición AJAX
-    fetch('../controlador/cliente.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-            dni: clienteDni,
-        })
-    })
-        .then(response => response.json())
-        .then(data => {
-            // Verificar si hay un error en la respuesta
-            if (data.error) {
-                alert(data.error);
-                return;
-            }
-
-            // Mostrar datos del cliente en la página
-            document.getElementById('clienteInfo').style.display = 'block';
-            document.getElementById('nombreCliente').innerText = data.nombre; // Campo 'nombre'
-            document.getElementById('direcionCliente').innerText = data.domicilio; // Campo 'domicilio'
-            document.getElementById('telefonoCliente').innerText = data.celular; // Campo 'celular'
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Ha ocurrido un error al buscar el cliente.');
+    try {
+        const response = await fetch('../controlador/cliente.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ dni: clienteDni })
         });
+
+        const data = await response.json();
+
+        if (data.error) throw new Error(data.error);
+
+        document.getElementById('clienteInfo').style.display = 'block';
+        document.getElementById('nombreCliente').innerText = data.nombre;
+        document.getElementById('direcionCliente').innerText = data.domicilio;
+        document.getElementById('telefonoCliente').innerText = data.celular;
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Ha ocurrido un error al buscar el cliente.');
+    }
 });
+
 
 /////////////////////////////////////////////////// Evento para buscar producto en cada fila //////////////////////////////////////////////////////
 $(document).on('blur', "[id^=codigoProducto_]", function () {
@@ -89,6 +80,56 @@ $(document).on('blur', "[id^=codigoProducto_]", function () {
 /////////////////////////////////////////////////////// Evento factura /////////////////////////////////////////////////////////////
 
 
+// $(document).ready(function () {
+//     // Marcar todos los ítems
+//     $(document).on('click', '#checkAll', function () {
+//         $(".fila").prop("checked", this.checked);
+//     });
+
+//     // Control de marcado de ítems
+//     $(document).on('click', '.fila', function () {
+//         $('#checkAll').prop('checked', $('.fila:checked').length === $('.fila').length);
+//     });
+
+//     var count = 1; // Inicializa el contador de filas
+
+//     // Ambas funciones de agregar filas funcionan y toman la funcion de buscar productos
+//     $(document).on('click', '.btn.custom-btn', function (e) {
+//         e.preventDefault();
+//         if ($(this).text().includes("Agregar")) {
+//             count++;
+//             var htmlRows = '<tr>';
+//             htmlRows += '<td><input class="fila" type="checkbox"></td>';
+//             htmlRows += '<td><input type="number" name="codigoProducto[]" id="codigoProducto_' + count + '" class="form-control" autocomplete="off"></td>';
+//             htmlRows += '<td><input type="text" name="nombreProducto[]" id="nombreProducto_' + count + '" class="form-control" autocomplete="off"></td>';
+//             htmlRows += '<td><input type="number" name="cantidad[]" id="cantidad_' + count + '" class="form-control cantidad" autocomplete="off"></td>';
+//             htmlRows += '<td><input type="number" name="precio[]" id="precio_' + count + '" class="form-control precio" autocomplete="off"></td>';
+//             htmlRows += '<td><input type="number" name="total[]" id="total_' + count + '" class="form-control total" readonly></td>'; // Total será solo de lectura
+//             htmlRows += '</tr>';
+//             $('#tbodyFacturas').append(htmlRows);
+//         } else if ($(this).text().includes("Eliminar")) {
+//             $(".fila:checked").each(function () {
+//                 $(this).closest('tr').remove();
+//             });
+//             calculateTotal(); // Recalcular totales después de eliminar
+//         }
+//     });
+
+//     // Calcular total al cambiar cantidad o precio
+//     $(document).on('blur', "[id^=cantidad_], [id^=precio_]", function () {
+//         calculateRowTotal($(this)); // Calcula total de la fila correspondiente
+//         calculateTotal(); // Calcula total general
+//     });
+//      // Calcular impuestos y cambio al actualizar campos relevantes
+//      $(document).on('blur', "#porcentajeImpuestos", function () {
+//         calculateTotal();
+//     });
+//     $(document).on('blur', "#montoPagado", function () {
+//         calculateChange(parseFloat($('#totalFinal').val())); // Actualiza cambio en función del monto pagado
+//     });
+    
+// });
+
 $(document).ready(function () {
     // Marcar todos los ítems
     $(document).on('click', '#checkAll', function () {
@@ -102,9 +143,8 @@ $(document).ready(function () {
 
     var count = 1; // Inicializa el contador de filas
 
-    // Ambas funciones de agregar filas funcionan y toman la funcion de buscar productos
-    $(document).on('click', '.btn.custom-btn', function (e) {
-        e.preventDefault();
+    // Función para agregar y eliminar filas
+    $(document).on('click', '.btn.custom-btn', function () {
         if ($(this).text().includes("Agregar")) {
             count++;
             var htmlRows = '<tr>';
@@ -129,18 +169,62 @@ $(document).ready(function () {
         calculateRowTotal($(this)); // Calcula total de la fila correspondiente
         calculateTotal(); // Calcula total general
     });
-     // Calcular impuestos y cambio al actualizar campos relevantes
-     $(document).on('blur', "#porcentajeImpuestos", function () {
+    
+    // Calcular impuestos y cambio al actualizar campos relevantes
+    $(document).on('blur', "#porcentajeImpuestos", function () {
         calculateTotal();
     });
+
     $(document).on('blur', "#montoPagado", function () {
         calculateChange(parseFloat($('#totalFinal').val())); // Actualiza cambio en función del monto pagado
     });
-    
+
+    // Validación o manejo antes de enviar el formulario (opcional)
+    $('form').on('submit', function(e) {
+        // Si necesitas hacer validaciones antes de enviar el formulario
+        // y no interrumpir el flujo, solo asegúrate de que todo esté listo
+        // para el envío, sin evitar el comportamiento predeterminado del formulario.
+        if (!validateForm()) {
+            e.preventDefault(); // Esto solo se activará si hay un error en la validación
+            alert("Formulario incompleto.");
+        }
+    });
 });
 
+// Función para calcular el total de la fila
+function calculateRowTotal(element) {
+    var row = $(element).closest('tr');
+    var cantidad = parseFloat(row.find('.cantidad').val()) || 0;
+    var precio = parseFloat(row.find('.precio').val()) || 0;
+    var total = cantidad * precio;
+    row.find('.total').val(total.toFixed(2)); // Redondear el total de la fila
+}
 
-// Función para calcular total de cada fila
+// Función para calcular el total general
+function calculateTotal() {
+    var totalGeneral = 0;
+    $(".total").each(function() {
+        totalGeneral += parseFloat($(this).val()) || 0;
+    });
+    $('#totalFinal').val(totalGeneral.toFixed(2)); // Asignar el total general
+}
+
+// Función para calcular el cambio
+function calculateChange(total) {
+    var montoPagado = parseFloat($('#montoPagado').val()) || 0;
+    var cambio = montoPagado - total;
+    $('#cambio').val(cambio.toFixed(2)); // Asignar el cambio
+}
+
+// Función de validación (opcional)
+function validateForm() {
+    // Aquí puedes agregar validaciones si es necesario, como asegurarte
+    // de que todos los campos estén completos, que los totales sean correctos, etc.
+    return true; // Retorna true si todo es válido
+}
+
+
+// // Función para calcular total de cada fila
 function calculateRowTotal(element) {
     var row = element.closest('tr'); // Obtiene la fila más cercana
     var quantity = row.find("input[id^='cantidad_']").val();
@@ -151,7 +235,7 @@ function calculateRowTotal(element) {
 
 }
 
-// Función para calcular el total general
+// // Función para calcular el total general
 function calculateTotal() {
     var totalAmount = 0;
     $("#tbodyFacturas input[id^='total_']").each(function () {
@@ -167,7 +251,7 @@ function calculateTotal() {
      $('#totalFinal').val(totalFinal.toFixed(2)); // Actualiza totalFinal
 }
 
-// Función para calcular impuestos
+// // Función para calcular impuestos
 function calculateTaxes(subTotal) {
     var taxRate = $("#porcentajeImpuestos").val();
     if (taxRate) {
@@ -178,7 +262,7 @@ function calculateTaxes(subTotal) {
         calculateChange(totalAftertax); // Calcula cambio
     }
 }
-// Función para eliminar filas
+// // Función para eliminar filas
 function eliminarFila() {
     const tbody = document.getElementById('tbodyFacturas');
     const filas = tbody.querySelectorAll('tr');
@@ -190,44 +274,3 @@ function eliminarFila() {
         }
     });
 }
-
-
-// //// guardra factura
-document.getElementById('guardarFactura').addEventListener('click', function() {
-    const idpproducto = document.getElementById('codigoProducto_1').value;
-
-    // Verificar que el DNI no esté vacío antes de hacer la solicitud
-    if (!idpproducto) {
-        alert("Por favor un oroducto.");
-        return;
-    }
-
-    // Realizar la petición AJAX
-    fetch('./guardarFactura.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-                dni: clienteDni,
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Verificar si hay un error en la respuesta
-            if (data.error) {
-                alert(data.error);
-                return;
-            }
-
-            // Mostrar datos del cliente en la página
-            document.getElementById('clienteInfo').style.display = 'block';
-            document.getElementById('nombreCliente').innerText = data.nombre; // Campo 'nombre'
-            document.getElementById('direcionCliente').innerText = data.domicilio; // Campo 'domicilio'
-            document.getElementById('telefonoCliente').innerText = data.celular; // Campo 'celular'
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Ha ocurrido un error al buscar el cliente.');
-        });
-});
