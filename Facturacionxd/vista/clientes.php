@@ -93,10 +93,11 @@
                
                 echo "<td>" . $cliente["nombre"] . "</td>";
                 echo "<td>" . $cliente["apellido"] . "</td>";
-                echo "<td>" . $cliente["cuil"] . "</td>";
+                echo "<td>" . $cliente["dni"] . "</td>";
                 echo "<td>" . $cliente["domicilio"] . "</td>";
                 echo "<td>" . $cliente["celular"] . "</td>";
                 echo "<td>" . $cliente["tipoCliente"] . "</td>";
+                echo "<td>" . $cliente["correo"] . "</td>";
                 echo "<th scope='row'><i class='fas fa-trash me-2'></i></th>";
                echo "</tr>";
               }
@@ -105,6 +106,7 @@
           </table>
         </div>
       </div>
+      
  </div>
 
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

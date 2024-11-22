@@ -82,12 +82,12 @@
                 </div>
                 <div class="card h-100 custom-card" style="width: 100%;">
                   <div class="card-body">
-                    <h6 class="card-title">Detalles factura</h6><br>
+                    <h6 class="card-title">Detalles de Comprobante</h6><br>
                     <div class="form-group">
-                      <label for="tipoFactura">Tipo de factura:</label>
+                      <label for="tipoFactura">Tipo de Comprobante:</label>
                       <select class="form-control" id="tipoFactura" name="tipoFactura">
-                        <option value="una empresa">A</option>
-                        <option value="consumidor final">B</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
                       </select>
                     </div>
                     <div class="form-group">
@@ -95,7 +95,7 @@
                       <select class="form-control" id="formaPago" name="formaPago">
                         <option value="efectivo">Efectivo</option>
                         <option value="tarjeta">Tarjeta de crédito</option>
-                        <option value="transferencia">Transferencia Bancaria</option>
+                        <option value="transferencia">Transferencia</option>
                       </select>
                     </div>
                     <!-- Tabla con scroll horizontal -->
@@ -143,13 +143,12 @@
 
                       <div class="col-md-6 mb-3">
                         <label for="porcentajeImpuestos" class="form-label">Porcentaje Impuestos</label>
-                        <input type="number" id="porcentajeImpuestos" name="montoImpuestos" class="form-control" placeholder="%">
+                        <input type="number" id="porcentajeImpuestos" name="porcentajeImpuestos" class="form-control" placeholder="%">
                       </div>
-                    </div>
-                    <div class="row">
+
                       <div class="col-md-6 mb-3">
                         <label for="montoImpuestos" class="form-label">Monto Impuestos</label>
-                        <input type="number" id="montoImpuestos" class="form-control" placeholder="$">
+                        <input type="number" id="montoImpuestos" name="montoImpuestos" class="form-control" placeholder="$">
                       </div>
                     </div>
                     <input type="submit" class="btn custom-btn" id="guardarFactura" value="Generar Factura">
@@ -161,25 +160,44 @@
           </div>
         </form>
         <!-- FORMULARIO PARA CREAR CLIENTE-->
-        <div class="recuadro" id="recuadro">
+        <div class="recuadro" id="recuadro" class="card h-80 custom-card">
           <h2>Crear Nuevo Cliente</h2>
-          <form method="POST" class="form" action="../controlador/cliente.php?accion=crear">
+          <form method="POST" class="form" action="../controlador/crearCliente.php?accion=crear">
             <!-- Agrega un contenedor para los mensajes de error -->
             <div class="form-group">
-              <label for="nombre" class="form-label">Nombre del cliente:</label>
+              <label for="nombre" class="form-label">Nombre/s:</label>
               <input type="text" id="nombre" name="nombre" class="form-control border-label" required>
             </div>
             <div class="form-group">
-              <label for="cuit" class="form-label">CUIL/CUIT:</label>
-              <input type="text" id="cuit" name="cuit" class="form-control border-label" required>
+              <label for="apellido" class="form-label">Apellido/s:</label>
+              <input type="text" id="apellido" name="apellido" class="form-control border-label" required>
             </div>
             <div class="form-group">
-              <label for="domicilio" class="form-label">Domicilio:</label>
+              <label for="dni" class="form-label">DNI:</label>
+              <input type="number" id="dni" name="dni" class="form-control border-label" required>
+            </div>
+            <div class="form-group">
+              <label for="domicilio" class="form-label">Domicio:</label>
               <input type="text" id="domicilio" name="domicilio" class="form-control border-label" required>
             </div>
+            <div class="form-group">
+              <label for="celu" class="form-label">Numero de telefono:</label>
+              <input type="text" id="celular" name="domicilio" class="form-control border-label" required>
+            </div>
+            <div class="form-group">
+              <label for="correo" class="form-label">Correo electronico:</label>
+              <input type="text" id="correo" name="correo" class="form-control border-label" required>
+            </div>
+            <div class="form-group">
+              <label for="tipoCliente">Tipo Cliente:</label>
+              <select class="form-control" id="tipoCliente" name="tipoCliente">
+                <option value="responsable inscripto">Responsable Inscripto</option>
+                <option value="consumidor final">Consumidor Final</option>
+              </select>
+            </div>
             <!-- <button type="submit" class="btn btn-primary" name="insertar">Crear Alumno</button> -->
-            <button type="submit" class="btn btn-primary">Crear Cliente</button>
-            <button type="button" class="btn btn-secondary" onclick="cerrarRecuadro()">Cancelar</button>
+            <button type="submit" class="btn custom-btn">Crear Cliente</button>
+            <button type="button" class="btn custom-btn" onclick="cerrarRecuadro()">Cancelar</button>
 
           </form>
         </div>
@@ -192,7 +210,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../factura.js"></script>
-
 </body>
 
 </html>

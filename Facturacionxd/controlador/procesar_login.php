@@ -21,7 +21,7 @@ if ($permiso !== null) {
     if ($permiso == "1") {
         header("Location: ../vista/admin.php");
     } elseif ($permiso == "0") {
-        header("Location: ../vista/empleado.php");
+        header("Location: ../vista/facturas2.php");
         exit();
     }
 } else {

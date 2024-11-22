@@ -13,10 +13,10 @@ function cerrarRecuadro() {
 document.getElementById('buscarClienteBtn').addEventListener('click', async function () {
     const clienteDni = document.getElementById('dni').value;
 
-    if (!clienteDni) {
-        alert("Por favor ingresa el DNI del cliente.");
-        return;
-    }
+    // if (!clienteDni) {
+    //     alert("Por favor ingresa el DNI del cliente.");
+    //     return;
+    // }
 
     try {
         const response = await fetch('../controlador/cliente.php', {
@@ -48,6 +48,7 @@ $(document).on('blur', "[id^=codigoProducto_]", function () {
     if (producto === '') {
         return;
     }
+
 
     fetch('../controlador/producto.php', {
         method: 'POST',

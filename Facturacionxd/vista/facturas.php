@@ -17,6 +17,12 @@
   $modelo = new Conexion();
   $facturas = $modelo->obtener_facturas();
   ?>
+  <?php if (isset($_GET['mensaje'])): ?>
+    <script>
+      alert("<?= htmlspecialchars($_GET['mensaje']) ?>");
+    </script>
+  <?php endif; ?>
+
 
   <div class="d-flex">
     <!-- Sidebar -->
@@ -60,17 +66,19 @@
       <!-- Main Content -->
       <div class="content p-4">
         <div class="d-flex justify-content-between mb-3">
-          <h3>Lista de Facturas</h3>
-          <a href="crearFactura.php" class="fbtn custom-btn btn-center">crear</a>
+          <h3>Lista de comprobante</h3>
+          <a href="crearFactura.php" class="fbtn custom-btn btn-center">+ crear</a>
         </div>
 
         <table class="table table-bordered grocery-crud-table table-hover">
           <thead>
             <tr>
-              <th>N° de Factura</th>
-              <th>Fecha Creación</th>
-              <th>Nombre del Cliente</th>
-              <th>Total Facturado</th>
+              <th>N° de comprobante</th>
+              <th>Tipo comprobante</th>
+              <th>Fecha creación</th>
+              <th>Hora creación</th>
+              <th>Cliente</th>
+              <th>Facturado</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -78,9 +86,11 @@
             <?php foreach ($facturas as $factura) : ?>
               <tr>
                 <td><?php echo $factura["id_factura"]; ?></td>
+                <td><?php echo $factura["tipoFactura"]; ?></td>
                 <td><?php echo $factura["fecha"]; ?></td>
+                <td><?php echo $factura["hora"]; ?></td>
                 <td><?php echo $factura["nombre_cliente"]; ?></td>
-                <td>$ <?php echo $factura["total"]; ?></td>
+                <td>$<?php echo $factura["total"]; ?></td>
                 <td>
                   <a href="../controlador/notaCredito.php?accion=anular&id=<?php echo $factura['id_factura']; ?>" class="btn btn-danger btn-sm me-2">
                     <i class="fas fa-ban"></i>
@@ -94,10 +104,10 @@
           </tbody>
         </table>
       </div>
-      </div>
-      
-
     </div>
+
+
+  </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

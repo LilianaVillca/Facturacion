@@ -1,17 +1,4 @@
 <?php
-// include_once '../modelo/conexion.php';
-
-// $modelo = new conexion();
-// $producto = $modelo->obtenerProductoPorId($_POST['numeroProducto']);
-
-// if ($producto !== null) {
-//     echo json_encode([
-//         'nombre' => $producto['nombre'],   // Nombre del producto
-//         'precio' => $producto['precio']    // Precio del producto
-//     ]);
-// } else {
-//     echo json_encode(['error' => 'Producto no encontrado']);
-// }
 include_once '../modelo/conexion.php';
 
 $modelo = new conexion();

@@ -24,8 +24,13 @@ if (isset($_GET["accion"])) {
             break;
 
         case "guardar":
+            // echo "<pre>";
+            // print_r($_POST);
+            // echo "</pre>";
+            // exit();
+
             // Verificar que todos los campos requeridos estén presentes
-            if (isset($_POST['dni'], $_POST['tipoFactura'], $_POST['formaPago'], $_POST['codigoProducto'], $_POST['nombreProducto'], $_POST['cantidad'], $_POST['precio'], $_POST['total'])) {
+            if (isset($_POST['dni'], $_POST['tipoFactura'], $_POST['formaPago'], $_POST['codigoProducto'], $_POST['nombreProducto'], $_POST['cantidad'], $_POST['precio'], $_POST['total'], $_POST['subTotal'], $_POST['totalFinal'], $_POST['porcentajeImpuestos'], $_POST['montoImpuestos'])) {
 
                 // Recoger los datos del formulario
                 $dni = $_POST['dni'];
@@ -36,25 +41,24 @@ if (isset($_GET["accion"])) {
                 $cantidad = $_POST['cantidad']; // Array
                 $precio = $_POST['precio']; // Array
                 $total = $_POST['total']; // Array
-                $subTotal = $_POST['subTotal'] ?? 0;
-                $totalFinal = $_POST['totalFinal'] ?? 0;
-                $montoImpuestos = $_POST['montoImpuestos'] ?? 0;
+                $subTotal = $_POST['subTotal'];
+                $totalFinal = $_POST['totalFinal'];
+                $porcentajeImpuestos = $_POST['porcentajeImpuestos'];
+                $montoImpuestos = $_POST['montoImpuestos'];
 
                 // Validar que los arrays tengan la misma longitud
                 if (count($codigoProducto) !== count($cantidad) || count($cantidad) !== count($precio) || count($precio) !== count($total)) {
                     echo "Error: los detalles de los productos no coinciden en cantidad.";
                     exit();
                 }
+                // Verificar que el cliente exista
+                $idCliente = $modelo->obtenerIdCliente($dni);
 
                 // Obtener el ID del cliente con el DNI proporcionado
                 $idCliente = $modelo->obtenerIdCliente($dni);
 
                 // Guardar la factura en la base de datos
-                $idFactura = $modelo->guardarFactura($idCliente, $subTotal, $montoImpuestos, $totalFinal);
-                if (!$idFactura) {
-                    echo "Error: no se pudo guardar la factura.";
-                    exit();
-                }
+                $idFactura = $modelo->guardarFactura($idCliente, $tipoFactura, $subTotal, $porcentajeImpuestos, $montoImpuestos, $totalFinal);
 
                 // Guardar los detalles de la factura
                 foreach ($codigoProducto as $i => $codigo) {
@@ -70,12 +74,13 @@ if (isset($_GET["accion"])) {
                         continue;
                     }
 
+
                     // Guardar el detalle de la factura
-                    $modelo->guardarDetalleFactura($idFactura, $idProducto, $cantidadProducto, $precioProducto, $totalProducto);
+                    $modelo->guardarDetalleFactura($idFactura, $idProducto, $cantidadProducto, $precioProducto, $totalProducto, $formaPago);
                 }
 
                 // echo "Factura guardada exitosamente.";
-                header("Location: ../vista/facturas.php");
+                header("Location: ../vista/facturas.php"); //?mensaje=Factura guardada exitosamente
             } else {
                 echo "Faltan campos obligatorios.";
                 exit();

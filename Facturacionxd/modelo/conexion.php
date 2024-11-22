@@ -64,8 +64,7 @@ class Conexion
     {
         $sql = "SELECT f.*, c.nombre AS nombre_cliente 
             FROM factura f
-            join usuario u on u.id_usuario = f.id_usuario
-            JOIN cliente c ON u.id_usuario = c.id_cliente";
+            JOIN cliente c ON f.id_cliente = c.id_cliente  ORDER BY fecha DESC "; // ORDER BY fecha DESC, hora DESC
         // Ejecutar la consulta
         $result = $this->conexion->query($sql);
         $facturas = array();
@@ -81,7 +80,9 @@ class Conexion
     }
     public function obtener_factura($id_factura)
     {
-        $sql = "SELECT * FROM factura WHERE id_factura = ?";
+        $sql = "SELECT f.*, c.nombre AS nombre_cliente 
+            FROM factura f
+            JOIN cliente c ON f.id_cliente = c.id_cliente WHERE id_factura = ?";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("i", $id_factura);
         $stmt->execute();
@@ -92,6 +93,31 @@ class Conexion
             return null;
         }
     }
+    public function obtener_detalle_factura($id_factura)
+    {
+        // $sql = "SELECT * FROM detalle_factura WHERE id_factura = ?";
+        $sql = "SELECT df.id_detalle_factura, df.id_factura, df.id_producto,
+        p.descripcion_producto, df.cantidad_producto, df.precio_producto, df.total_producto,
+        df.forma_pago FROM detalle_factura AS df INNER JOIN producto AS p ON df.id_producto = p.id_producto
+        WHERE df.id_factura = ?";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id_factura);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc();
+        } else {
+            return null;
+        }
+    }
+    public function crearCliente($nombre, $apellido, $dni, $domicilio, $correo, $tipoCliente)
+    {
+        $sql = "INSERT INTO cliente (nombre, apellido, dni, domicilio, correo, tipoCliente) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conexion->prepare($sql);
+
+        return $stmt->execute([$nombre, $apellido, $dni, $domicilio, $correo, $tipoCliente]);
+    }
+
     public function obtener_usuarios()
     {
         $sql = "SELECT * FROM usuario";
@@ -178,17 +204,20 @@ class Conexion
         $row = $result->fetch_assoc();
         return $row['id_cliente'];
     }
-
-    // Guardar factura en la base de datos y devolver el ID de la factura
-    public function guardarFactura($idCliente, $subTotal, $montoImpuestos, $totalFinal)
+    public function guardarFactura($idCliente, $tipoFactura, $subTotal, $porcentajeImpuestos, $montoImpuestos, $totalFinal)
     {
-        $query = "INSERT INTO factura (id_usuario, subtotal , montoImpuesto,  total) 
-              VALUES (?,?, ?, ?)";
+        date_default_timezone_set('America/Buenos_Aires');
+        $fecha = date('Y-m-d'); // Fecha actual
+        $hora = date('H:i:s'); // Hora actual
+
+        $query = "INSERT INTO factura (id_cliente, fecha, hora, tipoFactura, subtotal, porcentajeImpuesto, montoImpuesto, total) 
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($query);
-        $stmt->bind_param("iddd", $idCliente, $subTotal, $montoImpuestos, $totalFinal);
+        $stmt->bind_param("isssdddd", $idCliente, $fecha, $hora, $tipoFactura, $subTotal, $porcentajeImpuestos, $montoImpuestos, $totalFinal);
         $stmt->execute();
         return $stmt->insert_id;
     }
+
 
     // Guardar detalle de la factura
     public function guardarDetalleFactura($idFactura, $idProducto, $cantidad, $precio, $total, $formaPago)
@@ -202,7 +231,7 @@ class Conexion
     // Obtener el ID del producto basado en el código del producto
     public function obtenerIdProducto($codigoProducto)
     {
-        $query = "SELECT id_producto FROM producto WHERE codigo_producto = ?";
+        $query = "SELECT id_producto FROM producto WHERE id_producto = ?";
         $stmt = $this->conexion->prepare($query);
         $stmt->bind_param("s", $codigoProducto);
         $stmt->execute();
@@ -210,7 +239,29 @@ class Conexion
         $row = $result->fetch_assoc();
         return $row['id_producto'];
     }
+    //////////////////////////////////////////////////// Método para guardar Nota de credito ///////////////////////////////////////////////////////////
 
+    public function guardarNotaCredito($cliente, $motivo, $subTotal, $porcentajeImpuestos, $montoImpuestos, $totalFinal, $idFactura)
+    {
+        date_default_timezone_set('America/Buenos_Aires');
+        $fecha = date('Y-m-d');
+        $hora = date('H:i:s');
+        $query = "INSERT INTO nota_credito (id_cliente, fecha, hora, motivo, subtotal, porcentaje_impuesto, monto_impuesto, total, id_factura) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bind_param("isssddddi", $cliente, $fecha, $hora, $motivo, $subTotal, $porcentajeImpuestos, $montoImpuestos, $totalFinal, $idFactura);
+        $stmt->execute();
+        return $stmt->insert_id;
+    }
+
+    public function guardarDetalleNotaCredito($idNotaCredito, $idProducto, $descripcion, $cantidad, $precio, $total)
+    {
+        $query = "INSERT INTO detalle_nota_credito (id_nota_credito, id_producto, descripcion, cantidad, precio, total) 
+                      VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->bind_param("iisddd", $idNotaCredito, $idProducto, $descripcion, $cantidad, $precio, $total);
+        $stmt->execute();
+    }
 
     //////////////////////////////////////////////////// Método para cerrar la sesión///////////////////////////////////////////////////////////
     public static function cerrarSesion()
@@ -234,7 +285,7 @@ class Conexion
         return $stmt->get_result()->fetch_assoc();
     }
 
-   
+
     public function obtener_productos()
     {
         $sql = "SELECT p.id_producto, p.codigo_producto, p.descripcion_producto, p.precio_producto, c.nombre AS nombre_categoria
@@ -258,7 +309,7 @@ class Conexion
             return array();
         }
     }
-    
+
 
     public function productos_mas_vendidos()
     {
@@ -281,39 +332,4 @@ class Conexion
             return array();
         }
     }
-
-
-    
-// Nota de Credito---- realizado por Eva...jeje // Iniciar transacción
-         //   
-        //  public function obtenerNotaCredito($id_notaCredito, $numeroFactura, $idFactura, $monto, $motivo, $fecha) {
-        //     try {
-        //         // Iniciar la transacción
-        //         $this->conexion->beginTransaction();
-        
-        //         // Insertar la nota de crédito
-        //         $stmt = $this->conexion->prepare("INSERT INTO nota_credito (id_notacredito, numerofactura, id_factura, monto, motivo, fecha) 
-        //                                     VALUES (:id_notacredito, :numerofactura, :id_factura, :monto, :motivo, :fecha)");
-        //         $stmt->bindParam(":id_notacredito", $id_notaCredito);
-        //         $stmt->bindParam(":numerofactura", $numeroFactura);
-        //         $stmt->bindParam(":id_factura", $idFactura);
-        //         $stmt->bindParam(":monto", $monto);
-        //         $stmt->bindParam(":motivo", $motivo);
-        //         $stmt->bindParam(":fecha", $fecha);
-        //         $stmt->execute();
-        
-        //         // Actualizar la factura original como anulada o dada de baja
-        //         $stmt = $this->db->prepare("UPDATE facturas SET nota_credito = 1 WHERE id = :idFactura");
-        //         $stmt->bindParam(":idFactura", $idFactura);
-        //         $stmt->execute();
-        
-        //         // Confirmar la transacción
-        //         $this->db->commit();
-        //         return true;
-        //     } catch (Exception $e) {
-        //         // Revertir cambios en caso de error
-        //         $this->db->rollBack();
-        //         throw $e;
-        //     }
-        // }
-    }
+}
