@@ -16,6 +16,7 @@
   include_once("../modelo/conexion.php");
   $modelo = new Conexion();
   $facturas = $modelo->obtener_facturas();
+  // $notaCredito = $modelo->obtenerNotaCredito();
   ?>
   <?php if (isset($_GET['mensaje'])): ?>
     <script>
@@ -85,19 +86,39 @@
           <tbody>
             <?php foreach ($facturas as $factura) : ?>
               <tr>
-                <td><?php echo $factura["id_factura"]; ?></td>
-                <td><?php echo $factura["tipoFactura"]; ?></td>
+                <td><?php
+                    if (!empty($factura["id_nota_credito"])) {
+                      echo $factura["id_nota_credito"];
+                    } else {
+                      echo $factura["id_factura"];
+                    }
+                    ?>
+                </td>
+                <td><?php echo $factura["tipo_comprobante"]; ?></td>
                 <td><?php echo $factura["fecha"]; ?></td>
                 <td><?php echo $factura["hora"]; ?></td>
                 <td><?php echo $factura["nombre_cliente"]; ?></td>
-                <td>$<?php echo $factura["total"]; ?></td>
-                <td>
-                  <a href="../controlador/notaCredito.php?accion=anular&id=<?php echo $factura['id_factura']; ?>" class="btn btn-danger btn-sm me-2">
-                    <i class="fas fa-ban"></i>
-                  </a>
-                  <a href="../controlador/factura.php?accion=imprimir&id=<?php echo $factura['id_factura']; ?>" class="btn btn-primary btn-sm">
-                    <i class="fas fa-print"></i>
-                  </a>
+                <td><?php
+                    if (!empty($factura["id_nota_credito"])) {
+                      echo "- $",$factura["total"];
+                    } else {
+                      echo "$",$factura["total"];
+                    }
+                    ?>
+                </td>
+                <td><?php
+                    if (!empty($factura["id_nota_credito"])) { ?>
+                    <a href="../controlador/factura.php?accion=imprimir&id=<?php echo $factura['id_factura']; ?>" class="btn btn-primary btn-sm">
+                      <i class="fas fa-print"></i>
+                    </a>
+                  <?php } else { ?>
+                    <a href="../controlador/notaCredito.php?accion=anular&id=<?php echo $factura['id_factura']; ?>" class="btn btn-danger btn-sm me-2">
+                      <i class="fas fa-ban"></i>
+                    </a>
+                    <a href="../controlador/factura.php?accion=imprimir&id=<?php echo $factura['id_factura']; ?>" class="btn btn-primary btn-sm">
+                      <i class="fas fa-print"></i>
+                    </a>
+                  <?php } ?>
                 </td>
               </tr>
             <?php endforeach; ?>

@@ -44,7 +44,7 @@ if (isset($_GET["accion"])) {
             $porcentajeImpuestos = $_POST['porcentajeImpuestos'];
             $montoImpuestos = $_POST['montoImpuestos'];
 
-            $idNotaCredito = $modelo->guardarNotaCredito($cliente, $motivo, $subTotal, $porcentajeImpuestos, $montoImpuestos, $totalFinal, $idFactura);
+            $idNotaCredito = $modelo->guardarNotaCredito($cliente, $motivo, $subTotal, $porcentajeImpuestos, $montoImpuestos, $totalFinal, $idFactura, $tipoFactura);
 
             foreach ($idProductoArray as $index => $idProducto) {
                 $descripcion = $descripcionArray[$index];
@@ -52,7 +52,7 @@ if (isset($_GET["accion"])) {
                 $precio = $precioArray[$index];
                 $total = $totalArray[$index];
 
-                $modelo->guardarDetalleNotaCredito($idNotaCredito, $idProducto, $descripcion, $cantidad, $precio, $total);
+                $modelo->guardarDetalleNotaCredito($idNotaCredito, $idProducto, $descripcion, $cantidad, $precio, $total, $formaPago );
             }
 
             header("Location: ../vista/facturas.php"); // ahora lo que tendria que hacer es enviar mensajes si es que quiero xd

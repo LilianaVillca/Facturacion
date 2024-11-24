@@ -21,13 +21,11 @@ class PDF extends FPDF
         // Información de la empresa
         $this->SetFont('Arial', 'B', 10);
         $this->SetXY(140, 10);
-        $this->Cell(96, 5, utf8_decode("Ubicación : Ubicación de la empresa"), 0, 1, '');
+        $this->Cell(96, 5, utf8_decode("Ubicación : Av. San Martin 998"), 0, 1, '');
         $this->SetX(140);
-        $this->Cell(59, 5, utf8_decode("Teléfono : Teléfono de la empresa"), 0, 1, '');
+        $this->Cell(59, 5, utf8_decode("Teléfono : 4102 5200 "), 0, 1, '');
         $this->SetX(140);
-        $this->Cell(85, 5, utf8_decode("Correo : Correo de la empresa"), 0, 1, '');
-        $this->SetX(140);
-        $this->Cell(85, 5, utf8_decode("Sucursal : Sucursal de la empresa"), 0, 1, '');
+        $this->Cell(85, 5, utf8_decode("Correo : ecantonatural@muebleria.com "), 0, 1, '');
         $this->SetX(140);
         $this->Cell(85, 5, utf8_decode("Fecha : " . date("d/m/Y")), 0, 1, '');
 
@@ -77,11 +75,18 @@ $i = 0;
 $pdf->SetFont('Arial', '', 12);
 $pdf->SetDrawColor(163, 163, 163);
 
-$pdf->Cell(31, 10, utf8_decode($factura['id_factura']), 1, 0, 'C', 0);
-$pdf->Cell(35, 10, utf8_decode($factura['tipoFactura']), 1, 0, 'C', 0);
+$pdf->Cell(31, 10, utf8_decode(!empty($factura['id_nota_credito']) ? $factura['id_nota_credito'] : $factura['id_factura']), 1, 0, 'C', 0);
+$pdf->Cell(35, 10, utf8_decode($factura['tipo_comprobante']), 1, 0, 'C', 0);
 $pdf->Cell(29, 10, utf8_decode($factura['fecha']), 1, 0, 'C', 0);
 $pdf->Cell(27, 10, utf8_decode($factura['hora']), 1, 0, 'C', 0);
 $pdf->Cell(14, 10, utf8_decode($factura['nombre_cliente']), 1, 0, 'C', 0);
-$pdf->Cell(20, 10, utf8_decode($factura['total']), 1, 1, 'C', 0);
+$pdf->Cell(20, 10, utf8_decode(!empty($factura['id_nota_credito']) ? - $factura['total'] : $factura['total']), 1, 1, 'C', 0);
+
+// $pdf->Cell(31, 10, utf8_decode($factura['id_factura']), 1, 0, 'C', 0);
+// $pdf->Cell(35, 10, utf8_decode($factura['tipo_comprobante']), 1, 0, 'C', 0);
+// $pdf->Cell(29, 10, utf8_decode($factura['fecha']), 1, 0, 'C', 0);
+// $pdf->Cell(27, 10, utf8_decode($factura['hora']), 1, 0, 'C', 0);
+// $pdf->Cell(14, 10, utf8_decode($factura['nombre_cliente']), 1, 0, 'C', 0);
+// $pdf->Cell(20, 10, utf8_decode($factura['total']), 1, 1, 'C', 0);
 
 $pdf->Output('Factura.pdf', 'I');

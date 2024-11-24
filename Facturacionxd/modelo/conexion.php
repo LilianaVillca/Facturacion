@@ -62,10 +62,22 @@ class Conexion
     }
     public function obtener_facturas()
     {
-        $sql = "SELECT f.*, c.nombre AS nombre_cliente 
-            FROM factura f
-            JOIN cliente c ON f.id_cliente = c.id_cliente  ORDER BY fecha DESC "; // ORDER BY fecha DESC, hora DESC
+        // $sql = "SELECT f.*, c.nombre AS nombre_cliente  FROM factura f
+            // JOIN cliente c ON f.id_cliente = c.id_cliente ORDER BY fecha DESC "; // ORDER BY fecha DESC, hora DESC
         // Ejecutar la consulta
+        $sql = "
+        SELECT 
+            f.id_factura, nc.id_nota_credito,
+            COALESCE(nc.tipo_factura, f.tipoFactura) AS tipo_comprobante,
+            COALESCE(nc.fecha, f.fecha) AS fecha,
+            COALESCE(nc.hora, f.hora) AS hora,
+            c.nombre AS nombre_cliente,
+            COALESCE(nc.total, f.total) AS total
+        FROM factura f
+        JOIN cliente c ON f.id_cliente = c.id_cliente
+        LEFT JOIN nota_credito nc ON f.id_factura = nc.id_factura
+        ORDER BY fecha DESC, hora DESC
+    ";
         $result = $this->conexion->query($sql);
         $facturas = array();
 
@@ -80,9 +92,24 @@ class Conexion
     }
     public function obtener_factura($id_factura)
     {
-        $sql = "SELECT f.*, c.nombre AS nombre_cliente 
-            FROM factura f
-            JOIN cliente c ON f.id_cliente = c.id_cliente WHERE id_factura = ?";
+        // $sql = "SELECT f.*, c.nombre AS nombre_cliente 
+        //     FROM factura f
+        //     JOIN cliente c ON f.id_cliente = c.id_cliente WHERE id_factura = ?";
+        $sql = "
+        SELECT 
+            f.id_factura,
+            nc.id_nota_credito,
+            COALESCE(nc.tipo_factura, f.tipoFactura) AS tipo_comprobante,
+            COALESCE(nc.fecha, f.fecha) AS fecha,
+            COALESCE(nc.hora, f.hora) AS hora,
+            c.nombre AS nombre_cliente,
+            COALESCE(nc.total, f.total) AS total,
+            nc.motivo AS motivo_nota_credito -- Ejemplo: incluir campo adicional para notas de crédito
+        FROM factura f
+        JOIN cliente c ON f.id_cliente = c.id_cliente
+        LEFT JOIN nota_credito nc ON f.id_factura = nc.id_factura
+        WHERE f.id_factura = ?
+    ";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("i", $id_factura);
         $stmt->execute();
@@ -112,11 +139,12 @@ class Conexion
     }
     public function crearCliente($nombre, $apellido, $dni, $domicilio, $correo, $tipoCliente)
     {
-        $sql = "INSERT INTO cliente (nombre, apellido, dni, domicilio, correo, tipoCliente) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO cliente (nombre, apellido, dni, domicilio, correo, tipo_cliente) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
 
         return $stmt->execute([$nombre, $apellido, $dni, $domicilio, $correo, $tipoCliente]);
     }
+    
 
     public function obtener_usuarios()
     {
@@ -241,27 +269,44 @@ class Conexion
     }
     //////////////////////////////////////////////////// Método para guardar Nota de credito ///////////////////////////////////////////////////////////
 
-    public function guardarNotaCredito($cliente, $motivo, $subTotal, $porcentajeImpuestos, $montoImpuestos, $totalFinal, $idFactura)
+    public function guardarNotaCredito($cliente, $motivo, $subTotal, $porcentajeImpuestos, $montoImpuestos, $totalFinal, $idFactura, $tipoFactura )
     {
         date_default_timezone_set('America/Buenos_Aires');
         $fecha = date('Y-m-d');
         $hora = date('H:i:s');
-        $query = "INSERT INTO nota_credito (id_cliente, fecha, hora, motivo, subtotal, porcentaje_impuesto, monto_impuesto, total, id_factura) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO nota_credito (id_cliente,id_factura, fecha, hora, motivo, subtotal, porcentaje_impuesto, monto_impuesto, total, tipo_factura) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($query);
-        $stmt->bind_param("isssddddi", $cliente, $fecha, $hora, $motivo, $subTotal, $porcentajeImpuestos, $montoImpuestos, $totalFinal, $idFactura);
+        $stmt->bind_param("iisssdddds", $cliente, $idFactura, $fecha, $hora, $motivo, $subTotal, $porcentajeImpuestos, $montoImpuestos, $totalFinal, $tipoFactura);
         $stmt->execute();
         return $stmt->insert_id;
     }
 
-    public function guardarDetalleNotaCredito($idNotaCredito, $idProducto, $descripcion, $cantidad, $precio, $total)
+    public function guardarDetalleNotaCredito($idNotaCredito, $idProducto, $descripcion, $cantidad, $precio, $total, $formaPago)
     {
-        $query = "INSERT INTO detalle_nota_credito (id_nota_credito, id_producto, descripcion, cantidad, precio, total) 
-                      VALUES (?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO detalle_nota_credito (id_nota_credito, id_producto, descripcion, cantidad, precio, total, forma_pago) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($query);
-        $stmt->bind_param("iisddd", $idNotaCredito, $idProducto, $descripcion, $cantidad, $precio, $total);
+        $stmt->bind_param("iisddds", $idNotaCredito, $idProducto, $descripcion, $cantidad, $precio, $total, $formaPago);
         $stmt->execute();
     }
+    // public function obtenerNotaCredito(){
+    //     $sql = "SELECT f.id_factura, f.tipoFactura, f.fecha, f.hora, f.nombre_cliente, f.total, CASE 
+    //     WHEN nc.id_factura IS NOT NULL THEN 1 
+    //     ELSE 0  END AS tiene_nota_credito FROM facturas f LEFT JOIN notas_credito nc ON f.id_factura = nc.id_factura;"; // un inert con id de factura nabien
+    //    // Ejecutar la consulta
+    //    $result = $this->conexion->query($sql);
+    //    $facturas = array();
+
+    //    if ($result->num_rows > 0) {
+    //        while ($row = $result->fetch_assoc()) {
+    //            $facturas[] = $row;
+    //        }
+    //        return $facturas;
+    //    } else {
+    //        return array();
+    //    }
+    // }
 
     //////////////////////////////////////////////////// Método para cerrar la sesión///////////////////////////////////////////////////////////
     public static function cerrarSesion()

@@ -92,7 +92,7 @@ if (isset($_GET["factura"],$_GET['detalleFactura'])) {
                     <h6 class="card-title">Detalles de Comprobante</h6><br>
                     <div class="form-group">
                       <label for="tipoFactura">Tipo de Comprobante:</label>
-                      <input type="text" name="tipoFactura" class="form-control" value="<?php echo $factura['tipoFactura']; ?>" readonly>
+                      <input type="text" name="tipoFactura" class="form-control" value="NC<?php echo $factura['tipoFactura']; ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label for="formaPago">Forma de pago:</label>
