@@ -66,11 +66,11 @@ if (isset($_GET["accion"])) {
                 $tipoCliente = $_POST["tipoCliente"];
 
                 // Llamar al modelo para crear el cliente
-                $clienteCreado = $modelo->crearCliente($nombre, $apellido, $dni, $domicilio, $correo, $tipoCliente);
+                $clienteEditado = $modelo->editarCliente($nombre, $apellido, $dni, $domicilio, $correo, $tipoCliente);
 
                 // Redirigir o mostrar un mensaje según el resultado
-                if ($clienteCreado) {
-                    header("Location: ../vista/clientes.php"); //?status=success
+                if ($clienteEditado) {
+                    header("Location: ../vista/cliente.php"); //?status=success
                     exit();
                 } else {
                     echo "Error al crear el cliente.";
@@ -81,13 +81,13 @@ if (isset($_GET["accion"])) {
             
             break;
 
-            case "crear":
-                /// Lógica para borrar una carrera
+            case "eliminar":
+                /// Lógica para elimar
             if (isset($_GET["id"])) {
                 $id = $_GET["id"];
                 $modelo->eliminar_cliente($id);
                 // Redireccionar a la página de gestión de carreras
-                header("Location: ../views/carrera_view.php");
+                header("Location: ../vista/cliente.php");
                 exit();
             }
             break;
