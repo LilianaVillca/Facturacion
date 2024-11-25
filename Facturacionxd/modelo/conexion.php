@@ -144,6 +144,30 @@ class Conexion
 
         return $stmt->execute([$nombre, $apellido, $dni, $domicilio, $correo, $tipoCliente]);
     }
+    public function eliminar_cliente($id){
+        $query = "DELETE FROM cliente WHERE id_cliente = ?";
+        $statement = $this->conexion->prepare($query);
+        $statement->bind_param("i", $id); 
+        if ($statement->execute()) {
+            return true; 
+        } else {
+            return false;
+        }
+    }
+    public function actualizarCliente($nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente , $id) {
+        // Preparar la consulta SQL para editar una carrera en la base de datos
+        $query = "UPDATE cliente SET nombre = ?, apelllido = ?, dni = ?, domicio = ?, celular = ?, correo = ?, tipo_cliente =?  WHERE id_cliente = ?";
+        // Preparar la sentencia
+        $statement = $this->conexion->prepare($query);
+        // Vincular parámetros
+        $statement->bind_param("ssisissi", $nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente, $id);
+        // Ejecutar la consulta
+        if ($statement->execute()) {
+            return true; // Operación exitosa
+        } else {
+            return false; // Error al editar la carrera
+        }
+    }
     
 
     public function obtener_usuarios()
@@ -318,13 +342,12 @@ class Conexion
         session_destroy();
     }
 
-
     // ////////////////////////////// metodos Brisa //////////////////////////////////////////
 
     ///////otra cosaa eeeee
     public function obtenerClientePorId($idCliente)
     {
-        $stmt = $this->conexion->prepare("SELECT * FROM clientes WHERE id_cliente = ?");
+        $stmt = $this->conexion->prepare("SELECT * FROM cliente WHERE id_cliente = ?");
         $stmt->bind_param("i", $idCliente);
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();

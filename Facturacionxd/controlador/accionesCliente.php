@@ -47,47 +47,62 @@ if (isset($_GET["accion"])) {
             }
             break;
         case "editar":
-            if (
-                isset(
-                    $_POST["nombre"],
-                    $_POST["apellido"],
-                    $_POST["dni"],
-                    $_POST["domicilio"],
-                    $_POST["correo"],
-                    $_POST["tipoCliente"]
-                )
-            ) {
+            if (isset($_GET["id"])) {
+                $id = $_GET["id"];
+                $clienteB = $modelo->obtenerClientePorId($id);
+                if ($clienteB) {
+                    $cliente_serializado = serialize($clienteB);
+                    header("Location: ../vista/editarCliente.php?datoCliente=$cliente_serializado");
+                    exit();
+                }
+                // header("Location: ../vista/clientes.php");
+                exit();
+            }
+            break;
+        case "guardarEditado":
+            //  echo "<pre>";
+            // print_r($_POST);
+            // echo "</pre>";
+            // exit();
+            if (isset($_POST["id"],$_POST["nombre"], $_POST["apellido"], $_POST["dni"],$_POST["domicilio"], $_POST["celular"], $_POST["correo"], $_POST["tipoCliente"]) ) {
                 // Obtener los datos del POST
+                $id=$_POST["id"];
                 $nombre = $_POST["nombre"];
                 $apellido = $_POST["apellido"];
                 $dni = $_POST["dni"];
                 $domicilio = $_POST["domicilio"];
+                $celular = $_POST["celular"];
                 $correo = $_POST["correo"];
                 $tipoCliente = $_POST["tipoCliente"];
 
                 // Llamar al modelo para crear el cliente
-                $clienteEditado = $modelo->editarCliente($nombre, $apellido, $dni, $domicilio, $correo, $tipoCliente);
+                $clienteEditado = $modelo->actualizarCliente($id, $nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente);
 
                 // Redirigir o mostrar un mensaje según el resultado
                 if ($clienteEditado) {
-                    header("Location: ../vista/cliente.php"); //?status=success
+                    header("Location: ../vista/clientes.php"); //?status=success
                     exit();
                 } else {
                     echo "Error al crear el cliente.";
                 }
             } else {
-                echo "Faltan parámetros para crear el cliente.";
+                echo "Faltan parámetros para editar el cliente.";
             }
-            
             break;
 
-            case "eliminar":
-                /// Lógica para elimar
+
+        case "eliminar":
+            //  echo "<pre>";
+            // print_r($_POST);
+            // echo "</pre>";
+            // exit();
             if (isset($_GET["id"])) {
                 $id = $_GET["id"];
-                $modelo->eliminar_cliente($id);
-                // Redireccionar a la página de gestión de carreras
-                header("Location: ../vista/cliente.php");
+                $eliminado = $modelo->eliminar_cliente($id);
+                if ($eliminado) {
+                    header("Location: ../vista/clientes.php");
+                }
+                // header("Location: ../vista/clientes.php");
                 exit();
             }
             break;

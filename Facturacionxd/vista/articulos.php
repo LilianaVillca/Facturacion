@@ -51,56 +51,58 @@
         <a class="nav-link text-dark" href="../controlador/cerrarSession.php"><i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión</a>
       </div>
     </div>
-    
+
     <div class="w-100">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light text-white">
-      <div class="container-fluid">
-        <span class="navbar-brand text-white">Encanto Natural</span>
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-light text-white">
+        <div class="container-fluid">
+          <span class="navbar-brand text-white">Encanto Natural</span>
+        </div>
+      </nav>
+
+      <div class="content p-4">
+
+        <div class="title-box">
+          <h1>Gestión de Articulos</h1>
+        </div>
+        <a class="btn custom-btn btn-center mb-3 ms-3" href="crearFactura.php"><b>+</b> Añadir producto </a>
+
+
+        <div class="card custom-card ms-3">
+          <div class="card-body">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col"> </th>
+                  <th scope="col">Codigo del artículo</th>
+                  <th scope="col">Nombre del artículo</th>
+                  <th scope="col">Descripción</th>
+                  <th scope="col">Precio</th>
+                  <th scope="col"> </th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                foreach ($productos as $producto) {
+                  echo "<tr onclick=\"window.location.href='facturas.php'\">";
+                  //  echo "<th scope='row'><i class='fas fa-edit me-2'></i></th>";
+                  echo "<a href='../controlador/accionesCliente.php?accion=editar&id=" . $cliente["id_cliente"] . "' class='fas fa-edit me-2'>Editar</a>";
+                  echo "<td>" . $producto["codigo_producto"] . "</td>";
+                  echo "<td>" . $producto["descripcion_producto"] . "</td>";
+                  echo "<td>$" . $producto["precio_producto"] . "</td>";
+                  echo "<td>" . $producto["nombre_categoria"] . "</td>";
+                  echo "<a href='../controlador/accionesCliente.php?accion=eliminar&id=" . $cliente["id_cliente"] . "' class='fas fa-trash me-2'>Eliminar</a>";
+                  //  echo "<th scope='row'><i class='fas fa-trash me-2'></i></th>";
+                  echo "</tr>";
+                }
+                ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    </nav>
 
-  <div class="content p-4">
-
-    <div class="title-box">
-        <h1>Gestión de Articulos</h1>
-    </div>
-    <a class="btn custom-btn btn-center mb-3 ms-3" href="crearFactura.php"><b>+</b> Añadir producto </a>
-  
-
-    <div class="card custom-card ms-3">
-     <div class="card-body">
-      <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col"> </th>
-                <th scope="col">Codigo del artículo</th>
-                <th scope="col">Nombre del artículo</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Precio</th>
-                <th scope="col"> </th>
-            </tr>
-        </thead>
-        <tbody>
-           <?php
-             foreach ($productos as $producto) {
-               echo "<tr onclick=\"window.location.href='facturas.php'\">";
-               echo "<th scope='row'><i class='fas fa-edit me-2'></i></th>";
-               echo "<td>" . $producto["codigo_producto"] . "</td>";
-               echo "<td>" . $producto["descripcion_producto"] . "</td>";
-               echo "<td>$" . $producto["precio_producto"] . "</td>";
-               echo "<td>" . $producto["nombre_categoria"] . "</td>";
-               echo "<th scope='row'><i class='fas fa-trash me-2'></i></th>";
-               echo "</tr>";
-             }
-           ?>
-        </tbody>
-      </table>
-     </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </body>
 
