@@ -87,7 +87,7 @@
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label for="domicio" class="form-label">Domicilio</label>
-                                                <input type="text" id="domicio" value="<?php echo $cliente['domicilio'] ?>" name="domicio" class="form-control">
+                                                <input type="text" id="domicilio" value="<?php echo $cliente['domicilio'] ?>" name="domicilio" class="form-control">
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label for="celular" class="form-label">Celular</label>

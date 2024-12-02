@@ -90,6 +90,39 @@ class Conexion
             return array();
         }
     }
+    public function obtener4_facturas()
+{
+    // Consulta SQL corregida
+    $sql = "
+        SELECT 
+            f.id_factura, 
+            nc.id_nota_credito,
+            COALESCE(nc.tipo_factura, f.tipoFactura) AS tipo_comprobante,
+            COALESCE(nc.fecha, f.fecha) AS fecha,
+            COALESCE(nc.hora, f.hora) AS hora,
+            c.nombre AS nombre_cliente,
+            COALESCE(nc.total, f.total) AS total
+        FROM factura f
+        JOIN cliente c ON f.id_cliente = c.id_cliente
+        LEFT JOIN nota_credito nc ON f.id_factura = nc.id_factura
+        ORDER BY COALESCE(nc.fecha, f.fecha) DESC, COALESCE(nc.hora, f.hora) DESC
+        LIMIT 4
+    ";
+
+    // Ejecutar la consulta
+    $result = $this->conexion->query($sql);
+    $facturas = array();
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $facturas[] = $row;
+        }
+        return $facturas;
+    } else {
+        return array();
+    }
+}
+
     public function obtener_factura($id_factura)
     {
         // $sql = "SELECT f.*, c.nombre AS nombre_cliente 
@@ -137,12 +170,12 @@ class Conexion
             return null;
         }
     }
-    public function crearCliente($nombre, $apellido, $dni, $domicilio, $correo, $tipoCliente)
+    public function crearCliente($nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente)
     {
-        $sql = "INSERT INTO cliente (nombre, apellido, dni, domicilio, correo, tipo_cliente) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO cliente (nombre, apellido, dni, domicilio, celular, correo, tipo_cliente) VALUES (?, ?,?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
 
-        return $stmt->execute([$nombre, $apellido, $dni, $domicilio, $correo, $tipoCliente]);
+        return $stmt->execute([$nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente]);
     }
     public function eliminar_cliente($id){
         $query = "DELETE FROM cliente WHERE id_cliente = ?";
@@ -154,13 +187,17 @@ class Conexion
             return false;
         }
     }
-    public function actualizarCliente($nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente , $id) {
+    public function actualizarCliente($nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente, $id) {
         // Preparar la consulta SQL para editar una carrera en la base de datos
-        $query = "UPDATE cliente SET nombre = ?, apelllido = ?, dni = ?, domicio = ?, celular = ?, correo = ?, tipo_cliente =?  WHERE id_cliente = ?";
+        $query = "UPDATE cliente SET nombre = ?, apellido = ?, dni = ?, domicilio = ?, celular = ?, correo = ?, tipo_cliente = ? WHERE id_cliente = ?";
+
+        // $query = "UPDATE cliente SET nombre = ?, apelllido = ?, dni = ?, domicio = ?, celular = ?, correo = ?, tipo_cliente =?  WHERE id_cliente = ?";
         // Preparar la sentencia
         $statement = $this->conexion->prepare($query);
         // Vincular parámetros
-        $statement->bind_param("ssisissi", $nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente, $id);
+        $statement->bind_param("ssssssss", $nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente, $id);
+
+        // $statement->bind_param("ssisissi", $nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente, $id);
         // Ejecutar la consulta
         if ($statement->execute()) {
             return true; // Operación exitosa
@@ -244,6 +281,24 @@ class Conexion
             echo json_encode(["error" => "Cliente no encontrado"]);
         }
     }
+    public function crearProducto($codigo, $nombre, $descripcion, $precio) {
+        $sql = "INSERT INTO articulos (codigo, nombre, descripcion, precio) VALUES (?, ?, ?, ?)";
+        $stmt = $this->conexion->prepare($sql);
+        return $stmt->execute([$codigo, $nombre, $descripcion, $precio]);
+    }
+
+    public function editarProducto($id, $codigo, $nombre, $descripcion, $precio) {
+        $sql = "UPDATE articulos SET codigo = ?, nombre = ?, descripcion = ?, precio = ? WHERE id = ?";
+        $stmt = $this->conexion->prepare($sql);
+        return $stmt->execute([$codigo, $nombre, $descripcion, $precio, $id]);
+    }
+
+    public function eliminarProducto($id) {
+        $sql = "DELETE FROM articulos WHERE id = ?";
+        $stmt = $this->conexion->prepare($sql);
+        return $stmt->execute([$id]);
+    }
+
     ////////////////////////////////////////////////////////  guardar factura //////////////////////////////////////////////////////////////////
     // Obtener el ID del cliente a partir del nombre o CUIL/CUIT
     public function obtenerIdCliente($dni)

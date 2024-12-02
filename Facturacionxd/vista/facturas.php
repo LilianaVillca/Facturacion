@@ -68,7 +68,7 @@
       <div class="content p-4">
         <div class="d-flex justify-content-between mb-3">
           <h3>Lista de comprobante</h3>
-          <a href="crearFactura.php" class="fbtn custom-btn btn-center">+ crear</a>
+          <a href="crearFactura.php" class="fbtn custom-btn btn-center">+ Crear</a>
         </div>
 
         <table class="table table-bordered grocery-crud-table table-hover">

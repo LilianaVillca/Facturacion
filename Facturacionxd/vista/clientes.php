@@ -127,12 +127,12 @@
               <input type="number" id="dni" name="dni" class="form-control border-label" required>
             </div>
             <div class="form-group">
-              <label for="domicilio" class="form-label">Domicio:</label>
+              <label for="domicilio" class="form-label">Domicilio:</label>
               <input type="text" id="domicilio" name="domicilio" class="form-control border-label" required>
             </div>
             <div class="form-group">
               <label for="celu" class="form-label">Numero de telefono:</label>
-              <input type="text" id="celular" name="domicilio" class="form-control border-label" required>
+              <input type="text" id="celular" name="celular" class="form-control border-label" required>
             </div>
             <div class="form-group">
               <label for="correo" class="form-label">Correo electronico:</label>

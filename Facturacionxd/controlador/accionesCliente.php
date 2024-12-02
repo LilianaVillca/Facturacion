@@ -20,6 +20,7 @@ if (isset($_GET["accion"])) {
                     $_POST["apellido"],
                     $_POST["dni"],
                     $_POST["domicilio"],
+                    $_POST["celular"],
                     $_POST["correo"],
                     $_POST["tipoCliente"]
                 )
@@ -29,11 +30,12 @@ if (isset($_GET["accion"])) {
                 $apellido = $_POST["apellido"];
                 $dni = $_POST["dni"];
                 $domicilio = $_POST["domicilio"];
+                $celular = $_POST["celular"];
                 $correo = $_POST["correo"];
                 $tipoCliente = $_POST["tipoCliente"];
 
                 // Llamar al modelo para crear el cliente
-                $clienteCreado = $modelo->crearCliente($nombre, $apellido, $dni, $domicilio, $correo, $tipoCliente);
+                $clienteCreado = $modelo->crearCliente($nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente);
 
                 // Redirigir o mostrar un mensaje según el resultado
                 if ($clienteCreado) {
@@ -59,38 +61,33 @@ if (isset($_GET["accion"])) {
                 exit();
             }
             break;
-        case "guardarEditado":
-            //  echo "<pre>";
-            // print_r($_POST);
-            // echo "</pre>";
-            // exit();
-            if (isset($_POST["id"],$_POST["nombre"], $_POST["apellido"], $_POST["dni"],$_POST["domicilio"], $_POST["celular"], $_POST["correo"], $_POST["tipoCliente"]) ) {
-                // Obtener los datos del POST
-                $id=$_POST["id"];
-                $nombre = $_POST["nombre"];
-                $apellido = $_POST["apellido"];
-                $dni = $_POST["dni"];
-                $domicilio = $_POST["domicilio"];
-                $celular = $_POST["celular"];
-                $correo = $_POST["correo"];
-                $tipoCliente = $_POST["tipoCliente"];
-
-                // Llamar al modelo para crear el cliente
-                $clienteEditado = $modelo->actualizarCliente($id, $nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente);
-
-                // Redirigir o mostrar un mensaje según el resultado
-                if ($clienteEditado) {
-                    header("Location: ../vista/clientes.php"); //?status=success
-                    exit();
+            case "guardarEditado":
+                if (isset($_POST["id"], $_POST["nombre"], $_POST["apellido"], $_POST["dni"], $_POST["domicilio"], $_POST["celular"], $_POST["correo"], $_POST["tipoCliente"])) {
+                    // Obtener los datos del POST
+                    $id = $_POST["id"];
+                    $nombre = $_POST["nombre"];
+                    $apellido = $_POST["apellido"];
+                    $dni = $_POST["dni"];
+                    $domicilio = $_POST["domicilio"];
+                    $celular = $_POST["celular"];
+                    $correo = $_POST["correo"];
+                    $tipoCliente = $_POST["tipoCliente"];
+            
+                    // Llamar al modelo para actualizar el cliente
+                    $clienteEditado = $modelo->actualizarCliente($nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente, $id);
+            
+                    // Redirigir o mostrar un mensaje según el resultado
+                    if ($clienteEditado) {
+                        header("Location: ../vista/clientes.php");
+                        exit();
+                    } else {
+                        echo "Error al editar el cliente.";
+                    }
                 } else {
-                    echo "Error al crear el cliente.";
+                    echo "Faltan parámetros para editar el cliente.";
                 }
-            } else {
-                echo "Faltan parámetros para editar el cliente.";
-            }
-            break;
-
-
+                break;
+         
         case "eliminar":
             //  echo "<pre>";
             // print_r($_POST);

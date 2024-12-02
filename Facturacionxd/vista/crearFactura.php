@@ -64,22 +64,6 @@
           <div class="row justify-content-md-center">
             <div class="col-md-8 mb-3">
               <div class="card h-80 custom-card" style="width: 100%;">
-                <div class="card-body">
-                  <h6 class="card-title">cliente</h6><br>
-                  <div class="text-center">
-                    <!-- Campo de entrada para el DNI y botones de acciones -->
-                    <input type="text" id="dni" name="dni" class="form-control border-label" required>
-                    <button id="buscarClienteBtn" class="btn custom-btn btn-center">Buscar Cliente</button>
-                    <a href="#" class="btn custom-btn btn-center" onclick="abrirRecuadro()">Crear Cliente</a>
-
-                    <!-- Contenedor para mostrar la información del cliente -->
-                    <div id="clienteInfo" style="display: none; margin-top: 15px;">
-                      <p><strong>Nombre:</strong> <span id="nombreCliente" name="nombreCliente"></span></p>
-                      <p><strong>Dirección:</strong> <span id="direcionCliente" name="direcionCliente"></span></p>
-                      <p><strong>Teléfono:</strong> <span id="telefonoCliente" name="telefonoCliente"></span></p>
-                    </div>
-                  </div>
-                </div>
                 <div class="card h-100 custom-card" style="width: 100%;">
                   <div class="card-body">
                     <h6 class="card-title">Detalles de Comprobante</h6><br>
@@ -149,6 +133,34 @@
                       <div class="col-md-6 mb-3">
                         <label for="montoImpuestos" class="form-label">Monto Impuestos</label>
                         <input type="number" id="montoImpuestos" name="montoImpuestos" class="form-control" placeholder="$">
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <h6 class="card-title">cliente</h6><br>
+                      <div class="text-center">
+                        <div class="d-flex align-items-center gap-2">
+                          <!-- Campo de entrada para el DNI -->
+                          <input type="text" id="dni" name="dni" class="form-control border-label" placeholder="Ingrese DNI" required>
+
+                          <!-- Botón para buscar cliente -->
+                          <button id="buscarClienteBtn" class="btn custom-btn">Buscar Cliente</button>
+
+                          <!-- Enlace para crear cliente -->
+                          <a href="#" class="btn custom-btn" onclick="abrirRecuadro()">Crear Cliente</a>
+                        </div>
+                        <br><br>
+
+                        <!-- Campo de entrada para el DNI y botones de acciones -->
+                        <!-- <input type="text" id="dni" name="dni" class="form-control border-label" required>
+                        <button id="buscarClienteBtn" class="btn custom-btn btn-center">Buscar Cliente</button>
+                        <a href="#" class="btn custom-btn btn-center" onclick="abrirRecuadro()">Crear Cliente</a> -->
+
+                        <!-- Contenedor para mostrar la información del cliente -->
+                        <div id="clienteInfo" style="display: none; margin-top: 15px;">
+                          <p><strong>Nombre:</strong> <span id="nombreCliente" name="nombreCliente"></span></p>
+                          <p><strong>Dirección:</strong> <span id="direcionCliente" name="direcionCliente"></span></p>
+                          <p><strong>Teléfono:</strong> <span id="telefonoCliente" name="telefonoCliente"></span></p>
+                        </div>
                       </div>
                     </div>
                     <input type="submit" class="btn custom-btn" id="guardarFactura" value="Generar Factura">

@@ -65,7 +65,7 @@
         <div class="title-box">
           <h1>Gestión de Articulos</h1>
         </div>
-        <a class="btn custom-btn btn-center mb-3 ms-3" href="crearFactura.php"><b>+</b> Añadir producto </a>
+        <a class="btn custom-btn btn-center mb-3 ms-3" onclick="abrirRecuadro()"><b>+</b> Añadir producto </a>
 
 
         <div class="card custom-card ms-3">
@@ -84,15 +84,19 @@
               <tbody>
                 <?php
                 foreach ($productos as $producto) {
-                  echo "<tr onclick=\"window.location.href='facturas.php'\">";
+                  // echo "<tr onclick=\"window.location.href='facturas.php'\">";
                   //  echo "<th scope='row'><i class='fas fa-edit me-2'></i></th>";
-                  echo "<a href='../controlador/accionesCliente.php?accion=editar&id=" . $cliente["id_cliente"] . "' class='fas fa-edit me-2'>Editar</a>";
+                   echo "<th><a scope='row' href='../controlador/productoA.php?accion=editar&id=" . $producto["id_producto"] . "'><i class='fas fa-edit me-2'></i></a></th>";
+
+                  // echo "<a href='../controlador/accionesCliente.php?accion=editar&id=" . $cliente["id_cliente"] . "' class='fas fa-edit me-2'>Editar</a>";
                   echo "<td>" . $producto["codigo_producto"] . "</td>";
                   echo "<td>" . $producto["descripcion_producto"] . "</td>";
                   echo "<td>$" . $producto["precio_producto"] . "</td>";
                   echo "<td>" . $producto["nombre_categoria"] . "</td>";
-                  echo "<a href='../controlador/accionesCliente.php?accion=eliminar&id=" . $cliente["id_cliente"] . "' class='fas fa-trash me-2'>Eliminar</a>";
-                  //  echo "<th scope='row'><i class='fas fa-trash me-2'></i></th>";
+                  // echo "<a href='../controlador/accionesCliente.php?accion=eliminar&id=" . $cliente["id_cliente"] . "' class='fas fa-trash me-2'>Eliminar</a>";
+                  echo "<th><a scope='row' href='../controlador/productoA.php?accion=eliminar&id=" . $producto["id_producto"] . "'><i class='fas fa-trash me-2'></i></a></th>";
+                   
+                  // echo "<th scope='row'><i class='fas fa-trash me-2'></i></th>";
                   echo "</tr>";
                 }
                 ?>
