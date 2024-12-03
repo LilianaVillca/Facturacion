@@ -10,7 +10,7 @@ if (isset($_GET["accion"])) {
         case "anular":
             if (isset($_GET["id"])) {
                 $id_factura = $_GET["id"];
-                $factura = $modelo->obtener_factura($id_factura);
+                $factura = $modelo->obtenerFacturaParaNC($id_factura);
                 $detalleFactura = $modelo->obtener_detalle_factura($id_factura);
                 if ($factura) {
                     $factura_serializado = serialize($factura);

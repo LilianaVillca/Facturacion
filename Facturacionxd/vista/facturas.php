@@ -30,7 +30,8 @@
     <div id="sidebar" class="bg-light p-3">
       <div class="text-center mb-4">
         <img src="img/user1.png" class="rounded-circle" alt="Avatar">
-        <p class="mt-2">Administrador <br> Luis</p>
+        <p class="mt-2">Administrador <br><?php session_start();
+                                          echo htmlspecialchars($_SESSION["nombre_usuario"]) ?> </p>
       </div>
       <hr>
       <ul class="nav flex-column">
@@ -66,72 +67,74 @@
 
       <!-- Main Content -->
       <div class="content p-4">
-        <div class="d-flex justify-content-between mb-3">
-          <h3>Lista de comprobante</h3>
-          <a href="crearFactura.php" class="fbtn custom-btn btn-center">+ Crear</a>
+        <div class="title-box">
+          <h1>Gestión de Comprobantes</h1>
+        </div>
+        <a href="crearFactura.php" class="btn custom-btn btn-center mb-3 ms-3"><b>+</b> Crear Factura</a>
+        <div class="card custom-card ms-3">
+          <div class="card-body">
+            <table class="table table-hover">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>N° de comprobante</th>
+                    <th>Tipo comprobante</th>
+                    <th>Fecha creación</th>
+                    <th>Hora creación</th>
+                    <th>Cliente</th>
+                    <th>Facturado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach ($facturas as $factura) : ?>
+                    <tr>
+                      <td><?php
+                          if (!empty($factura["id_nota_credito"])) {
+                            echo $factura["id_nota_credito"];
+                          } else {
+                            echo $factura["id_factura"];
+                          }
+                          ?>
+                      </td>
+                      <td><?php echo $factura["tipo_comprobante"]; ?></td>
+                      <td><?php echo $factura["fecha"]; ?></td>
+                      <td><?php echo $factura["hora"]; ?></td>
+                      <td><?php echo $factura["nombre_cliente"]; ?></td>
+                      <td><?php
+                          if (!empty($factura["id_nota_credito"])) {
+                            echo "- $", $factura["total"];
+                          } else {
+                            echo "$", $factura["total"];
+                          }
+                          ?>
+                      </td>
+                      <td><?php
+                          if (!empty($factura["id_nota_credito"])) { ?>
+                          <a href="../controlador/factura.php?accion=imprimir&id=<?php echo $factura['id_factura']; ?>" class="btn btn-primary btn-sm">
+                            <i class="fas fa-print"></i>
+                          </a>
+                        <?php } else { ?>
+                          <a href="../controlador/notaCredito.php?accion=anular&id=<?php echo $factura['id_factura']; ?>" class="btn btn-danger btn-sm me-2">
+                            <i class="fas fa-ban"></i>
+                          </a>
+                          <a href="../controlador/factura.php?accion=imprimir&id=<?php echo $factura['id_factura']; ?>" class="btn btn-primary btn-sm">
+                            <i class="fas fa-print"></i>
+                          </a>
+                        <?php } ?>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                </tbody>
+              </table>
+          </div>
         </div>
 
-        <table class="table table-bordered grocery-crud-table table-hover">
-          <thead>
-            <tr>
-              <th>N° de comprobante</th>
-              <th>Tipo comprobante</th>
-              <th>Fecha creación</th>
-              <th>Hora creación</th>
-              <th>Cliente</th>
-              <th>Facturado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($facturas as $factura) : ?>
-              <tr>
-                <td><?php
-                    if (!empty($factura["id_nota_credito"])) {
-                      echo $factura["id_nota_credito"];
-                    } else {
-                      echo $factura["id_factura"];
-                    }
-                    ?>
-                </td>
-                <td><?php echo $factura["tipo_comprobante"]; ?></td>
-                <td><?php echo $factura["fecha"]; ?></td>
-                <td><?php echo $factura["hora"]; ?></td>
-                <td><?php echo $factura["nombre_cliente"]; ?></td>
-                <td><?php
-                    if (!empty($factura["id_nota_credito"])) {
-                      echo "- $",$factura["total"];
-                    } else {
-                      echo "$",$factura["total"];
-                    }
-                    ?>
-                </td>
-                <td><?php
-                    if (!empty($factura["id_nota_credito"])) { ?>
-                    <a href="../controlador/factura.php?accion=imprimir&id=<?php echo $factura['id_factura']; ?>" class="btn btn-primary btn-sm">
-                      <i class="fas fa-print"></i>
-                    </a>
-                  <?php } else { ?>
-                    <a href="../controlador/notaCredito.php?accion=anular&id=<?php echo $factura['id_factura']; ?>" class="btn btn-danger btn-sm me-2">
-                      <i class="fas fa-ban"></i>
-                    </a>
-                    <a href="../controlador/factura.php?accion=imprimir&id=<?php echo $factura['id_factura']; ?>" class="btn btn-primary btn-sm">
-                      <i class="fas fa-print"></i>
-                    </a>
-                  <?php } ?>
-                </td>
-              </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
+
       </div>
     </div>
 
-
-  </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </body>
 

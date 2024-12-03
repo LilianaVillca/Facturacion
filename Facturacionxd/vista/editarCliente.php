@@ -28,7 +28,8 @@
         <div id="sidebar" class="bg-light p-3">
             <div class="text-center mb-4">
                 <img src="img/user1.png" class="rounded-circle" alt="Avatar">
-                <p class="mt-2">Administrador <br> Luis</p>
+                <p class="mt-2">Administrador <br> <?php session_start();
+                                          echo htmlspecialchars($_SESSION["nombre_usuario"]) ?></p>
             </div>
             <hr>
             <ul class="nav flex-column">
@@ -66,7 +67,7 @@
                 </div>
                 <form method="POST" action="../controlador/accionesCliente.php?accion=guardarEditado">
                     <div class="row justify-content-md-center">
-                        <div class="col-md-8 mb-3">
+                        <div class="col-md-10 mb-3">
                             <div class="card h-80 custom-card" style="width: 100%;">
                                 <div class="card h-100 custom-card" style="width: 100%;">
                                     <div class="card-body">

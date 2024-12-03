@@ -1,3 +1,11 @@
+<?php
+// Verifica si el usuario tiene permisos de administrador
+// session_start();
+// if ($_SESSION["rol"] !== "1") {
+//     header("Location: .."); // Redirigir si no es admin
+//     exit();
+// }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -148,17 +156,101 @@
 
 
 
+
         <!-- Sección para actualizar detalles de factura -->
         <h4 class="mb-3">Actualizar detalles de factura</h4>
         <div class="card mb-4 custom-card">
           <div class="card-body d-flex justify-content-between align-items-center">
             <div>
-              <img src="ruta_al_logo.png" alt="Logo" class="rounded-circle" style="width: 50px; height: 50px;">
+              <img src="../vista/fpdf/logo_2.png" alt="Logo" class="rounded-circle" style="width: 50px; height: 50px;">
               <span class="ml-3">Encanto Natural</span>
             </div>
             <button class="btn custom-btn">Editar</button>
           </div>
         </div>
+        <!-- Sección para Crear un Subadministrador -->
+        <h4>Registrar Nuevos Usuarios</h4>
+        <br>
+        <div class="card mb-4 custom-card">
+          <div class="card-body">
+            <form action="../controlador/accionesCliente.php?accion=crearUsuario" method="POST">
+              <div class="row">
+                <!-- Columna 1: Nombre Completo y Nombre de Usuario -->
+                <div class="col-md-6 mb-3">
+                  <label for="nombreCompleto" class="form-label">Nombre Completo</label>
+                  <input type="text" class="form-control form-control-sm" id="nombreCompleto" name="nombre" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="usuario" class="form-label">Nombre de Usuario</label>
+                  <input type="text" class="form-control form-control-sm" id="usuario" name="usuario" required>
+                </div>
+
+                <!-- Columna 2: Correo Electrónico y Contraseña -->
+                <div class="col-md-6 mb-3">
+                  <label for="correo" class="form-label">Correo Electrónico</label>
+                  <input type="email" class="form-control form-control-sm" id="correo" name="correo" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="contrasena" class="form-label">Contraseña</label>
+                  <input type="password" class="form-control form-control-sm" id="contrasena" name="contrasena" required>
+                </div>
+
+                <!-- Campo oculto para el rol -->
+                <input type="hidden" value="0" name="rol">
+              </div>
+
+              <!-- Botón centrado -->
+              <div class="text-center mt-3">
+                <button type="submit" class="btn custom-btn">Crear Sub Administrador</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+        <h4 class="mb-3">Usuarios empleado</h4>
+        <?php
+        include_once("../modelo/conexion.php");
+        $modelo = new conexion();
+        $usuarios = $modelo->obtenerUsuarios();
+        ?>
+        <div class="card custom-card ms-3">
+          <div class="card-body">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col"> </th>
+                  <th scope="col">Nombre completo</th>
+                  <th scope="col">Nombre de usuario</th>
+                  <th scope="col">Correo electrónico</th>
+                  <th scope="col">Contraseña</th>
+                  <th scope="col"> </th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                foreach ($usuarios as $usuario) {
+                  echo "<tr >";
+                  // echo "<tr onclick=\"window.location.href='facturas.php'\">";
+                  // echo "<th scope='row'><i class='fas fa-edit me-2'></i></th>";
+                  // echo "<th><a scope='row' href='../controlador/accionesCliente.php?accion=editarUsuario&id=" . $usuario["id_usuario"] . "'><i class='fas fa-edit me-2'></i></a></th>";
+                  echo "<th></th>";
+                  echo "<td>" . $usuario["nombre"] . "</td>";
+                  echo "<td>" . $usuario["nomUsuario"] . "</td>";
+                  echo "<td>" . $usuario["email"] . "</td>";
+                  echo "<td>" . $usuario["password"] . "</td>";
+                  // echo "<th scope='row'><i class='fas fa-trash me-2'></i></th>";
+                  echo "<th><a scope='row' href='../controlador/accionesCliente.php?accion=eliminarUsuario&id=" . $usuario["id_usuario"] . "'><i class='fas fa-trash me-2'></i></a></th>";
+                  echo "</tr>";
+                }
+                ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <br>
       </div>
     </div>
   </div>

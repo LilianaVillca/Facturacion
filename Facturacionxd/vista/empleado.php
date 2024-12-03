@@ -18,13 +18,18 @@
 </head>
 
 <body>
-
+<?php
+  include_once("../modelo/conexion.php");
+  $modelo = new Conexion();
+  $facturas = $modelo->obtener4_facturas();
+  // $notaCredito = $modelo->obtenerNotaCredito();
+  ?>
   <div class="d-flex">
     <!-- Sidebar -->
     <div id="sidebar" class="bg-light p-3">
       <div class="text-center mb-4">
         <img src="img/user1.png" class="rounded-circle" alt="Avatar">
-        <p class="mt-2">Administrador <br><?php session_start();
+        <p class="mt-2">Empleado <br><?php session_start();
                                           echo htmlspecialchars($_SESSION["nombre_usuario"]) ?> </p>
       </div>
       <hr>
@@ -87,42 +92,31 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr onclick="window.location.href='facturas.php'">
-                    <th scope="row"><i class="fas fa-file-invoice me-2"></i></th>
-                    <td>A</td>
-                    <td>4</td>
-                    <td>Marcelo Suarez</td>
-                    <td>5/11/2024</td>
-                    <td>13:12 hs</td>
-                    <td>$50.00</td>
-                  </tr>
-                  <tr onclick="window.location.href='facturas.php'">
-                    <th scope="row"><i class="fas fa-file-invoice me-2"></i></th>
-                    <td>B</td>
-                    <td>3</td>
-                    <td>Carlos Suarez</td>
-                    <td>3/08/2024</td>
-                    <td>12:30 hs</td>
-                    <td>$100.00</td>
-                  </tr>
-                  <tr onclick="window.location.href='facturas.php'">
-                    <th scope="row"><i class="fas fa-file-invoice me-2"></i></th>
-                    <td>B</td>
-                    <td>2</td>
-                    <td>Gimena Suarez</td>
-                    <td>11/05/24</td>
-                    <td>11:40 hs</td>
-                    <td>$650.00</td>
-                  </tr>
-                  <tr onclick="window.location.href='facturas.php'">
-                    <th scope="row"><i class="fas fa-file-invoice me-2"></i></th>
-                    <td>A</td>
-                    <td>1</td>
-                    <td>Pia Suarez</td>
-                    <td>12/02/2023</td>
-                    <td>11:30 hs</td>
-                    <td>$500.00</td>
-                  </tr>
+                <?php foreach ($facturas as $factura) : ?>
+                    <tr>
+                      <td scope="col"> </td>
+                      <td><?php echo $factura["tipo_comprobante"]; ?></td>
+                      <td><?php
+                          if (!empty($factura["id_nota_credito"])) {
+                            echo $factura["id_nota_credito"];
+                          } else {
+                            echo $factura["id_factura"];
+                          }
+                          ?>
+                      </td>
+                      <td><?php echo $factura["nombre_cliente"]; ?></td>
+                      <td><?php echo $factura["fecha"]; ?></td>
+                      <td><?php echo $factura["hora"]; ?></td>
+                      <td><?php
+                          if (!empty($factura["id_nota_credito"])) {
+                            echo "- $", $factura["total"];
+                          } else {
+                            echo "$", $factura["total"];
+                          }
+                          ?>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
                 </tbody>
               </table>
             </div>

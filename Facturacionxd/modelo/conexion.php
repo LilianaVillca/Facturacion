@@ -5,7 +5,7 @@ class Conexion
 
     public function __construct()
     {
-        $this->conexion = new mysqli("localhost:3309", "root", "", "facturacion");
+        $this->conexion = new mysqli("localhost:3307", "root", "", "facturacion");
     }
     ///////////////////////////////INGRESO DE USUARIO ///////////////////////////
     public function procesarInicioSesion($usuario, $correo, $contrasena)
@@ -63,7 +63,7 @@ class Conexion
     public function obtener_facturas()
     {
         // $sql = "SELECT f.*, c.nombre AS nombre_cliente  FROM factura f
-            // JOIN cliente c ON f.id_cliente = c.id_cliente ORDER BY fecha DESC "; // ORDER BY fecha DESC, hora DESC
+        // JOIN cliente c ON f.id_cliente = c.id_cliente ORDER BY fecha DESC "; // ORDER BY fecha DESC, hora DESC
         // Ejecutar la consulta
         $sql = "
         SELECT 
@@ -91,9 +91,9 @@ class Conexion
         }
     }
     public function obtener4_facturas()
-{
-    // Consulta SQL corregida
-    $sql = "
+    {
+        // Consulta SQL corregida
+        $sql = "
         SELECT 
             f.id_factura, 
             nc.id_nota_credito,
@@ -106,22 +106,21 @@ class Conexion
         JOIN cliente c ON f.id_cliente = c.id_cliente
         LEFT JOIN nota_credito nc ON f.id_factura = nc.id_factura
         ORDER BY COALESCE(nc.fecha, f.fecha) DESC, COALESCE(nc.hora, f.hora) DESC
-        LIMIT 4
-    ";
+        LIMIT 4";
 
-    // Ejecutar la consulta
-    $result = $this->conexion->query($sql);
-    $facturas = array();
+        // Ejecutar la consulta
+        $result = $this->conexion->query($sql);
+        $facturas = array();
 
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $facturas[] = $row;
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $facturas[] = $row;
+            }
+            return $facturas;
+        } else {
+            return array();
         }
-        return $facturas;
-    } else {
-        return array();
     }
-}
 
     public function obtener_factura($id_factura)
     {
@@ -153,6 +152,22 @@ class Conexion
             return null;
         }
     }
+    public function obtenerFacturaParaNC($id_factura)
+    {
+        $sql = "SELECT f.*, c.nombre AS nombre_cliente 
+            FROM factura f
+            JOIN cliente c ON f.id_cliente = c.id_cliente WHERE id_factura = ?";
+        
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id_factura);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc();
+        } else {
+            return null;
+        }
+    }
     public function obtener_detalle_factura($id_factura)
     {
         // $sql = "SELECT * FROM detalle_factura WHERE id_factura = ?";
@@ -170,24 +185,55 @@ class Conexion
             return null;
         }
     }
+
     public function crearCliente($nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente)
     {
-        $sql = "INSERT INTO cliente (nombre, apellido, dni, domicilio, celular, correo, tipo_cliente) VALUES (?, ?,?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO cliente (nombre, apellido, dni, domicilio, celular, correo, tipo_cliente) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
 
-        return $stmt->execute([$nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente]);
+        // Vincula los parámetros con los tipos correspondientes: "s" para string, "i" para integer
+        $stmt->bind_param("sssssss", $nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente);
+
+        // Ejecuta la consulta y devuelve el resultado
+        return $stmt->execute();
     }
-    public function eliminar_cliente($id){
+
+    public function crearUsu($nombre, $usuario, $correo, $contra, $rol)
+    {
+        $sql = "INSERT INTO usuario (nombre, nomUsuario, email, password, rol) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $this->conexion->prepare($sql);
+
+        // Vincula los parámetros con los tipos correspondientes: "s" para string, "i" para integer
+        $stmt->bind_param("ssssi", $nombre, $usuario, $correo, $contra, $rol);
+
+        // Ejecuta la consulta y devuelve el resultado
+        return $stmt->execute();
+    }
+
+    public function eliminar_cliente($id)
+    {
         $query = "DELETE FROM cliente WHERE id_cliente = ?";
         $statement = $this->conexion->prepare($query);
-        $statement->bind_param("i", $id); 
+        $statement->bind_param("i", $id);
         if ($statement->execute()) {
-            return true; 
+            return true;
         } else {
             return false;
         }
     }
-    public function actualizarCliente($nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente, $id) {
+    public function eliminar_usuario($id)
+    {
+        $query = "DELETE FROM usuario WHERE id_usuario = ?";
+        $statement = $this->conexion->prepare($query);
+        $statement->bind_param("i", $id);
+        if ($statement->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function actualizarCliente($nombre, $apellido, $dni, $domicilio, $celular, $correo, $tipoCliente, $id)
+    {
         // Preparar la consulta SQL para editar una carrera en la base de datos
         $query = "UPDATE cliente SET nombre = ?, apellido = ?, dni = ?, domicilio = ?, celular = ?, correo = ?, tipo_cliente = ? WHERE id_cliente = ?";
 
@@ -205,7 +251,7 @@ class Conexion
             return false; // Error al editar la carrera
         }
     }
-    
+
 
     public function obtener_usuarios()
     {
@@ -218,6 +264,18 @@ class Conexion
             return $result->fetch_assoc();
         } else {
             return null;
+        }
+    }
+    public function obtenerUsuarios()
+    {
+        $sql = "SELECT * FROM usuario where rol = 0";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return [];
         }
     }
     public function obtener_clientes()
@@ -233,17 +291,17 @@ class Conexion
         }
     }
 
-    public function obtenerNombreUsuario($usuario)
+    public function obtenerNombreUsuario($contrUusuario)
     {
-        $sql = "SELECT nomUsuario FROM usuario WHERE nomUsuario = ?";
+        $sql = "SELECT nombre FROM usuario WHERE password = ?";
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("s", $usuario);
+        $stmt->bind_param("s", $contrUusuario);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            return $row['nomUsuario'];
+            return $row['nombre'];
         } else {
             return null;
         }
@@ -281,19 +339,22 @@ class Conexion
             echo json_encode(["error" => "Cliente no encontrado"]);
         }
     }
-    public function crearProducto($codigo, $nombre, $descripcion, $precio) {
-        $sql = "INSERT INTO articulos (codigo, nombre, descripcion, precio) VALUES (?, ?, ?, ?)";
+    public function crearProducto($codigo, $descripcion, $precio, $categoria)
+    {
+        $sql = "INSERT INTO articulos (codigo_producto, descripcion_producto, precio_producto, nombre_categoria) VALUES (?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
-        return $stmt->execute([$codigo, $nombre, $descripcion, $precio]);
+        return $stmt->execute([$codigo, $descripcion, $precio, $categoria]);
     }
 
-    public function editarProducto($id, $codigo, $nombre, $descripcion, $precio) {
+    public function editarProducto($id, $codigo, $nombre, $descripcion, $precio)
+    {
         $sql = "UPDATE articulos SET codigo = ?, nombre = ?, descripcion = ?, precio = ? WHERE id = ?";
         $stmt = $this->conexion->prepare($sql);
         return $stmt->execute([$codigo, $nombre, $descripcion, $precio, $id]);
     }
 
-    public function eliminarProducto($id) {
+    public function eliminarProducto($id)
+    {
         $sql = "DELETE FROM articulos WHERE id = ?";
         $stmt = $this->conexion->prepare($sql);
         return $stmt->execute([$id]);
@@ -348,7 +409,7 @@ class Conexion
     }
     //////////////////////////////////////////////////// Método para guardar Nota de credito ///////////////////////////////////////////////////////////
 
-    public function guardarNotaCredito($cliente, $motivo, $subTotal, $porcentajeImpuestos, $montoImpuestos, $totalFinal, $idFactura, $tipoFactura )
+    public function guardarNotaCredito($cliente, $motivo, $subTotal, $porcentajeImpuestos, $montoImpuestos, $totalFinal, $idFactura, $tipoFactura)
     {
         date_default_timezone_set('America/Buenos_Aires');
         $fecha = date('Y-m-d');
@@ -369,6 +430,7 @@ class Conexion
         $stmt->bind_param("iisddds", $idNotaCredito, $idProducto, $descripcion, $cantidad, $precio, $total, $formaPago);
         $stmt->execute();
     }
+    
     // public function obtenerNotaCredito(){
     //     $sql = "SELECT f.id_factura, f.tipoFactura, f.fecha, f.hora, f.nombre_cliente, f.total, CASE 
     //     WHEN nc.id_factura IS NOT NULL THEN 1 
@@ -456,3 +518,20 @@ class Conexion
         }
     }
 }
+
+
+// public function obtenerProductos($idProducto)
+//     {
+//         $sql = "SELECT nombre, apellido, domicio, celular FROM cliente WHERE id_cliente = ?";
+//         $stmt = $this->conexion->prepare($sql);
+//         $stmt->bind_param("i", $idProducto);
+//         $stmt->execute();
+//         $result = $stmt->get_result();
+
+//         // Si encuentra el cliente, devuelve sus datos
+//         if ($result->num_rows > 0) {
+//             echo json_encode($result->fetch_assoc());
+//         } else {
+//             echo json_encode(["error" => "Cliente no encontrado"]);
+//         }
+//     }

@@ -26,7 +26,8 @@
     <div id="sidebar" class="bg-light p-3">
       <div class="text-center mb-4">
         <img src="img/user1.png" class="rounded-circle" alt="Avatar">
-        <p class="mt-2">Administrador <br> Luis</p>
+        <p class="mt-2">Administrador <br><?php session_start();
+                                          echo htmlspecialchars($_SESSION["nombre_usuario"]) ?> </p>
       </div>
       <hr>
       <ul class="nav flex-column">
@@ -132,7 +133,7 @@
             </div>
             <div class="form-group">
               <label for="celu" class="form-label">Numero de telefono:</label>
-              <input type="text" id="celular" name="celular" class="form-control border-label" required>
+              <input type="text" id="celular" name="celu" class="form-control border-label" required>
             </div>
             <div class="form-group">
               <label for="correo" class="form-label">Correo electronico:</label>

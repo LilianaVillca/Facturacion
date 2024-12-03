@@ -87,7 +87,7 @@
 // $pdf->Output('Factura.pdf', 'I');
 
 
-<?php
+
 
 require('./fpdf.php');
 $factura_serializado = $_GET['datoFactura'];

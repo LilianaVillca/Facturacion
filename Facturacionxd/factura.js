@@ -9,14 +9,51 @@ function cerrarRecuadro() {
     recuadro.style.display = "none";
 }
 
+function abrirRecuadroo() {
+    var recuadro = document.getElementById("recuadro");
+    recuadro.style.display = "block";
+}
+
 ///////////////////////////////// Evento de clic para buscar cliente por DNI////////////////////////////////////////////////////////////
-document.getElementById('buscarClienteBtn').addEventListener('click', async function () {
+// document.getElementById('buscarClienteBtn').addEventListener('click', async function () {
+//     const clienteDni = document.getElementById('dni').value;
+
+//     // if (!clienteDni) {
+//     //     alert("Por favor ingresa el DNI del cliente.");
+//     //     return;
+//     // }
+
+//     try {
+//         const response = await fetch('../controlador/cliente.php', {
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+//             body: new URLSearchParams({ dni: clienteDni })
+//         });
+
+//         const data = await response.json();
+
+//         if (data.error) throw new Error(data.error);
+
+//         document.getElementById('clienteInfo').style.display = 'block';
+//         document.getElementById('nombreCliente').innerText = data.nombre;
+//         document.getElementById('direcionCliente').innerText = data.domicilio;
+//         document.getElementById('telefonoCliente').innerText = data.celular;
+//     } catch (error) {
+//         console.error('Error:', error);
+//         alert('Ha ocurrido un error al buscar el cliente.');
+//     }
+// });
+
+///////////////////////////////// Evento de clic para buscar cliente por DNI////////////////////////////////////////////////////////////
+document.getElementById('buscarClienteBtn').addEventListener('click', async function (e) {
+    e.preventDefault(); // Evita el comportamiento predeterminado del botón
+
     const clienteDni = document.getElementById('dni').value;
 
-    // if (!clienteDni) {
-    //     alert("Por favor ingresa el DNI del cliente.");
-    //     return;
-    // }
+    if (!clienteDni) {
+        alert("Por favor ingresa el DNI del cliente.");
+        return;
+    }
 
     try {
         const response = await fetch('../controlador/cliente.php', {
@@ -29,13 +66,27 @@ document.getElementById('buscarClienteBtn').addEventListener('click', async func
 
         if (data.error) throw new Error(data.error);
 
+        // Mostrar la información del cliente
         document.getElementById('clienteInfo').style.display = 'block';
         document.getElementById('nombreCliente').innerText = data.nombre;
+        document.getElementById('apellidoCliente').innerText = data.apellido;
         document.getElementById('direcionCliente').innerText = data.domicilio;
         document.getElementById('telefonoCliente').innerText = data.celular;
+
+        // Habilitar el botón de "Generar Factura"
+        document.getElementById('guardarFactura').disabled = false;
+
     } catch (error) {
         console.error('Error:', error);
         alert('Ha ocurrido un error al buscar el cliente.');
+    }
+});
+
+// Desactivar el botón de "Generar Factura" al inicio
+document.getElementById('guardarFactura').addEventListener('click', function (e) {
+    if (document.getElementById('guardarFactura').disabled) {
+        e.preventDefault();
+        alert("Por favor, selecciona o crea un cliente antes de generar la factura.");
     }
 });
 
@@ -128,7 +179,7 @@ $(document).on('blur', "[id^=codigoProducto_]", function () {
 //     $(document).on('blur', "#montoPagado", function () {
 //         calculateChange(parseFloat($('#totalFinal').val())); // Actualiza cambio en función del monto pagado
 //     });
-    
+
 // });
 
 $(document).ready(function () {
@@ -170,7 +221,7 @@ $(document).ready(function () {
         calculateRowTotal($(this)); // Calcula total de la fila correspondiente
         calculateTotal(); // Calcula total general
     });
-    
+
     // Calcular impuestos y cambio al actualizar campos relevantes
     $(document).on('blur', "#porcentajeImpuestos", function () {
         calculateTotal();
@@ -181,7 +232,7 @@ $(document).ready(function () {
     });
 
     // Validación o manejo antes de enviar el formulario (opcional)
-    $('form').on('submit', function(e) {
+    $('form').on('submit', function (e) {
         // Si necesitas hacer validaciones antes de enviar el formulario
         // y no interrumpir el flujo, solo asegúrate de que todo esté listo
         // para el envío, sin evitar el comportamiento predeterminado del formulario.
@@ -204,7 +255,7 @@ function calculateRowTotal(element) {
 // Función para calcular el total general
 function calculateTotal() {
     var totalGeneral = 0;
-    $(".total").each(function() {
+    $(".total").each(function () {
         totalGeneral += parseFloat($(this).val()) || 0;
     });
     $('#totalFinal').val(totalGeneral.toFixed(2)); // Asignar el total general
@@ -245,11 +296,11 @@ function calculateTotal() {
     $('#subTotal').val(totalAmount.toFixed(2)); // Actualiza subtotal
     calculateTaxes(totalAmount); // Calcula impuestos
 
-     // Calcula el total final como subTotal + montoImpuestos
-     var subTotal = parseFloat($('#subTotal').val()) || 0;
-     var montoImpuestos = parseFloat($('#montoImpuestos').val()) || 0;
-     var totalFinal = subTotal + montoImpuestos;
-     $('#totalFinal').val(totalFinal.toFixed(2)); // Actualiza totalFinal
+    // Calcula el total final como subTotal + montoImpuestos
+    var subTotal = parseFloat($('#subTotal').val()) || 0;
+    var montoImpuestos = parseFloat($('#montoImpuestos').val()) || 0;
+    var totalFinal = subTotal + montoImpuestos;
+    $('#totalFinal').val(totalFinal.toFixed(2)); // Actualiza totalFinal
 }
 
 // // Función para calcular impuestos

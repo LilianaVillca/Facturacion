@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost:3309
--- Tiempo de generación: 24-11-2024 a las 17:00:37
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Servidor: localhost:3307
+-- Tiempo de generación: 03-12-2024 a las 15:23:23
+-- Versión del servidor: 10.4.27-MariaDB
+-- Versión de PHP: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -56,15 +56,21 @@ CREATE TABLE `cliente` (
   `dni` char(8) NOT NULL,
   `domicilio` varchar(255) DEFAULT NULL,
   `celular` varchar(20) DEFAULT NULL,
-  `tipo_cliente` enum('responsable inscripto','consumidor final') NOT NULL
+  `tipo_cliente` enum('responsable inscripto','consumidor final') NOT NULL,
+  `correo` varchar(80) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `cliente`
 --
 
-INSERT INTO `cliente` (`id_cliente`, `nombre`, `apellido`, `dni`, `domicilio`, `celular`, `tipo_cliente`) VALUES
-(1, 'Rosa', 'Ferrari', '23654321', 'villa tulumaya', '261456987', 'responsable inscripto');
+INSERT INTO `cliente` (`id_cliente`, `nombre`, `apellido`, `dni`, `domicilio`, `celular`, `tipo_cliente`, `correo`) VALUES
+(1, 'Rosa', 'Ferrari', '23654321', 'Villa Tulumaya', '261456987', 'responsable inscripto', 'rosa@gmail.com'),
+(2, 'Carla', 'Solluz', '46398752', 'Salvatierra', '2615789631', 'responsable inscripto', 'carlu@gmail.com'),
+(3, 'Juan', 'Cruz', '47890023', 'Villa Tulumaya', '2615896324', 'responsable inscripto', 'juan@gmail.com'),
+(4, 'Brisa', 'Suarez', '45454545', 'Villa Tulumaya', '26162581376', 'consumidor final', 'brisua@gmail.com'),
+(5, 'Liliana', 'Villca', '46464646', 'San Francisco', '2616741589', 'consumidor final', 'lili@gmail.com'),
+(6, 'Eavangelina', 'Mayorga', '47474747', 'Villa Tulumaya', '2618975123', 'consumidor final', 'evamayo@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -82,6 +88,17 @@ CREATE TABLE `detalle_factura` (
   `forma_pago` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `detalle_factura`
+--
+
+INSERT INTO `detalle_factura` (`id_detalle_factura`, `id_factura`, `id_producto`, `cantidad_producto`, `precio_producto`, `total_producto`, `forma_pago`) VALUES
+(1, 3, 1, 2, '67000.00', '134000.00', 'tarjeta'),
+(4, 5, 5, 1, '165000.00', '165000.00', 'transferencia'),
+(5, 6, 3, 2, '135000.00', '270000.00', 'efectivo'),
+(6, 7, 2, 5, '61000.00', '305000.00', 'efectivo'),
+(7, 8, 5, 2, '165000.00', '330000.00', 'efectivo');
+
 -- --------------------------------------------------------
 
 --
@@ -95,8 +112,16 @@ CREATE TABLE `detalle_nota_credito` (
   `descripcion` varchar(255) NOT NULL,
   `cantidad` int(11) NOT NULL,
   `precio` decimal(10,2) NOT NULL,
-  `total` decimal(10,2) NOT NULL
+  `total` decimal(10,2) NOT NULL,
+  `forma_pago` varchar(60) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `detalle_nota_credito`
+--
+
+INSERT INTO `detalle_nota_credito` (`id_detalle_nota_credito`, `id_nota_credito`, `id_producto`, `descripcion`, `cantidad`, `precio`, `total`, `forma_pago`) VALUES
+(1, 3, 5, 'Desayunador de Melamina 120x50', 2, '165000.00', '330000.00', 'efectivo');
 
 -- --------------------------------------------------------
 
@@ -116,6 +141,17 @@ CREATE TABLE `factura` (
   `total` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `factura`
+--
+
+INSERT INTO `factura` (`id_factura`, `id_cliente`, `fecha`, `hora`, `tipoFactura`, `subtotal`, `porcentajeImpuesto`, `montoImpuesto`, `total`) VALUES
+(3, 4, '2024-12-03', '10:52:58', 'B', '134000.00', '21.00', '28140.00', '162140.00'),
+(5, 1, '2024-12-03', '11:12:33', 'A', '165000.00', '21.00', '34650.00', '199650.00'),
+(6, 6, '2024-12-03', '11:13:06', 'B', '270000.00', '21.00', '56700.00', '326700.00'),
+(7, 5, '2024-12-03', '11:13:50', 'B', '305000.00', '21.00', '64050.00', '369050.00'),
+(8, 1, '2024-12-03', '11:14:55', 'A', '330000.00', '21.00', '69300.00', '399300.00');
+
 -- --------------------------------------------------------
 
 --
@@ -132,8 +168,16 @@ CREATE TABLE `nota_credito` (
   `subtotal` decimal(10,2) NOT NULL,
   `porcentaje_impuesto` decimal(5,2) NOT NULL,
   `monto_impuesto` decimal(10,2) NOT NULL,
-  `total` decimal(10,2) NOT NULL
+  `total` decimal(10,2) NOT NULL,
+  `tipo_factura` varchar(60) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `nota_credito`
+--
+
+INSERT INTO `nota_credito` (`id_nota_credito`, `id_cliente`, `id_factura`, `fecha`, `hora`, `motivo`, `subtotal`, `porcentaje_impuesto`, `monto_impuesto`, `total`, `tipo_factura`) VALUES
+(3, 1, 8, '2024-12-03', '11:21:43', 'cantidad incorrecta de productos', '330000.00', '21.00', '69300.00', '399300.00', 'NCA');
 
 -- --------------------------------------------------------
 
@@ -154,27 +198,27 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id_producto`, `codigo_producto`, `descripcion_producto`, `precio_producto`, `categorias_id`) VALUES
-(1, '0001', 'Alacena blanca de 3 puertas 120x60cm  de Melamina', 67000.00, 1),
-(2, '0002', 'Alacena Marron de 4 puertas 140x60cm  de Melamina', 61000.00, 1),
-(3, '0003', 'Mesada c/Bacha de acero inoxidable de 120x60 cm', 135000.00, 1),
-(4, '0004', 'Mesada c/Bacha de acero inoxidable de 140x60 cm', 145000.00, 1),
-(5, '0005', 'Desayunador de Melamina 120x50', 165000.00, 1),
-(6, '0006', 'Mesa c/6 sillas Madera de Roble de 175x60cm', 750000.00, 1),
-(7, '0007', 'Mesa c/6 sillas  Madera de Alamo de 175x60cm', 450000.00, 1),
-(8, '0008', 'Mesa Melamina c/6 sillas de hiero tapizadas cuerina Madera de Alamo de 175x60cm', 320000.00, 1),
-(9, '1001', 'Juego de Living de 3 cuerpos de en tela color gris', 790000.00, 2),
-(10, '1002', 'Juego de Living de 3 cuerpos de en cuerina color beige', 670000.00, 2),
-(11, '1003', 'Futon estructura de Madera de Pino de 120x80', 520000.00, 2),
-(12, '1004', 'Futon estructura de Hierro de 120x80', 490000.00, 2),
-(13, '1005', 'Mesa de Living de vidrio redonda de 80cm de diametro', 150000.00, 2),
-(14, '2001', 'Sommier 180x200cm', 95000.00, 3),
-(15, '2002', 'Sommier 120x180cm', 75000.00, 3),
-(16, '2003', 'Colchon SuaveStar de 180x200cm', 584000.00, 3),
-(17, '2003', 'Colchon SuaveStar de 120x180cm', 43000.00, 3),
-(18, '3001', 'Silla giratoria c/5 ruedas', 118000.00, 4),
-(19, '3002', 'Silla giratoria ergonomica c/5 ruedas', 130000.00, 4),
-(20, '3003', 'Escritorio p/PC c/3 cajones de 180x50', 124000.00, 4),
-(21, '3004', 'Escritorio p/PC s/cajones de 160x00', 115000.00, 4);
+(1, '0001', 'Alacena blanca de 3 puertas 120x60cm  de Melamina', '67000.00', 1),
+(2, '0002', 'Alacena Marron de 4 puertas 140x60cm  de Melamina', '61000.00', 1),
+(3, '0003', 'Mesada c/Bacha de acero inoxidable de 120x60 cm', '135000.00', 1),
+(4, '0004', 'Mesada c/Bacha de acero inoxidable de 140x60 cm', '145000.00', 1),
+(5, '0005', 'Desayunador de Melamina 120x50', '165000.00', 1),
+(6, '0006', 'Mesa c/6 sillas Madera de Roble de 175x60cm', '750000.00', 1),
+(7, '0007', 'Mesa c/6 sillas  Madera de Alamo de 175x60cm', '450000.00', 1),
+(8, '0008', 'Mesa Melamina c/6 sillas de hiero tapizadas cuerina Madera de Alamo de 175x60cm', '320000.00', 1),
+(9, '1001', 'Juego de Living de 3 cuerpos de en tela color gris', '790000.00', 2),
+(10, '1002', 'Juego de Living de 3 cuerpos de en cuerina color beige', '670000.00', 2),
+(11, '1003', 'Futon estructura de Madera de Pino de 120x80', '520000.00', 2),
+(12, '1004', 'Futon estructura de Hierro de 120x80', '490000.00', 2),
+(13, '1005', 'Mesa de Living de vidrio redonda de 80cm de diametro', '150000.00', 2),
+(14, '2001', 'Sommier 180x200cm', '95000.00', 3),
+(15, '2002', 'Sommier 120x180cm', '75000.00', 3),
+(16, '2003', 'Colchon SuaveStar de 180x200cm', '584000.00', 3),
+(17, '2003', 'Colchon SuaveStar de 120x180cm', '43000.00', 3),
+(18, '3001', 'Silla giratoria c/5 ruedas', '118000.00', 4),
+(19, '3002', 'Silla giratoria ergonomica c/5 ruedas', '130000.00', 4),
+(20, '3003', 'Escritorio p/PC c/3 cajones de 180x50', '124000.00', 4),
+(21, '3004', 'Escritorio p/PC s/cajones de 160x00', '115000.00', 4);
 
 -- --------------------------------------------------------
 
@@ -187,18 +231,18 @@ CREATE TABLE `usuario` (
   `nomUsuario` varchar(50) NOT NULL,
   `password` varchar(8) NOT NULL,
   `email` varchar(60) NOT NULL,
-  `rol` int(11) NOT NULL
+  `rol` int(11) NOT NULL,
+  `nombre` varchar(60) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id_usuario`, `nomUsuario`, `password`, `email`, `rol`) VALUES
-(1, 'admin', 'admin123', 'admin@gmail.com', 1),
-(2, 'user', 'user1234', 'user@gmail.com', 0),
-(6, 'Carla', 'carlu123', 'carlu@gmail.com', 0),
-(7, 'lilixd', '$2y$10$l', 'lili@gmail.com', 0);
+INSERT INTO `usuario` (`id_usuario`, `nomUsuario`, `password`, `email`, `rol`, `nombre`) VALUES
+(1, 'admin', 'admin123', 'admin@gmail.com', 1, 'Agustin'),
+(2, 'user', 'user1234', 'user@gmail.com', 0, 'Carlos'),
+(8, 'sol', '12345678', 'sol@gmail.com', 0, 'Soledad');
 
 --
 -- Índices para tablas volcadas
@@ -277,31 +321,31 @@ ALTER TABLE `categorias`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_factura`
 --
 ALTER TABLE `detalle_factura`
-  MODIFY `id_detalle_factura` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detalle_factura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_nota_credito`
 --
 ALTER TABLE `detalle_nota_credito`
-  MODIFY `id_detalle_nota_credito` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detalle_nota_credito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `factura`
 --
 ALTER TABLE `factura`
-  MODIFY `id_factura` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_factura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `nota_credito`
 --
 ALTER TABLE `nota_credito`
-  MODIFY `id_nota_credito` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_nota_credito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
@@ -313,7 +357,7 @@ ALTER TABLE `producto`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restricciones para tablas volcadas

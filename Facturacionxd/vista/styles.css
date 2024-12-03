@@ -86,12 +86,12 @@
   .custom-card{
     border-radius: 20px;
     border:none;
+    width: 100%;
+    max-width: 100%; /* Evita que se desborde */
+    overflow: hidden; /* Oculta cualquier contenido que sobresalga */
   }
 
-  .custom-card {
-    border-width: 2px;
-    border-color: #6c3ed8; /* Color del borde de la tarjeta */
-  }
+  
   
   .bar {
     width: 60px; /* Ancho de las barras */

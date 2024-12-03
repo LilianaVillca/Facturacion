@@ -24,9 +24,10 @@
   <div class="d-flex">
     <!-- Sidebar -->
     <div id="sidebar" class="bg-light p-3">
-      <div class="text-center mb-4">
+    <div class="text-center mb-4">
         <img src="img/user1.png" class="rounded-circle" alt="Avatar">
-        <p class="mt-2">Administrador <br> Luis</p>
+        <p class="mt-2">Administrador <br><?php session_start();
+                                          echo htmlspecialchars($_SESSION["nombre_usuario"]) ?> </p>
       </div>
       <hr>
       <ul class="nav flex-column">
@@ -65,7 +66,7 @@
         <div class="title-box">
           <h1>Gestión de Articulos</h1>
         </div>
-        <a class="btn custom-btn btn-center mb-3 ms-3" onclick="abrirRecuadro()"><b>+</b> Añadir producto </a>
+        <a class="btn custom-btn btn-center mb-3 ms-3" onclick="abrirRecuadroo()"><b>+</b> Añadir producto </a>
 
 
         <div class="card custom-card ms-3">
@@ -75,9 +76,9 @@
                 <tr>
                   <th scope="col"> </th>
                   <th scope="col">Codigo del artículo</th>
-                  <th scope="col">Nombre del artículo</th>
                   <th scope="col">Descripción</th>
                   <th scope="col">Precio</th>
+                  <th scope="col">Categoría</th>
                   <th scope="col"> </th>
                 </tr>
               </thead>
@@ -104,6 +105,32 @@
             </table>
           </div>
         </div>
+        <!-- FORMULARIO PARA CREAR CLIENTE-->
+        <div id="recuadro" style="display: none; background: #f9f9f9; width: 400px; border: 1px solid #ccc; padding: 20px;">
+          <h2>Crear Producto</h2>
+          <form method="POST" class="form" action="../controlador/accionesCliente.php?accion=crearProducto">
+            <!-- Agrega un contenedor para los mensajes de error -->
+            <div class="form-group">
+              <label for="codigo" class="form-label">Código del producto:</label>
+              <input type="number" id="codigo_producto" name="codigo" class="form-control border-label" required>
+            </div>
+            <div class="form-group">
+              <label for="descripcion" class="form-label">Descripción:</label>
+              <input type="text" id="descripcion_producto" name="descripcion" class="form-control border-label" required>
+            </div>
+            <div class="form-group">
+              <label for="precio" class="form-label">Precio:</label>
+              <input type="number" id="precio_producto" name="precio" class="form-control border-label" required>
+            </div>
+            <div class="form-group">
+              <label for="categoria" class="form-label">Categoría:</label>
+              <input type="text" id="nombre_categoria" name="categoria" class="form-control border-label" required>
+            </div>
+            <!-- <button type="submit" class="btn btn-primary" name="insertar">Crear Alumno</button> -->
+            <button type="submit" class="btn custom-btn">Crear Producto</button>
+            <button type="button" class="btn custom-btn" onclick="cerrarRecuadro()">Cancelar</button>
+
+          </form>
       </div>
 
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

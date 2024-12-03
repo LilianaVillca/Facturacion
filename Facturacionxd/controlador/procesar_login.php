@@ -11,7 +11,7 @@ $permiso = $modelo->procesarInicioSesion($_POST['usuario'], $_POST['correo'], $_
 if ($permiso !== null) {
 
     // Obtener el nombre del usuario
-    $nombreUsuario = $modelo->obtenerNombreUsuario($_POST['usuario']);
+    $nombreUsuario = $modelo->obtenerNombreUsuario($_POST['contrasena']);
 
     // Autenticación exitosa, redirigir según el permiso del usuario
     $_SESSION["autentificado"] = true;
@@ -21,7 +21,7 @@ if ($permiso !== null) {
     if ($permiso == "1") {
         header("Location: ../vista/admin.php");
     } elseif ($permiso == "0") {
-        header("Location: ../vista/facturas2.php");
+        header("Location: ../vista/empleado.php");
         exit();
     }
 } else {
