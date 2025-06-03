@@ -1,0 +1,149 @@
+#sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+    background-color: white !important;
+  }
+  
+  #sidebar .nav-link {
+    font-size: 16px;
+  }
+
+  #sidebar .nav-link:hover {
+    background-color: #d0c4ee; /* Color lila */
+    color: #512da8; /* Lila en hover */
+    /* color: white; Color de texto blanco cuando el hover esté activo */
+    border-radius: 5px; /* Para que se vea más redondeado */
+  }
+
+  #sidebar .nav-link.active {
+  /*background-color: #d0c4ee;  Color lila */
+  color: #512da8 !important; /* Color de texto blanco */
+  border-radius: 5px;
+  font-weight: bold; /* Resalta el texto */
+}
+  
+  #sidebar img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  #sidebar .mt-auto {
+    margin-top: auto;
+  }
+  
+  .content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+  }
+/* Efecto de hover en los links del menú */
+#sidebar .nav-link {
+    color: #343a40; /* Color oscuro por defecto */
+    transition: color 0.3s ease-in-out; /* Transición suave para el cambio de color */
+  }
+  
+  #sidebar .nav-link i {
+    transition: color 0.3s ease-in-out; /* Transición para los iconos también */
+  }
+  
+  #sidebar .nav-link:hover i {
+    color:#512da8; /* Cambia el color del ícono a lila en hover */
+  }  
+  .content {
+    margin-left: 250px; /* Alinea el contenido principal después del sidebar */
+  }
+  
+  .navbar {
+    margin-left: 250px; /* Alinea la barra de navegación con el contenido */
+    background-color: #6c3ed8; /* Color lila para el navbar */
+  }
+  
+  .form-control {
+    width: 400px; /* Ancho más largo */
+    height: 35px; /* Altura más delgada */
+    border-radius: 20px; /* Mantener bordes redondeados si es necesario */
+    padding: 5px 15px; /* Espaciado interno para que no se vea aplastado */
+  }
+
+  .custom-btn {
+    background-color: #6c3ed8; /* Color lila personalizado */
+    color: white; /* Color del texto */
+    border: none; /* Quita el borde */
+    padding: 8px 30px; /* Ajusta el tamaño del botón */
+    border-radius: 20px; /* Bordes redondeados */
+    transition: background-color 0.3s ease; /* Transición suave */
+    align-items: center;
+  }
+  
+  .custom-btn:hover {
+    background-color: #512da8; /* Color más oscuro en hover */
+    color:white;
+  }
+
+  .custom-card{
+    border-radius: 20px;
+    border:none;
+    width: 100%;
+    max-width: 100%; /* Evita que se desborde */
+    overflow: hidden; /* Oculta cualquier contenido que sobresalga */
+  }
+
+  
+  
+  .bar {
+    width: 60px; /* Ancho de las barras */
+    background-color: #6c3ed8; /* Color de las barras */
+    margin: 0 auto; /* Centra las barras en las columnas */
+    color: white; /* Color del texto dentro de las barras */
+    display: flex;
+    flex-direction: column; /* Coloca el texto en vertical */
+    justify-content: flex-end; /* Alinea el texto en la parte inferior de la barra */
+    padding: 5px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+  }
+  
+  .sales {
+    font-size: 0.8rem; /* Tamaño del texto que muestra las ventas */
+  }
+  
+  .table-hover {
+    > tbody > tr:hover {
+      > td,
+      > th {
+        background-color: #d0c4ee;
+      }
+    }
+  }
+
+  #myChart {
+    width: 100%;  /* Ajusta el ancho del gráfico a 100% del contenedor */
+    height: 100px; /* Ajusta la altura para que coincida con la tarjeta "Hoy" */
+  }
+  
+  body{
+    background-color: #efeef3;
+  }
+   /* ESTILOS PARA EL FORMULARIO DE CREAR CLIENTE*/
+   .recuadro {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  }
+
+  .container {
+    margin-top: 50px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
